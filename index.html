@@ -1,0 +1,3666 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Noto Sans JP -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>🍖 狂介クリッカー</title>
+
+
+
+
+
+<!-- WARNING: unauthorized access detected -->
+<!-- Q: 「……あれ～？ キミ、なんか触っちゃいけないところまで来てない？」 -->
+<!-- ルーイ: 「……チートとかダセェことはすんなよ」 -->
+<!-- TRACE: dismissed -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+:root {
+    /* ===== ベース（背景） ===== */
+    --base-color: #5C5758;
+    --base-light: #6A6566;
+    --base-dark: #4A4546;
+    /* ===== メインカラー===== */
+    --main-color: #A91D3A;
+    --main-color-light: #C73659;
+
+    /* ===== アクセント ===== */
+    --accent-color: #EEEEEE;
+
+    /* ===== グラデーション ===== */
+    --primary-gradient: linear-gradient(135deg, #C73659 0%, #A91D3A 100%);
+    --secondary-gradient: linear-gradient(135deg, #A91D3A 0%, #C73659 100%);
+
+    /* ===== カード背景 ===== */
+    --card-bg: rgba(255, 255, 255, 0.08);
+
+    /* ===== 罫線 ===== */
+    --border-color: rgba(238, 238, 238, 0.25);
+
+    /* ===== テキスト ===== */
+    --text-color: #FFFFFF;   
+    --text-dark: #F1F1F1;    
+    --text-light: #D0D0D0;   
+    --text-muted: #AAAAAA;
+    --text-glow: 0 0 10px rgba(199, 54, 89, 0.35);
+
+    /* ===== ボタン ===== */
+    --button-gradient: linear-gradient(135deg, #C73659 0%, #A91D3A 100%);
+    --button-hover: linear-gradient(135deg, #D64F73 0%, #B32443 100%);
+}
+
+
+body {
+    font-family: 'BIZ UDPGothic', 'Noto Sans JP', sans-serif;
+
+    background: linear-gradient(
+        135deg,
+        #4A4546 0%,
+        #5C5758 40%,
+        #6A6566 100%
+    );
+    background-attachment: fixed;
+
+    color: var(--text-color);
+    overflow-x: hidden;
+    min-height: 100vh;
+}        /* 背景アニメーション */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    
+    background:
+        radial-gradient(circle at 20% 50%, rgba(199, 54, 89, 0.12) 0%, transparent 55%),
+        radial-gradient(circle at 80% 80%, rgba(169, 29, 58, 0.10) 0%, transparent 55%),
+        radial-gradient(circle at 40% 20%, rgba(230, 160, 175, 0.08) 0%, transparent 55%);
+
+    animation: bgPulse 10s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes bgPulse {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 0.95; }
+}
+
+
+/* =========================
+   ヘッダー
+   ========================= */
+header {
+
+    background: linear-gradient(
+        135deg,
+        rgba(92, 87, 88, 0.80) 0%,
+        rgba(74, 69, 70, 0.78) 40%,
+        rgba(90, 20, 40, 0.75) 100%
+    );
+    backdrop-filter: blur(16px);
+
+    padding: 1rem 2rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+
+    border-bottom: 3px solid var(--main-color);
+
+
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.45),
+        0 0 20px rgba(199, 54, 89, 0.20);
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* =========================
+   タイトル
+   ========================= */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+header h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 0;
+    color: #FFFFFF;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+    letter-spacing: 2px;
+}
+.subtitle {
+    font-size: 0.9rem;
+    opacity: 0.95;
+    margin-top: 0.3rem;
+    color: #FFFFFF;
+    white-space: nowrap;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 0.6rem;
+    white-space: nowrap;
+}
+
+.header-btn {
+    background: #4A4546; 
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #FFFFFF;
+
+    padding: 0.45rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+
+    box-shadow:
+        0 1px 4px rgba(0,0,0,0.4),
+        0 0 8px rgba(199, 54, 89, 0.25); /* 深赤の祝祭グロー */
+}
+
+
+.header-btn:hover {
+    background: rgba(199, 54, 89, 0.35);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+    transform: none;
+}
+        /* =========================
+   メインコンテナ
+   ========================= */
+.container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: 1.5fr 2.5fr 1.6fr;
+    gap: 2rem;
+align-items: stretch;
+}
+
+/* =========================
+   ステータスパネル
+   ========================= */
+.status-panel {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    
+border: 1px solid rgba(245, 208, 126, 0.25);
+    border-radius: 20px;
+
+    padding: 1.5rem;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.25),
+        0 0 20px rgba(199, 54, 89, 0.18);
+    
+    transition: all 0.3s ease;
+}
+
+#meatImage {
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+}
+
+
+
+/* メインの肉カウント */
+.meat-count {
+    font-size: 3rem;
+    font-weight: 900;
+    text-align: center;
+    margin: 1rem 0;
+
+}
+
+/* 秒間生産量 */
+.per-second {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+
+    background: rgba(199, 54, 89, 0.12);
+    border-radius: 10px;
+    color: #F1F1F1;
+}
+
+/* =========================
+   ステータス項目
+   ========================= */
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    font-size: 0.9rem;
+    color: #E8E8E8;
+}
+
+/* =========================
+   クリックエリア
+   ========================= */
+.click-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 2rem;
+
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+
+border: 2px solid rgba(245, 208, 126, 0.25);
+    border-radius: 20px;
+
+    padding: 2rem;
+
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.25),
+        0 0 20px rgba(199, 54, 89, 0.18);
+}
+
+/* 肉クリックボタン */
+.meat-button {
+    width: 400px;
+    height: 400px;
+    font-size: 90%;
+
+    background: transparent;
+    border: none;
+
+    border-radius: 50%;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.2s ease;
+}
+
+.meat-button:hover {
+    transform: scale(1.05);
+}
+
+.meat-button:active {
+    transform: scale(0.95);
+}
+
+/* =========================
+   クリックセリフ
+   ========================= */
+.speech-bubble {
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.35);
+
+    border-radius: 15px;
+    padding: 1rem 1.5rem;
+    min-height: 80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+
+    box-shadow: 
+        0 4px 20px rgba(0,0,0,0.2),
+        0 0 12px rgba(199,54,89,0.25);
+    
+    color: #FFFFFF;
+
+    position: relative;
+    transition: all 0.3s ease;
+    z-index: 20;
+}
+
+.speech-bubble::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    border-width: 10px 10px 0 10px;
+    border-style: solid;
+    border-color: rgba(255,255,255,0.35) transparent transparent transparent;
+}
+
+/* レア演出 */
+.speech-bubble.rare {
+    border-color: #C73659; /* 深赤 */
+    box-shadow: 0 0 20px rgba(199, 54, 89, 0.5);
+}
+
+/* 超レア演出 */
+.speech-bubble.super-rare {
+    border-color: #FFFFFF;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+    animation: superRareGlow 1.2s ease-in-out infinite;
+}
+
+@keyframes superRareGlow {
+    0%, 100% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.5); }
+    50% { box-shadow: 0 0 50px rgba(255, 255, 255, 0.9); }
+}
+
+        /* フィーバー時のセリフ枠 */
+.speech-bubble.fever {
+    border-color: #C73659;  /* 祝祭赤 */
+    background: linear-gradient(
+        135deg,
+        rgba(199, 54, 89, 0.18),
+        rgba(255, 255, 255, 0.05)
+    );
+    box-shadow: 
+        0 0 40px rgba(199, 54, 89, 0.8),
+        0 0 20px rgba(255, 255, 255, 0.25);
+
+    animation: feverBubblePulse 1.2s ease-in-out infinite;
+}
+
+.speech-bubble.fever::after {
+    border-color: #C73659 transparent transparent transparent;
+}
+
+@keyframes feverBubblePulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 40px rgba(199, 54, 89, 0.8),
+            0 0 20px rgba(255, 255, 255, 0.25);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 
+            0 0 60px rgba(199, 54, 89, 1),
+            0 0 35px rgba(255, 255, 255, 0.35);
+        transform: scale(1.03);
+    }
+    }
+
+
+/* アップグレード一覧パネル */
+.upgrades-panel {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+
+    padding: 1.5rem;
+    max-height: 600px;
+    overflow-y: auto;
+
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.25),
+        0 0 20px rgba(199, 54, 89, 0.18);
+}
+
+/* ===========================
+   クリック不能になる問題の完全対策
+   =========================== */
+/* =========================
+   画面全体を覆うフェード
+   ========================= */
+.screen-fade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: rgba(21, 21, 21, 0.9);
+    backdrop-filter: blur(6px);
+
+    z-index: 5000;
+
+    opacity: 1;
+    transition: opacity 1.2s ease;
+
+    pointer-events: none !important; /* ←重複してたのでここに入れる */
+}
+
+
+/* モーダルの表示制御とクリック制御 */
+.modal,
+.unlock-modal {
+    display: none;
+    pointer-events: none !important;
+    
+    /* モーダルの基本レイアウト */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    
+    /* 背景とエフェクト */
+    background: rgba(20, 20, 20, 0.75);
+    backdrop-filter: blur(12px);
+    
+    /* 配置 */
+    z-index: 3000;
+    justify-content: center;
+    align-items: center;
+    
+    padding: 2rem;
+}
+
+.modal.active,
+.unlock-modal.active {
+    display: flex;  /* .activeで表示 */
+    pointer-events: auto !important;
+}
+
+/* 支援者パネルのクリックを強制的に有効化 */
+.upgrades-panel {
+    pointer-events: auto !important;
+}
+
+
+.upgrades-panel h2 {
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #FFFFFF;
+}
+
+/* 個別アップグレード */
+.upgrade-item {
+    pointer-events: auto !important;
+    cursor: pointer;
+    position: relative;
+    z-index: 100 !important;
+
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(245, 208, 126, 0.25);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+.upgrade-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0.2rem;
+    transition: transform 0.15s ease;
+}
+
+.upgrade-info {
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.4rem;
+
+    font-size: 0.65rem;
+    white-space: nowrap;
+    color: #DDDDDD;
+    opacity: 0.85;
+}
+
+.upgrade-item:not(.locked):hover {
+    background: rgba(199, 54, 89, 0.15);
+    border-color: #C73659;
+    box-shadow: 0 0 12px rgba(199, 54, 89, 0.4);
+
+}
+.upgrade-item.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.upgrade-item.locked:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: none;
+}
+
+.upgrade-item:not(.locked):active .upgrade-inner {
+    filter: brightness(0.8);
+}
+
+/* アイコン / タイトル */
+.upgrade-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    width: 100%;
+    column-gap: 0.4rem;
+    row-gap: 0.1rem;
+}
+
+.upgrade-icon {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    
+    font-size: 1.1rem !important;
+    color: #FFFFFF;
+    flex-shrink: 0;
+}
+.upgrade-name {
+    grid-column: 2;
+    grid-row: 1;
+
+    font-size: 0.9rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    width: 100%;
+    min-width: 0;
+}
+pgrade-info {
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+
+    opacity: 0.85;
+    color: #DDDDDD;
+}
+
+/* 所持数タグ */
+.upgrade-count {
+    grid-column: 2;
+    grid-row: 2;
+
+    background: linear-gradient(135deg, #C73659, #A91D3A);
+    color: #FFFFFF;
+
+    padding: 0.15rem 0.5rem;
+    border-radius: 8px;
+
+    font-size: 0.75rem;
+    flex-shrink: 0;
+
+    justify-self: start;
+}
+.news-ticker {
+background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(10px);
+
+    border: 2px solid rgba(255,255,255,0.25);
+    padding: 0.8rem;
+
+    margin: 2rem auto;
+    max-width: 1400px;
+    border-radius: 10px;
+
+    overflow: hidden;
+    position: relative;
+
+    color: #FFFFFF;
+}
+
+.news-content {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll 30s linear infinite;
+    padding-left: 100%;
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+
+  /* ゴールデンカレー */
+.golden-curry {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    font-size: 200px;
+    cursor: pointer;
+    z-index: 1000;
+    filter: 
+        drop-shadow(0 0 25px rgba(255, 215, 130, 0.9)) 
+        drop-shadow(0 0 40px rgba(199, 54, 89, 0.35));
+
+    animation: goldenPulse 1.3s ease-in-out infinite;
+    user-select: none;
+}
+
+@keyframes goldenPulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        filter: 
+            drop-shadow(0 0 25px rgba(255, 215, 130, 0.9))
+            drop-shadow(0 0 35px rgba(199, 54, 89, 0.35));
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        filter: 
+            drop-shadow(0 0 40px rgba(255, 230, 160, 1))
+            drop-shadow(0 0 55px rgba(199, 54, 89, 0.6));
+    }
+}
+.golden-meat-rain {
+    position: fixed;
+    font-size: 2rem;
+    pointer-events: none;
+    z-index: 999;
+    filter: 
+        drop-shadow(0 0 12px rgba(245, 208, 126, 0.9))
+        drop-shadow(0 0 18px rgba(199, 54, 89, 0.4));
+
+    animation: meatFall 2s ease-in forwards;
+}
+
+@keyframes meatFall {
+    0% {
+        opacity: 1;
+        transform: translateY(-120px) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(100vh) rotate(360deg);
+    }
+}
+
+
+ /* モーダル背景 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: rgba(20, 20, 20, 0.65);
+    backdrop-filter: blur(10px);
+
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+
+    padding: 2rem;
+}
+.modal.active {
+    display: flex;
+}
+/* モーダルコンテンツ*/
+.modal-content {
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+
+    max-width: 800px;
+    max-height: 80vh;
+
+    box-shadow:
+        0 10px 50px rgba(0, 0, 0, 0.4),
+        0 0 25px rgba(199, 54, 89, 0.25);
+
+    display: flex;
+    flex-direction: column;
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 2rem 2rem 1rem 2rem;
+
+    background: rgba(255,255,255,0.05);
+    border-bottom: 2px solid rgba(255,255,255,0.25);
+
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    backdrop-filter: blur(10px);
+}
+
+.modal-header h2 {
+    color: #FFFFFF;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-shadow: 0 0 6px rgba(255,255,255,0.3);
+}
+.modal-body {
+    padding: 2rem;
+    overflow-y: auto;
+    flex: 1;
+}
+.modal-close {
+    background: linear-gradient(135deg, #C73659, #A91D3A);
+    border: none;
+
+    color: white;
+
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+
+    box-shadow:
+        0 0 10px rgba(199,54,89,0.5),
+        0 2px 8px rgba(0,0,0,0.4);
+
+    transition: 0.2s;
+}
+
+.modal-close:hover {
+    transform: scale(1.1);
+}
+.recipe-grid, .achievement-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.recipe-item, .achievement-item {
+    background: rgba(255, 255, 255, 0.06);
+    border: 2px solid rgba(255,255,255,0.20);
+    border-radius: 12px;
+
+    padding: 1rem;
+    text-align: center;
+
+    color: #FFFFFF;
+}
+
+/* 解放済み*/
+.recipe-item.unlocked, .achievement-item.unlocked {
+    border-color: #C73659;
+    background: rgba(199,54,89,0.12);
+}
+
+.recipe-item:hover:not(.locked),
+.achievement-item:hover:not(.locked) {
+    transform: translateY(-3px);
+    background: rgba(199, 54, 89, 0.18);
+}
+.recipe-icon, .achievement-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    color: #FFFFFF;
+}
+
+.locked-icon {
+    font-size: 3rem;
+    opacity: 0.3;
+    color: #FFFFFF;
+}
+
+
+
+/* 料理図鑑用 */
+.recipe-img {
+    width: 15%;
+    height: auto;
+    border-radius: 0px;
+    margin-bottom: 0.5rem;
+
+}
+
+.recipe-img.locked {
+    filter: brightness(0) invert(0.4) opacity(0.4);
+}
+/* 実績モーダル */
+#achievementsModal .modal-content {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+}
+/* 支援者パネル */
+#upgradesList {
+    gap: 0.6rem !important;
+}
+/* 解放演出 */
+#unlockIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2 auto;
+    width: 100%;
+}
+
+
+.header-se-toggle {
+    cursor: pointer;
+    font-size: 1.5rem;
+    user-select: none;
+    transition: transform 0.2s ease;
+margin: 0px 0px 0px 0;
+}
+/* サウンド */
+.header-se-toggle:hover {
+    transform: scale(1.1);
+}
+
+
+
+.unlock-content {
+    background: rgba(255, 255, 255, 0.08);
+    
+    border: 3px solid rgba(245, 208, 126, 0.6);
+    border-radius: 30px;
+
+    padding: 3rem;
+    max-width: 550px;
+    text-align: center;
+
+    box-shadow:
+        0 0 50px rgba(245, 208, 126, 0.35),
+        0 0 70px rgba(199, 54, 89, 0.25);
+
+    position: relative;
+    overflow: hidden;
+
+    animation: unlockPop 0.4s ease forwards;
+}
+
+
+/* PC・共通（通常の解放アニメ） */
+@keyframes unlockPop {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    @keyframes unlockPop {
+        0% {
+            transform: scale(0.3) rotate(-15deg);
+            opacity: 0;
+        }
+        100% {
+            transform: scale(0.9);
+            opacity: 1;
+        }
+    }
+
+}
+.unlock-content::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(245, 208, 126, 0.4),
+        transparent
+    );
+
+    animation: shine 2.5s infinite linear;
+}
+
+@keyframes shine {
+    0%   { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+.unlock-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 1.4rem;
+
+    color: #F5D07E;
+    text-shadow:
+        0 0 20px rgba(245, 208, 126, 0.9),
+        0 0 35px rgba(199, 54, 89, 0.4);
+
+    animation: titleGlow 1.4s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% {
+        text-shadow:
+            0 0 20px rgba(245, 208, 126, 0.9),
+            0 0 35px rgba(199, 54, 89, 0.4);
+    }
+    50% {
+        text-shadow:
+            0 0 40px rgba(245, 208, 126, 1),
+            0 0 60px rgba(199, 54, 89, 0.6);
+    }
+}
+
+
+.upgrade-icon-img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.unlock-name {
+    font-size: 2.4rem;
+    font-weight: 900;
+    margin: 1rem 0;
+
+    color: #F5D07E;
+    text-shadow:
+        0 0 30px rgba(245, 208, 126, 0.8),
+        0 0 50px rgba(199, 54, 89, 0.4);
+}
+.unlock-description {
+    font-size: 1.2rem;
+    margin: 1.5rem 0;
+    opacity: 0.95;
+    color: #FFFFFF;
+}
+.unlock-stats {
+    display: block;
+    max-width: 300px;
+    width: 100%; 
+    margin: 1.5rem auto;
+
+    background: rgba(245, 208, 126, 0.12);
+    border: 2px solid rgba(245, 208, 126, 0.6);
+    border-radius: 15px;
+
+    padding: 1rem;
+    font-size: 1.1rem;
+    color: #FFFFFF;
+    text-align: left;
+    line-height: 1.4;
+}
+.recruit-button {
+width: 360px; 
+    height: 80px;
+white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;   /
+    background: linear-gradient(135deg, #C73659, #A91D3A);
+    border: 3px solid rgba(245, 208, 126, 0.8);
+
+    color: white;
+    padding: 1.5rem 5rem;
+    border-radius: 70px;
+
+    cursor: pointer;
+    font-weight: 1000;
+    font-size: 2rem;
+
+    margin-top: 1.5rem;
+
+transition: transform 0.5s ease-out;
+    box-shadow:
+        0 6px 20px rgba(199, 54, 89, 0.45),
+        0 0 15px rgba(245, 208, 126, 0.25); 
+
+    animation: buttonPulse 1.6s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes buttonPulse {
+    0%, 100% {
+        box-shadow:
+            0 10px 40px rgba(199, 54, 89, 0.5),
+            0 0 20px rgba(245, 208, 126, 0.35);
+    }
+    50% {
+        box-shadow:
+            0 15px 60px rgba(199, 54, 89, 0.7),
+            0 0 35px rgba(245, 208, 126, 0.5);
+    }
+}
+
+.recruit-button:hover {
+transform: scale(1.02);
+
+}
+
+.recruit-button:active {
+    transform: scale(0.97);
+}
+
+
+/* パーティクル全体 */
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* 個別パーティクル*/
+.particle {
+    position: absolute;
+    font-size: 2rem;
+
+    opacity: 0;
+    animation: particleFloat 3s ease-in-out infinite;
+    color: rgba(245, 208, 126, 0.9);
+    filter: drop-shadow(0 0 10px rgba(245, 208, 126, 0.8));
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-120px) rotate(360deg);
+        opacity: 0;
+    }
+}
+.particle.red {
+    color: #C73659;
+    filter: drop-shadow(0 0 12px rgba(199, 54, 89, 0.8));
+}
+
+.particle.gold {
+    color: #F5D07E;
+    filter: drop-shadow(0 0 12px rgba(245, 208, 126, 0.9));
+}
+
+.particle.white {
+    color: #FFFFFF;
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.7));
+}
+.notification {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: linear-gradient(
+        135deg,
+        #C73659 0%,
+        #A91D3A 100%
+    );
+
+    border: 2px solid rgba(245, 208, 126, 0.9);
+
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.4),
+        0 0 18px rgba(199, 54, 89, 0.35);
+
+    z-index: 2000;
+
+    animation: slideIn 0.5s ease, slideOut 0.5s ease 4.5s;
+    min-width: 300px;
+
+    color: #FFFFFF;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+white-space: pre-line;
+}
+@keyframes slideIn {
+    from { transform: translateX(400px); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to   { transform: translateX(400px); opacity: 0; }
+}
+
+/* フィーバーモード*/
+.status-panel.fever {
+    border-color: #F5D07E;
+    background: linear-gradient(
+        135deg,
+        rgba(199, 54, 89, 0.25),
+        rgba(169, 29, 58, 0.25)
+    );
+
+    box-shadow:
+        0 0 35px rgba(199, 54, 89, 0.7),
+        0 0 55px rgba(245, 208, 126, 0.45);
+
+    animation: feverPulse 1s ease-in-out infinite;
+}
+/* クリックブースト*/
+.meat-button.click-boost {
+    border-color: #F5D07E;
+    box-shadow:
+        0 0 40px rgba(199, 54, 89, 0.75),
+        0 0 60px rgba(245, 208, 126, 0.5);
+
+    animation: clickBoostPulse 1s ease-in-out infinite;
+}
+@keyframes feverPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow:
+            0 0 35px rgba(199, 54, 89, 0.7),
+            0 0 55px rgba(245, 208, 126, 0.45);
+    }
+    50% {
+        transform: scale(1.03);
+        box-shadow:
+            0 0 55px rgba(199, 54, 89, 1),
+            0 0 75px rgba(245, 208, 126, 0.6);
+    }
+}
+
+@keyframes clickBoostPulse {
+    0%, 100% {
+        box-shadow:
+            0 0 40px rgba(199, 54, 89, 0.75),
+            0 0 60px rgba(245, 208, 126, 0.5);
+    }
+    50% {
+        box-shadow:
+            0 0 60px rgba(199, 54, 89, 1),
+            0 0 80px rgba(245, 208, 126, 0.65);
+    }
+}
+
+
+
+.right-panel::after,
+.supporter-panel::after {
+    pointer-events: none !important;
+}
+
+
+/* =========================
+   1200px 以下（タブレット〜小型PC）
+   ========================= */
+@media (max-width: 1200px) {
+
+    .container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 0 1rem;
+    }
+
+    header {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.6rem;
+    }
+
+    .header-left {
+        flex: 0 0 auto;
+    }
+
+    header h1 {
+        font-size: 1.6rem;
+    }
+
+    .subtitle {
+        font-size: 0.85rem;
+    }
+
+
+    .meat-button {
+        width: 200px;
+        height: 200px;
+    }
+}
+/* =========================
+   768px 以下（スマホ）
+   ========================= */
+@media (max-width: 768px) {
+
+    header {
+        padding: 0.6rem 1rem;
+    }
+
+    header h1 {
+        font-size: 1.4rem;
+        letter-spacing: 1px;
+    }
+
+    .subtitle {
+        font-size: 0.75rem;
+    }
+
+    .header-buttons {
+        gap: 0.4rem;
+    }
+
+    .header-btn {
+        padding: 0.35rem 0.8rem;
+        font-size: 0.85rem;
+    }
+#upgradesList {
+        grid-template-columns: 1fr !important;
+        gap: 0.8rem;
+    }
+
+    .upgrades-panel {
+        width: 100%;
+    }
+
+    .meat-button {
+        width: 160px;
+        height: 160px;
+    }
+
+.status-panel,
+.click-area,
+.upgrades-panel {
+    height: 100%;
+    align-self: stretch;
+}
+}
+
+ /* =========================
+   ニュースティッカー（スマホ調整）
+   ========================= */
+.news-ticker {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.78rem;
+    margin: 0.6rem auto;
+
+    border-width: 2px;
+    border-color: rgba(245, 208, 126, 0.35);
+}
+
+
+
+/* =========================
+   ニュースティッカー
+   ========================= */
+
+/* 外枠：見せる範囲の箱 */
+.news-ticker {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+
+.news-content {
+    display: inline-block;
+    white-space: nowrap;
+    padding-left: 100%; 
+    animation: news-ticker 22s linear infinite;
+    font-size: 0.95rem;
+}
+
+
+@keyframes news-ticker {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* スマホのときだけ、少しゆっくり＆小さめ文字にする例 */
+@media (max-width: 768px) {
+    .news-content {
+        animation-duration: 26s;   /* 時間を長く＝ゆっくり流れる */
+        font-size: 0.85rem;
+    }
+}
+
+
+/* =========================
+   メインコンテナ
+   ========================= */
+.main-container {
+    gap: 1rem;
+    padding: 1rem;
+}
+
+
+/* =========================
+   ステータスパネルの縮小調整
+   ========================= */
+.status-panel {
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(199, 54, 89, 0.25);
+}
+
+.status-panel h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+    color: #FFFFFF;
+}
+
+.status-panel > div:first-of-type {
+    font-size: 0.8rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+
+/* 肉カウント */
+.meat-count {
+    font-size: 1.8rem;
+    margin: 0.4rem 0;
+    color: rgba(245, 208, 126, 0.95);
+text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* 1秒あたり肉 */
+.per-second {
+    font-size: 0.85rem;
+    padding: 0.5rem;
+    margin-bottom: 0.6rem;
+
+    background: rgba(199, 54, 89, 0.15);
+}
+
+
+/* 個別ステータス行 */
+.stat-item {
+    font-size: 0.78rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(245, 208, 126, 0.25);
+}
+
+   /* =========================
+   クリックエリア（スマホ最適化）
+   ========================= */
+.click-area {
+    position: relative;
+    overflow: hidden;
+    background: none;
+}
+
+/* ぼかし背景画像 */
+.click-area::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background-image: url("images/cafe_bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    filter: blur(5px);
+    opacity: 0.45;
+
+    will-change: filter;
+    z-index: 0;
+}
+
+@media (max-width: 768px) {
+    .click-area::before {
+        filter: blur(2.5px);
+        opacity: 0.35;
+    }
+}
+
+/* コンテンツを前面に戻す */
+.click-area > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* セリフバブル（スマホ対応） */
+.speech-bubble {
+    padding: 0.7rem 1rem;
+    min-height: clamp(48px, 10vw, 70px);
+
+    font-size: clamp(0.9rem, 2.8vw, 1.2rem);
+    line-height: 1.35;
+
+    background: rgba(255, 255, 255, 0.85);
+    color: #222;
+
+    border: 2px solid rgba(245, 208, 126, 0.4);
+
+    border-radius: 14px;
+    backdrop-filter: blur(4px);
+
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+}
+
+/* 肉ボタン（主役・スマホサイズ） */
+.meat-button {
+    width: min(65vw, 280px);
+    height: min(65vw, 280px);
+
+    filter: drop-shadow(0 0 10px rgba(245, 208, 126, 0.4));
+    transition: 0.2s ease;
+    touch-action: manipulation;
+}
+
+.meat-button:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 15px rgba(245, 208, 126, 0.55));
+}
+
+.meat-button:active {
+    transform: scale(0.95);
+}
+
+
+#upgradesList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    grid-auto-rows: 125px;
+}
+
+/* 各カードのサイズ調整 */
+.upgrade-item {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1rem;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(245, 208, 126, 0.25);
+}
+.upgrades-panel {
+    padding: 0.7rem 0.8rem;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(245, 208, 126, 0.25);
+    box-shadow: 0 3px 12px rgba(199, 54, 89, 0.2);
+}
+
+/* 見出し*/
+.upgrades-panel h2 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* アイコン */
+.upgrade-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.upgrade-name {
+    font-size: 0.7rem;
+    margin: 0 0.4rem;
+    flex-grow: 1;
+    white-space: nowrap; 
+}
+
+.upgrade-count {
+    font-size: 0.8rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+/* モーダル外枠 */
+.modal {
+    padding: 0.6rem;
+}
+
+/* ガラス背景のまま縮小 */
+.modal-content {
+    max-width: 95%;
+    max-height: calc(100vh - 20px);
+    border-radius: 18px;
+    background: rgba(255,255,255,0.07);
+    border: 2px solid rgba(245,208,126,0.35);
+    overflow-y: auto;
+}
+
+/* ヘッダー */
+.modal-header {
+    padding: 0.9rem;
+    border-bottom: 2px solid rgba(245,208,126,0.35);
+}
+
+.modal-header h2 {
+    font-size: 1.2rem;
+    color: #FFFFFF;
+}
+
+/* 本文 */
+.modal-body {
+    padding: 1rem;
+}
+
+/* 閉じるボタン */
+.modal-close {
+    width: 32px;
+    height: 32px;
+    font-size: 1.2rem;
+    background: linear-gradient(135deg, #C73659, #A91D3A);
+    border: 1px solid rgba(245,208,126,0.6);
+}
+.recipe-item, .achievement-item {
+    padding: 0.8rem;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(245,208,126,0.25);
+}
+
+.recipe-icon, .achievement-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.3rem;
+}
+
+.recipe-item strong, .achievement-item strong {
+    font-size: 0.85rem;
+    color: #FFFFFF;
+}
+
+.recipe-item p, .achievement-item p {
+    font-size: 0.75rem !important;
+    opacity: 0.9;
+    color: #FFFFFF;
+}
+
+/* ガラス感*/
+.unlock-content {
+max-height: 90vh;
+    width: 200%; 
+    padding: 2rem 1.8rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(245,208,126,0.6);
+}
+
+/* タイトル・名前・説明 */
+.unlock-content h2 {
+    font-size: 1rem;
+    color: #F5D07E;
+}
+
+.unlock-icon {
+    width: 300px;
+    height: 300px;
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.unlock-icon img {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    filter:
+        drop-shadow(0 0 15px rgba(245, 208, 126, 0.7))
+        drop-shadow(0 0 25px rgba(199, 54, 89, 0.35));
+}
+
+.unlock-name {
+ font-size: 2rem;
+    margin: 1.2rem 0;
+    color: #F5D07E;
+}
+
+.unlock-description {
+    font-size: 1.35rem !important; 
+    margin: 1.5rem 0;
+    line-height: 1.6;
+    color: #FFFFFF;
+    opacity: 0.95;
+}
+
+/* ステータス */
+.unlock-stats {
+    padding: 1rem;
+    margin: 1.2rem auto;
+
+    font-size: 1rem !important;
+
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(245,208,126,0.45);
+    border-radius: 12px;
+
+    max-width: 320px;
+    width: 100%;
+    text-align: center;
+    line-height: 1.6;
+}
+/* 勧誘ボタン */
+.recruit-button {
+    padding: 0.1rem 1rem;
+    font-size: 1.4rem;
+    margin-top: 0.5rem;
+
+    background: linear-gradient(135deg, #C73659, #A91D3A);
+    border: 2px solid rgba(245,208,126,0.8);
+}
+
+
+ /* モニターの高さが小さい時、全体を縮小する */
+@media (max-height: 800px) {
+    .unlock-content {
+        padding: 1rem 0.8rem;
+        max-width: 500px;     /* 少し細くする＝縦も縮む */
+    }
+
+    .unlock-icon-img {
+        width: 80px; /* アイコンも少し小さくして高さを確保 */
+    }
+
+    #unlockDescription,
+    #unlockStats {
+        font-size: 0.5rem; /* 長い文章の行数を減らす */
+        line-height: 1.3;
+    }
+  .unlock-name {
+        font-size: 1.6rem;
+    }
+
+    .unlock-description {
+        font-size: 0.95rem;
+    }
+
+.unlock-stats {
+        font-size: 1rem; 
+    }
+}
+
+
+    .recruit-button {
+        font-size: 1.4rem;
+        width: 300px;
+        height: 65px;
+        padding: 1rem 3rem;
+    }
+}
+
+@media (max-height: 720px) {
+    .unlock-stats {
+        font-size: 0.9rem;
+    }
+}
+
+
+
+/* =========================
+   通知 - スマホ表示
+   ========================= */
+.notification {
+    top: 80px;
+    right: 10px;
+    left: auto;
+
+    padding: 1rem 1.2rem;
+
+    white-space: pre-line;
+    word-break: break-word; 
+    line-height: 1.4;
+
+    max-width: 80vw;
+    min-width: 200px;
+
+    background: linear-gradient(135deg, #C73659 0%, #A91D3A 100%);
+    border: 2px solid rgba(245, 208, 126, 0.8);
+    border-radius: 10px;
+
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.45),
+        0 0 12px rgba(245, 208, 126, 0.4);
+}/* =========================
+   ゴールデンカレー（スマホ）
+   ========================= */
+.golden-curry {
+    position: fixed;        /* スクロールしても中央に居続ける */
+    left: 50%;
+    top: 50%;
+    font-size: 100px;
+transform: translate(-50%, -50%);
+
+    z-index: 999999;        /* 他UIより絶対前に出す */
+
+    width: 200px;           /* スマホでも押しやすいサイズ */
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    pointer-events: auto;  
+    filter:
+        drop-shadow(0 0 25px rgba(245, 208, 126, 0.75))
+        drop-shadow(0 0 40px rgba(199, 54, 89, 0.35));
+
+    touch-action: manipulation; /* タップ遅延・ズレ防止 */
+}
+
+@media (max-width: 480px) {
+    .golden-curry {
+        width: 160px;
+        height: 160px;
+    }
+}
+
+@media (max-width: 360px) {
+    .golden-curry {
+        width: 140px;
+        height: 140px;
+    }
+}
+
+
+/* =========================
+   パーティクル（スマホ）
+   ========================= */
+.particle {
+    font-size: 1.5rem;
+    opacity: 0.9;
+
+    filter: drop-shadow(0 0 8px rgba(245, 208, 126, 0.8));
+}
+/* =========================
+   スクロールバー 全体統一版
+   ========================= */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* トラック（背景） */
+::-webkit-scrollbar-track {
+    background: rgba(40, 40, 40, 0.6);
+    border-radius: 5px;
+}
+
+/* つまみ */
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #F5D07E, #C73659);
+    border-radius: 5px;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* hover 演出 */
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #FFE8B5, #D53E63);
+}
+
+/* クリックエフェクト（共通） */
+.click-effect {
+    position: absolute;
+    font-size: 1.5rem;
+    font-weight: bold;
+    pointer-events: none;
+    animation: floatUp 1s ease-out forwards;
+    z-index: 1000;
+
+    text-shadow: 0 0 6px rgba(0,0,0,0.4);
+}
+
+
+/* =========================
+   NORMAL（通常ヒット）
+   ========================= */
+.click-effect.normal {
+    color: #C73659;
+    text-shadow: 0 0 10px rgba(199, 54, 89, 0.5);
+}
+
+
+/* =========================
+   CRITICAL（クリティカル）
+   ========================= */
+.click-effect.critical {
+    color: #F5D07E;
+    font-size: 2rem;
+
+    text-shadow:
+        0 0 12px rgba(245, 208, 126, 0.9),
+        0 0 25px rgba(199, 54, 89, 0.4);
+}
+
+
+/* =========================
+   FEVER（フィーバー）
+   ========================= */
+.click-effect.fever {
+    color: #FF6F8F;
+    font-size: 2.4rem;
+
+    text-shadow:
+        0 0 20px rgba(199, 54, 89, 0.9),
+        0 0 35px rgba(245, 208, 126, 0.6);
+}
+
+
+/* =========================
+   BOOST（クリック7倍）
+   ========================= */
+.click-effect.boost {
+    color: #FFFFFF;
+    font-size: 2rem;
+
+    text-shadow:
+        0 0 18px rgba(245, 208, 126, 0.8),
+        0 0 35px rgba(199, 54, 89, 0.5);
+}
+
+
+/* 浮き上がりアニメーション */
+@keyframes floatUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-40px) scale(1.15);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-80px) scale(0.8);
+    }
+}
+/* =========================
+   フッター
+   ========================= */
+footer {
+    background: linear-gradient(
+        135deg,
+        #2a2a2a 0%,
+        #5c5758 60%,
+        #3a2a2f 100%
+    );
+    
+    color: #FFFFFF;
+    text-align: center;
+
+    padding: 2rem 1rem;
+    margin-top: 3rem;
+
+    border-top: 3px solid #C73659;
+    box-shadow: 0 -4px 20px rgba(199, 54, 89, 0.25);
+}
+footer p {
+    max-width: 800px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.8;
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.9);
+}
+
+footer span {
+    color: #C73659;
+    font-weight: bold;
+}
+
+footer strong {
+    color: #F5D07E;
+}
+
+/* 補足テキスト */
+footer small {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.85rem;
+}
+
+
+/* =========================
+   フッター・リセットボタン
+   ========================= */
+.footer-reset-btn {
+    background: linear-gradient(135deg, #C73659 0%, #A91D3A 100%);
+    border: 2px solid rgba(245, 208, 126, 0.8);
+    color: #FFFFFF;
+
+    padding: 0.8rem 2rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+
+    box-shadow: none; 
+    transition: all 0.3s ease;
+}
+
+.footer-reset-btn:hover {
+    background: linear-gradient(135deg, #D84C70 0%, #C73659 100%);
+    border-color: rgba(245,208,126,1);
+
+    transform: scale(1.05);
+    box-shadow: none;
+}
+/* hover：
+.footer-reset-btn:hover {
+    background: linear-gradient(135deg, #D84C70 0%, #C73659 100%);
+    border-color: rgba(245, 208, 126, 1);
+
+    transform: scale(1.05);
+    box-shadow:
+        0 0 25px rgba(199, 54, 89, 0.55),
+        0 0 35px rgba(245, 208, 126, 0.45);
+}
+
+
+/* ============================
+   スマホ専用サイズ調整
+   ============================ */
+@media (max-width: 480px) {
+
+    /* 狂介を小さくする */
+    .meat-button {
+        width: 260px;
+        height: 260px;
+    }
+
+    /* 狂介の画像も縮小に合わせて調整（自動フィット） */
+    .meat-button img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    /* セリフバブルの文字を少し小さくして収まり良く */
+    .speech-bubble {
+        font-size: 0.85rem;
+        padding: 0.6rem 1rem;
+    }
+
+    /* クリックエリア全体に少し余白を持たせる */
+    .click-area {
+        padding: 1rem 0;
+    }
+}
+    /* iPhone SE */
+@media (max-width: 360px) {
+    .meat-button {
+        width: 220px;
+        height: 220px;
+    }
+}
+/* ============================
+   スマホ用モーダル最適化
+   ============================ */
+
+@media (max-width: 768px) {
+
+    /* 通常モーダル（料理図鑑・実績） */
+    .modal-content {
+        max-height: 90vh;
+        overflow-y: auto;
+        border-radius: 12px;
+        margin: 1rem;
+    }
+
+    /* 解放モーダル */
+    .unlock-content {
+        max-height: 90vh;
+        overflow-y: auto;
+        padding-bottom: 2rem;
+        margin: 1rem;
+    }
+    /* モーダル内の画像調整用 */
+.unlock-content img,
+.recipe-img {
+    max-width: 90%;
+    height: auto;
+}
+
+    /* 閉じるボタンのタップ */
+    .modal-close {
+        font-size: 2rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+@media screen and (orientation: landscape) and (max-width: 900px) {
+    body::before {
+        content: "縦画面でプレイしてください";
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.8);
+        color: white;
+        font-size: 1.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999999;
+    }
+}
+@media (max-width: 480px) {
+    .unlock-icon {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+/* スマホのパーティクル軽量 */
+@media (max-width: 768px) {
+    .unlock-particle {
+        box-shadow: none;
+        filter: none;
+        opacity: 0.8;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .unlock-content {
+        width: 100%;
+    }
+}
+
+/* =========================
+   スマホ用フッター調整
+   ========================= */
+@media (max-width: 768px) {
+    footer {
+        padding: 1.2rem 0.8rem;
+        margin-top: 2rem;
+        font-size: 0.85rem;
+        line-height: 1.6;
+    }
+
+    footer p {
+        margin-bottom: 1rem;
+    }
+
+    footer a {
+        font-size: 0.9rem;
+    }
+
+    .footer-reset-btn {
+        width: 100%;
+        padding: 0.9rem 0;
+        font-size: 1rem;
+        border-radius: 8px;
+        margin-top: 0.8rem;
+    }
+}
+
+    </style>
+
+</head>
+<body>
+<header>
+    <div class="header-left">
+        <h1>🍖 狂介クリッカー</h1>
+    </div>
+
+    <div class="header-right">
+        <div class="header-buttons">
+        <button class="header-btn" onclick="openRecipes()">📖 料理図鑑</button>
+        <button class="header-btn" onclick="openAchievements()">🏆 実績</button>
+        <button class="header-btn" onclick="saveGame()">💾 保存</button>
+    </div>
+
+        <div class="header-se-toggle" onclick="toggleSound()">
+            <span id="soundIcon">🔊</span>
+        </div>
+    </div>
+</header>
+    <div class="news-ticker">
+        <div class="news-content" id="news"></div>
+    </div>
+
+ <div class="container">
+
+    <div class="left-column">
+
+        <!-- 左: ステータスパネル -->
+        <div class="status-panel" id="statusPanel">
+            <h2>📊 ステータス</h2>
+            <div style="text-align: center; font-size: 1rem; opacity: 0.7; margin-bottom: 0.5rem; color: var(--text-dark);">現在の保有肉数</div>
+            <div class="meat-count" id="meatCount">0</div>
+            <div class="per-second">🥩 <span id="perSecond">0</span> 肉/秒</div>
+            <div class="stat-item">
+                <span>累計獲得肉</span>
+                <span id="totalMeat">0</span>
+            </div>
+            <div class="stat-item">
+                <span>総クリック数</span>
+                <span id="totalClicks">0</span>
+            </div>
+            <div class="stat-item">
+                <span>解放済み料理</span>
+                <span id="unlockedRecipes">0/20</span>
+            </div>
+            <div class="stat-item">
+                <span>達成済み実績</span>
+                <span id="unlockedAchievements">0/21</span>
+            </div>
+        </div>
+
+        <!-- ★ 左下：強化ボタン -->
+        <div class="upgrade-panel">
+            <h2>💪 クリック強化</h2>
+            <button id="clickUpgradeButton">クリック強化（Lv.1）</button>
+        </div>
+
+    </div>
+
+    <!-- フェード -->
+    <div class="screen-fade" id="fade"></div>
+
+    <!-- 中央: クリックエリア -->
+    <div class="click-area">
+        <div class="speech-bubble" id="speechBubble">
+            狂介をクリックして始めよう!🖐
+        </div>
+        <div style="position: relative;">
+            <button class="meat-button" id="meatButton" onclick="clickMeat(event)">
+                <img id="meatImage" src="images/kyosuke1.png" alt="狂介" />
+            </button>
+            <div id="clickEffects" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden;"></div>
+        </div>
+    </div>
+
+    <!-- 右: アップグレードパネル -->
+    <div class="upgrades-panel">
+        <h2>👥 支援者</h2>
+        <div id="upgradesList"></div>
+    </div>
+
+</div>
+    <!-- 支援者解放モーダル -->
+    <div class="unlock-modal" id="unlockModal">
+        <div class="unlock-content">
+            <div class="particles" id="particles"></div>
+            <div class="unlock-title">🎉 新しい支援者が解放されました!🎉</div>
+            <div class="unlock-icon" id="unlockIcon"></div>
+            <div class="unlock-name" id="unlockName"></div>
+            <div class="unlock-description" id="unlockDescription"></div>
+            <div class="unlock-stats" id="unlockStats"></div>
+            <button class="recruit-button" onclick="closeUnlockModal()">応援を要請する！</button>
+        </div>
+    </div>
+
+<!-- 料理図鑑コンプリート演出モーダル -->
+<div class="unlock-modal" id="recipeCompleteModal">
+    <div class="unlock-content">
+        <div class="unlock-title">🍽️ 料理図鑑コンプリート！</div>
+
+        <div class="unlock-description">
+            全ての料理を制覇した！<br>
+            おめでとう、君は立派な“肉奉公者”だ。
+            <br><br><br>
+            レオン「…こんなに作ったのは初めてです！！」<br>
+            紫苑「色んな料理を作れて楽しかったなぁ」<br>
+            松之助「狂介…お前本当に大丈夫なのか…？」<br>
+            狂介「おう！！　まだまだいけるぜ！！」<br>
+            皇紀「…その腹、一度解体させろ」<br>
+            為士「バカは胃袋もバカだったか…」<br><br><br>
+        </div>
+
+        <button class="recruit-button" onclick="closeRecipeComplete()">OK</button>
+    </div>
+</div>
+<!-- 🎉 実績コンプリートモーダル -->
+<div class="unlock-modal" id="achievementCompleteModal">
+    <div class="unlock-content">
+        <div class="unlock-title">🎉 全実績コンプリート！</div>
+
+        <div class="unlock-description">
+おめでとう！<br>
+君はこの肉祭りの全記録を制覇した！
+<br><br><br>
+狂介「おまえ…マジでやったな。俺も流石にもう食えねェぜ…」<br>
+松之助「お疲れ、狂介。ここまでやり切るとは…本当にすごいよ」<br>
+為士「……これが本物のバカ、か。 いや、流石に認めてやるべきだな」<br><br><br>
+        </div>
+
+        <button class="recruit-button" onclick="closeAchievementComplete()">OK</button>
+    </div>
+</div>
+
+
+
+    <!-- 料理図鑑モーダル -->
+    <div class="modal" id="recipesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📖 料理図鑑</h2>
+                <button class="modal-close" onclick="closeModal('recipesModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="recipe-grid" id="recipeGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 実績モーダル -->
+    <div class="modal" id="achievementsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🏆 実績</h2>
+                <button class="modal-close" onclick="closeModal('achievementsModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="achievement-grid" id="achievementGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+// =======================
+// サウンド管理
+// =======================
+let audioContext = null;
+function ensureAudio() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+}
+
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    localStorage.setItem("soundEnabled", soundEnabled);
+    updateSoundIcon();
+}
+
+function updateSoundIcon() {
+    const icon = document.getElementById("soundIcon");
+    icon.textContent = soundEnabled ? "🔊" : "🔇";
+}
+
+
+
+
+// 効果音：キュピーン
+function playKyupeen() {
+    // 🔇 ミュートなら即終了
+    if (!soundEnabled) return;
+
+    ensureAudio();
+    if (!audioContext) return;
+
+    const ctx = audioContext;
+    const t = ctx.currentTime;
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(600, t);
+    osc.frequency.exponentialRampToValueAtTime(1800, t + 0.25);
+
+    gain.gain.setValueAtTime(0.001, t);
+    gain.gain.exponentialRampToValueAtTime(0.4, t + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+
+    osc.connect(gain).connect(ctx.destination);
+
+    osc.start(t);
+    osc.stop(t + 0.3);
+}
+
+// 効果音：ピッ
+function playSystemBeep() {
+    if (!soundEnabled) return;
+
+    ensureAudio();
+    if (!audioContext) return;
+
+    const ctx = audioContext;
+    const t = ctx.currentTime;
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "square";
+    osc.frequency.setValueAtTime(1400, t);
+
+    gain.gain.setValueAtTime(0.2, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+
+    osc.connect(gain).connect(ctx.destination);
+
+    osc.start(t);
+    osc.stop(t + 0.08);
+}
+
+// 効果音：キラキラ
+function playShiny() {
+    if (!soundEnabled) return;
+
+    ensureAudio();
+    if (!audioContext) return;
+
+    const ctx = audioContext;
+    const base = ctx.currentTime;
+    const freqs = [900, 1200, 1500];
+
+    freqs.forEach((f, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(f, base + i * 0.03);
+
+        gain.gain.setValueAtTime(0.15, base + i * 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.001, base + 0.35 + i * 0.03);
+
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(base + i * 0.03);
+        osc.stop(base + 0.35 + i * 0.03);
+    });
+}
+
+
+// =======================
+// 以下ゲーム本体の処理
+// =======================
+
+        // アップグレード描画
+        function renderUpgrades() {
+    const list = document.getElementById('upgradesList');
+    list.innerHTML = '';
+
+    gameState.upgrades.forEach((upgrade, index) => {
+        const cost = Math.floor(upgrade.baseCost * Math.pow(1.15, upgrade.count));
+        const production = (upgrade.baseProduction * upgrade.count).toFixed(1);
+        const unlocked = gameState.unlockedUpgrades.includes(index);
+
+        const item = document.createElement('div');
+        item.dataset.upgradeIndex = index;
+
+        if (unlocked) {
+    const canAfford = gameState.meat >= cost;
+
+    item.className = 'upgrade-item';
+    if (!canAfford) {
+        item.classList.add('disabled'); 
+    }
+
+    item.innerHTML = `
+ <div class="upgrade-inner">
+        <div class="upgrade-header">
+            <span class="upgrade-icon">
+                <img src="${upgrade.icon}" class="upgrade-icon-img" alt="${upgrade.name}">
+            </span>
+            <span class="upgrade-name">${upgrade.name}</span>
+            <span class="upgrade-count">Lv.${upgrade.count}</span>
+        </div>
+        <div class="upgrade-info">
+            <span>💰 ${formatNumber(cost)}</span>
+            <span>📈 ${production}/秒</span>
+        </div>
+    </div>
+`;
+
+} else {
+    item.className = 'upgrade-item locked';
+    item.innerHTML = `
+        <div class="upgrade-header">
+            <span class="upgrade-icon">🔒</span>
+            <span class="upgrade-name">???</span>
+        </div>
+        <div class="upgrade-info">
+            <span style="font-size: 0.85rem; opacity: 0.7;">解放条件未達成</span>
+        </div>
+    `;
+}
+
+        list.appendChild(item);
+    });
+}
+// ====================================================
+//  サウンド
+// ====================================================
+// 肉クリック用サウンド
+const meatClickSound = new Audio('sounds/mogmog.mp3');
+function playMeatClickSound() {
+if (!soundEnabled) return;
+
+    const s = meatClickSound.cloneNode();
+    s.play().catch(e => console.log("音再生エラー:", e));
+}
+
+// 支援者解放サウンド
+const upgradeUnlockSound = new Audio('sounds/kaihou.mp3');
+
+
+function playUpgradeUnlockSound() {
+if (!soundEnabled) return;
+    const s = upgradeUnlockSound.cloneNode();
+    s.play().catch(e => console.log("音再生エラー:", e));
+}
+
+// アップグレード購入サウンド
+const upgradeBuySound = new Audio('sounds/upgrade.mp3');
+
+function playUpgradeBuySound() {
+if (!soundEnabled) return;
+    const s = upgradeBuySound.cloneNode();
+    s.play().catch(e => console.log("音再生エラー:", e));
+}
+// ===== サウンド設定 =====
+let soundEnabled = true;
+
+
+        // ゲームデータ
+        const upgrades = [
+            { id: 1, name: '肉トレ', icon: 'images/upgrade01.png', baseCost: 15, baseProduction: 0.1, unlockCondition: () => true, description: '筋トレと肉は切っても切れない関係!定期的に肉トレをして燃料消費だ!' },
+            { id: 2, name: 'エージェント', icon: 'images/upgrade02.png',  baseCost: 100, baseProduction: 1, unlockCondition: () => gameState.upgrades[0].count > 0, description: 'みんなのエージェント。情報網を駆使して肉を調達してくれるぞ！' },
+            { id: 3, name: '松之助', icon: 'images/upgrade03.png', baseCost: 500, baseProduction: 5, unlockCondition: () => gameState.totalMeatEarned >= 200, description: '狂介の良き理解者。唐揚げおにぎりを持って駆けつけてくれた頼れる兄貴分！' },
+            { id: 4, name: '紫苑', icon: 'images/upgrade04.png', baseCost: 2000, baseProduction: 10, unlockCondition: () => gameState.totalMeatEarned >= 350, description: '料理上手な友人。珍しい肉料理を作ってみたい!と駆けつけてくれたぞ！' },
+            { id: 5, name: '肉屋の店主', icon: 'images/upgrade05.png', baseCost: 3000, baseProduction: 20, unlockCondition: () => gameState.totalMeatEarned >= 500, description: 'バイト先の肉屋も参戦！狂介のために新鮮な肉を安定供給してくれるぞ！' },
+            { id: 6, name: '為士', icon: 'images/upgrade06.png', baseCost: 10000, baseProduction: 100, unlockCondition: () => gameState.totalMeatEarned >= 1000, description: '呆れ顔で見つめているが、実は協力してくれている...のかもしれない。' },
+            { id: 7, name: 'レオン', icon: 'images/upgrade07.png', baseCost: 50000, baseProduction: 500, unlockCondition: () => gameState.totalMeatEarned >= 2000, description: 'シゴデキスーパー執事。圧倒的な調理スキルで大量の肉料理を生産するぞ！' },
+            { id: 8, name: '皇紀', icon: 'images/upgrade08.png', baseCost: 200000, baseProduction: 2000, unlockCondition: () => gameState.totalMeatEarned >= 5000, description: '商業地区の料理人。その包丁捌きはとてもワイルド。解体されないように気をつけろ!' }
+        ];
+
+        const recipes = [
+            { id: 1, name: '唐揚げ', icon: '🍗',image: 'images/recipes/food1.png', requirement: 10, description: '定番の美味しさ。カリッとジューシー！' },
+            { id: 2, name: 'カレー', icon: '🍛',image: 'images/recipes/food2.png', requirement: 50, description: 'スパイスが効いた濃厚な味わい' },
+            { id: 3, name: 'タコス', icon: '🥩', requirement: 250, description: 'スパイス香る肉と野菜を包んだ、手軽で豪快な一品' },
+            { id: 4, name: '大盛り肉カレー', icon: '🍛', requirement: 550, description: 'ゴロゴロ肉がたっぷり！' },
+            { id: 5, name: '牛丼', icon: '🍜', requirement: 1500, description: '甘辛いタレが染み込んだご飯' },
+            { id: 6, name: 'ハンバーグ', icon: '🍖', requirement: 5500, description: '肉汁溢れる極上の一品' },
+            { id: 7, name: 'ポークソテー', icon: '🍖', requirement: 15000, description: 'バターの香り豊かな豚肉' },
+            { id: 8, name: 'ステーキ', icon: '🍗', requirement: 35000, description: 'ミディアムレアの完璧な焼き加減' },
+            { id: 9, name: 'カリーヴルスト', icon: '🔥', requirement: 55000, description: 'カレーケチャップが絡むドイツの名物ソーセージ' },
+            { id: 10, name: 'チキン南蛮', icon: '🍲', requirement: 85000, description: '甘酢とタルタルが絶妙なコンビネーション' },
+            { id: 11, name: '鉄板焼き', icon: '🍖', requirement: 100000, description: '熱々の鉄板で焼き上げた香ばしい肉' },
+            { id: 12, name: 'ヤンニョムチキン', icon: '👅', requirement: 250000, description: '甘辛ダレが染み込んだ、クセになる韓国式フライドチキン' },
+            { id: 13, name: 'すき焼き', icon: '🥩', requirement: 300000, description: '甘辛いタレが絶妙' },
+            { id: 14, name: '焼肉定食', icon: '🍖', requirement: 450000, description: '炭火で焼いた香ばしい肉' },
+
+            { id: 15, name: '紅焼肉', icon: '🥩', requirement: 650000, description: 'とろけるように煮込まれた中華式角煮の濃厚な旨味' },
+            { id: 16, name: 'ｽﾊﾟｹﾞｯﾃｨ･ｳｨｽﾞ･ﾐｰﾄﾎﾞｰﾙ', icon: '🥩', requirement: 900000, description: '肉たっぷりのミートボールと濃厚ソースが絡む定番パスタ' },
+            { id: 17, name: '牛フィレステーキ', icon: '🥩', requirement: 1300000, description: 'ほどけるような柔らかさを持つ、赤身の最高峰' },
+            { id: 18, name: '伝説の熟成肉', icon: '🎂', requirement: 2000000, description: '数十年の熟成を経た幻の一品' },
+            { id: 19, name: 'レオン特性スペシャル肉カレー', icon: '🌶️', requirement: 3000000, description: '狂介のために作られた究極の一皿' },
+            { id: 20, name: '狂介の肉増しドリーム丼', icon: '🏆', requirement: 5000000, description: 'すべての肉が乗った最終形' }
+        ];
+
+const achievements = [
+    { id: 1, name: '初めての一口', icon: '😃', 
+      condition: () => gameState.totalMeatEarned >= 1,
+      description: 'プレイ累計肉1個達成' },
+
+    { id: 2, name: '一人前の肉奉行', icon: '🥩', 
+      condition: () => gameState.totalMeatEarned >= 100,
+      description: 'プレイ累計肉100個達成' },
+
+    { id: 3, name: 'おかわり三昧', icon: '🥣', 
+      condition: () => gameState.totalMeatEarned >= 300,
+      description: 'プレイ累計肉300個達成' },
+
+    { id: 4, name: '狂介の胃袋を満たした者', icon: '😋', 
+      condition: () => gameState.totalMeatEarned >= 500,
+      description: 'プレイ累計肉500個達成' },
+
+    { id: 12, name: 'クリック狂', icon: '🖱',
+      condition: () => gameState.totalClicks >= 5000,
+      description: 'クリック5,000回達成' },
+
+    { id: 17, name: 'ロケットスタート', icon: '🚀',
+      condition: () => gameState.rocketStart,
+      description: 'ゲーム開始から1分以内に肉100個達成' },
+
+    { id: 15, name: '肉速5段', icon: '🥄',
+      condition: () => gameState.speedRun5min,
+      description: '5分以内に肉1,000個到達' },
+
+    { id: 5, name: 'お肉マスター', icon: '🥳',
+      condition: () => gameState.totalMeatEarned >= 1000 && gameState.upgrades.some(u => u.count > 0),
+      description: 'プレイ累計肉1,000個+支援者1人以上' },
+
+    { id: 11, name: 'ラッキーボーイ', icon: '🛡️',
+      condition: () => gameState.goldenCurryClicks >= 10,
+      description: 'ゴールデン肉カレー10回クリック' },
+
+
+
+    { id: 22, name: '肉の探求者', icon: '🤠',
+      condition: () => gameState.unlockedRecipes.length >= 10,
+      description: '料理図鑑10種解放' },
+
+    { id: 8, name: '肉王候補', icon: '🤚',
+      condition: () => gameState.totalMeatEarned >= 50000,
+      description: 'プレイ累計肉50,000個達成' },
+
+    { id: 13, name: '肉富豪', icon: '🤴',
+      condition: () => gameState.meat >= 20000,
+      description: '一度に肉20,000個以上保有' },
+
+    { id: 16, name: 'スピードクリッカー', icon: '🏃',
+      condition: () => gameState.clicksInTenSeconds >= 40,
+      description: '10秒間に40回以上クリック' },
+
+    { id: 18, name: 'ライダーたちの支援', icon: '👪',
+      condition: () => gameState.orderMaster,
+      description: '松之助→紫苑→為士→皇紀の順番で購入' },
+
+    { id: 20, name: 'セリフコレクター', icon: '🗣️',
+      condition: () => gameState.heardDialogues.size >= 32,
+      description: '全32種類のセリフを聞く' },
+
+
+
+    { id: 6, name: '肉図鑑制覇目前', icon: '👨‍🍳',
+      condition: () => gameState.unlockedRecipes.length >= 20,
+      description: '全料理20種解放' },
+
+    { id: 9, name: '肉バカ', icon: '🍖',
+      condition: () => gameState.totalClicks >= 500000,
+      description: 'プレイ累計クリック500,000回達成' },
+
+    { id: 10, name: '狂介狂い', icon: '👹',
+      condition: () => gameState.totalClicks >= 1000000,
+      description: 'プレイ累計クリック1,000,000回達成' },
+
+    { id: 19, name: 'ゴールデンマスター', icon: '⭐',
+      condition: () => gameState.goldenCurryClicks >= 50,
+      description: 'ゴールデン肉カレーを50回クリック' },
+
+    { id: 14, name: '肉の番人', icon: '⚔️',
+      condition: () => gameState.upgrades.every(u => u.count >= 15),
+      description: '支援者全員をLv15以上に育成' },
+
+
+
+    { id: 7, name: '放置プレイ', icon: '📱',
+      condition: () => gameState.offlineMaxTime >= 21600,
+      description: '6時間以上オフラインで放置' },
+
+    { id: 21, name: '真の肉奉公者', icon: '🪐',
+      condition: () => gameState.achievements.filter(a => a).length >= 20 
+                     && gameState.meat >= 100000,
+      description: '全実績20種達成＋肉100,000個保有' }
+];
+
+
+const dialogues = [
+
+
+    { text: '肉トレの燃料補給だッ！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned < 10000 },
+
+    { text: 'うしっ、食った分だけ鍛えるぞ！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned < 10000 },
+
+    { text: 'おっ！　うまそうだな！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned < 10000 },
+
+    { text: 'もっとくれ！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned < 10000 },
+
+    { text: '肉最高！！！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned < 10000 },
+
+    { text: '肉が食べ放題とか最高過ぎンだろ！！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned < 10000 },
+
+    { text: 'ガッツリいくぞッ！！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned < 10000 },
+
+    { text: '今日は肉祭りか？！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned < 10000 },
+
+    { text: 'そろそろ肉トレしとくか……？！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned < 10000 },
+
+    { text: 'たんぱく質が全身に染み渡るぜェ！！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned < 10000 },
+
+    { text: 'まだ余裕だぜ……', rarity: 'rare',
+      condition: () => gameState.totalMeatEarned < 10000 },
+
+
+
+    { text: '……ちょっと食いすぎたかもしれねェ……', rarity: 'rare',
+      condition: () => gameState.totalMeatEarned >= 10000 && gameState.totalMeatEarned < 500000 },
+
+    { text: 'もっとだ……もっとくれ！！！！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned >= 10000 && gameState.totalMeatEarned < 500000 },
+
+    { text: '美味すぎだろ！！！！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned >= 10000 && gameState.totalMeatEarned < 500000 },
+
+    { text: '肉最高！！！！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned >= 10000 && gameState.totalMeatEarned < 500000 },
+
+    { text: 'ウォオオオオオ！！！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned >= 10000 && gameState.totalMeatEarned < 500000 },
+
+    { text: '……オマエ、結構すげぇ奴なんだな', rarity: 'rare',
+      condition: () => gameState.totalMeatEarned >= 10000 && gameState.totalMeatEarned < 500000 },
+
+    { text: '俺の肉ゲージが止まらねェ！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned >= 10000 && gameState.totalMeatEarned < 500000 },
+
+    { text: '肉トレしとくか……', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned >= 10000 && gameState.totalMeatEarned < 500000 },
+
+    { text: '俺の胃袋、何処までいけるんだ……', rarity: 'rare',
+      condition: () => gameState.totalMeatEarned >= 10000 && gameState.totalMeatEarned < 500000 },
+
+    { text: '俺が１番だ！！！！！！', rarity: 'rare',
+      condition: () => gameState.totalMeatEarned >= 10000 && gameState.totalMeatEarned < 500000 },
+
+
+
+    { text: 'マジで止まれねェ……俺、いま最強かもしれねェ……', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned >= 500000 },
+
+    { text: '肉が来るたびに身体が応えてやがる……！！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned >= 500000 },
+
+    { text: 'そろそろ肉トレしとくか……？！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned >= 500000 },
+
+    { text: '……うぷっ', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned >= 500000 },
+
+    { text: '……肉最高！！', rarity: 'normal',
+      condition: () => gameState.totalMeatEarned >= 500000 },
+
+    { text: '……一旦、休ませて……くれ……', rarity: 'rare',
+      condition: () => gameState.totalMeatEarned >= 500000 },
+
+    { text: '……ありがとな', rarity: 'super-rare',
+      condition: () => gameState.totalMeatEarned >= 500000 },
+
+    { text: '……もう……無理かもしれねぇ……', rarity: 'super-rare',
+      condition: () => gameState.totalMeatEarned >= 500000 },
+
+    { text: '……オマエ……正気か……？', rarity: 'super-rare',
+      condition: () => gameState.totalMeatEarned >= 500000 },
+
+    { text: 'オマエ、マジでスゲェよ……', rarity: 'super-rare',
+      condition: () => gameState.totalMeatEarned >= 500000 },
+
+    { text: 'オマエとなら……もっと強くなれそうだ', rarity: 'super-rare',
+      condition: () => gameState.totalMeatEarned >= 500000 }
+];
+
+let dialogueLocked = false;
+let dialogueTimeout = null;
+
+// 条件に合うセリフ取得
+function getAvailableDialogues() {
+    return dialogues.filter(d => d.condition());
+}
+
+// ランダムセリフ選択
+function getRandomDialogue() {
+    const list = getAvailableDialogues();
+    if (list.length === 0) return null;
+
+    // レアリティ抽選
+    const r = Math.random();
+    let filtered = [];
+
+    if (r < 0.02) filtered = list.filter(d => d.rarity === "super-rare");
+    else if (r < 0.10) filtered = list.filter(d => d.rarity === "rare");
+    else filtered = list.filter(d => d.rarity === "normal");
+
+    return filtered.length > 0
+        ? filtered[Math.floor(Math.random() * filtered.length)]
+        : list[Math.floor(Math.random() * list.length)];
+}
+
+// 表示処理（rare/super-rare は固定表示）
+function showDialogue() {
+    if (dialogueLocked) return;
+
+    const bubble = document.getElementById("speechBubble");
+    const d = getRandomDialogue();
+    if (!d) return;
+
+    bubble.textContent = d.text;
+    bubble.className = "speech-bubble " + d.rarity;
+
+    // 記録
+    gameState.heardDialogues.add(d.text);
+
+    // レア演出は固定時間ロック
+    if (d.rarity === "rare" || d.rarity === "super-rare") {
+        dialogueLocked = true;
+
+        clearTimeout(dialogueTimeout);
+        dialogueTimeout = setTimeout(() => {
+            dialogueLocked = false;
+            bubble.className = "speech-bubble";
+        }, d.rarity === "super-rare" ? 2000 : 1500);
+
+        return;
+    }
+}
+
+        const newsMessages = [
+            '📰 陽真『まだ入るの！？　胃袋が別の空間にでも繋がってんのか！？』',
+            '📰 陽真『狂介ー！　限定のメガバーガー手に入れてきた！　一緒に食おうぜ！！』',
+            '📰 才悟『...肉の減り方が尋常じゃないな。調理場が追いついていない』',
+            '📰 才悟『肉が荒鬼狂介に吸い込まれていく...。見ていると、不思議と感心してしまうな』',
+            '📰 紫苑『荒鬼くん、本当に楽しそうに食べてくれるね。はい、次の一皿だよ』',
+            '📰 紫苑『無理はしなくていいけど...まだいける？　じゃあ温かいうちにどうぞ』',
+            '📰 慈玄『はぁ...お前の食い方を見ていると、こっちの胃が重くなってくる』',
+            '📰 慈玄『そんなに詰め込んで大丈夫なのか。ぶっ倒れても俺は知らないからな』',
+            '📰 為士『...また肉か』',
+            '📰 為士『...その量を誇れると思っているなら、実に哀れだな』',
+            '📰 為士『肉を食べるだけでこうも騒がしいとは...。相変わらず暑苦しくて鬱陶しい奴だ』',
+            '📰 為士『...もう勝手にしろ』',
+            '📰 松之助『そんな食べ方して...腹、壊すなよ？』',
+            '📰 松之助『そんな肉ばっかじゃ筋肉も泣くぞ。少しでいいから野菜も食べろ。な？』',
+            '📰 松之助『もう、記録とかそういう次元じゃないな...』',
+            '📰 松之助『俺の唐揚げおにぎりも持ってけ！　頑張れよ！』',
+            '📰 狂介『俺が肉で、肉が俺だ！』',
+            '📰 狂介『肉が...足りねぇ...』',
+            '📰 狂介『肉...もっと...もっとだ...』',
+            '📰 狂介『俺は肉でも１番になる男だぜ！！！！！』',
+            '📰 ルーイ『有名な放置ゲーを思い出すな...。あったろ、クッキーが勝手に増えるやつ』',
+            '📰 ルーイ『街の肉全部食うとか...いやもう好きにしろ。俺は関わりたくねぇ』',
+            '📰 ランス『消費速度が常人の枠を超えている...。仕組みを解き明かしたくなるよ』',
+            '📰 ランス『君たちは止めるのかい？　僕はもう少しだけ見ていたいな』',
+            '📰 Ｑ『はいはい、お肉ね...好きだよねぇ、ほんと』',
+            '📰 Ｑ『お肉だけって飽きないの？　もっと可愛いものとか食べなよ』',
+            '📰 静流『これだけ美味しそうに食べてくれると、作った側も励みになるよね』',
+            '📰 静流『見てるだけでお腹いっぱいになっちゃった。若いって凄いねぇ』',
+            '📰 宗雲『ふむ、これほど気持ちよく食べる奴も珍しいな』',
+            '📰 宗雲『好きに食べるのは構わないが...ほどほど、という言葉も覚えておけ』',
+            '📰 颯『えぇっ？！　これ全部荒鬼が食べたの？！　凄っ！！』',
+            '📰 颯『大盛り完食チャレンジとか行ったらさ、絶対優勝できるじゃん。今度誘ってみようかな』',
+            '📰 皇紀『選ぶ肉が雑なら、出来る筋も雑になる』',
+            '📰 皇紀『...良い食いっぷりだ』',
+            '📰 浄『肉で喜べるのは若者の特権だな。俺は俺で、甘味の世界に浸らせてもらうよ』',
+            '📰 浄『よくもまぁ飽きもせず肉ばかり食べられるものだ...。俺はああいう重たいものより、甘いスイーツのほうがありがたいな』',
+            '📰 戴天『燃料効率が異常に高いのでしょうか...。興味深いデータが取れそうですね』',
+            '📰 戴天『この完食ぶり、まさしく驚嘆称賛に値する気迫ですね』',
+            '📰 雨竜『この量を１人で...？　まさかここまでとは...圧巻ですね』',
+            '📰 雨竜『荒鬼さんの食事の勢いには毎回驚かされますちゃんと飲んでくださいね』',
+            '📰 駆『これだけ需要があるなら、肉の相場まで動きそうだな...。今のうちに新しい商品でも考えておくか』',
+            '📰 駆『うちのフラリオでもあそこまでは食わねぇよ。あの天パ、食費とかどう回してんだ？』',
+            '📰フラリオ『ちょ、待て待て！　それ鳥じゃねーよな？！　...ああ牛か。マジ焦った』',
+            '📰フラリオ『いやいや、胃袋どうなってんだよ！　アニメの大食いキャラじゃねーか！』',
+            '📰レオン『おおっと、まだお召し上がりですか？！　承知いたしました！！　次の一皿も、最高の一品を全力でお届けいたします！！』',
+            '📰レオン『このように気持ちよく召し上がっていただけるとは、感激でございます！！　私も一層、腕が鳴ります！！』',
+            '📰 肉屋『在庫が...在庫が足りない！！』',
+            '📰 肉屋『だ、だめだ……補充が追いつかん！！』',
+            '📰 肉屋『店長！！　牛も豚も鶏も全部ありません！！』',
+            '📰 肉屋『店長！！　もう品出しする肉が無いです！！』',
+            '📰 レオン、カレーの仕込み中',
+            '📰 レオン、特製カレーの在庫ゼロに思わず涙',
+            '📰 エージェント、狂介の胃袋容量を調査中',
+            '📰 エージェント、狂介の胃袋スキャンを試みるもスキャナーが過熱して爆散',
+            '📰 脳波測定の結果:『肉』の文字で高反応',
+            '📰 狂介の肉トレ、今日も絶好調',
+            '📰 狂介、ついに肉と会話ができるようになる？！',
+            '📰 荒鬼狂介、一体いつまで食べ続けるのか',
+            '📰 肉食の神、荒鬼狂介 降臨',
+            '📰 目撃情報:虹顔市にゴールデン肉カレーが出現',
+            '📰 肉業界、供給ラインを狂介一人に特化へ',
+            '📰 肉市場、荒鬼狂介専用レーンを正式に設置',
+            '📰 虹顔市、肉消費量が国家統計を超え緊急会議へ突入',
+            '📰 時空管理局『彼の食欲は宇宙に影響を与える可能性』',
+            '📰 時空管理局『狂介の食欲が異能反応値を更新した』と発表',
+            '📰 時空管理局『狂介の胃袋に“別次元の入口”がある可能性』と発表',
+            '📰 今夜は肉祭り開催決定',
+            '📰 皇紀、狂介の食欲に驚愕',
+            '📰 為士、肉カウンターを呆れ顔で見つめる',
+            '📰 為士、肉の匂いに嫌気が差して部屋を退出',
+            '📰 松之助、調理に追われて眠れず',
+            '📰 松之助、徹夜明けでなお狂介の追加注文に対応',
+            '📰 市場、今日も品薄。原因は"アノ男"',
+            '📰 街中で聞こえる『もっと肉をくれ！』の叫び',
+            '📰 雨竜、狂介の大食い記録を丁寧にデータ化',
+            '📰 市民『朝から肉の匂いしかしない』と苦情殺到',
+            '📰 市場関係者『肉コーナーは幻です』と店内放送で謝罪',
+            '📰 虹顔市、肉不足で“野菜の日”へ強制移行を検討',
+            '📰 路上で謎の肉片が発見される。　専門家『これはゴールデン肉カレーの欠片かも』',
+            '📰 子どもたちの間で広がる『肉を無限に食べるお兄ちゃん』の噂',
+            '📰 虹顔市で目撃情報相次ぐ『すごい勢いで肉を消す男』'
+        ];
+
+
+        // ゲーム状態
+        let gameState = {
+            meat: 0,
+            totalMeatEarned: 0,
+            totalClicks: 0,
+            clickPower: 1,
+            upgrades: upgrades.map(u => ({ ...u, count: 0 })),
+            unlockedUpgrades: [0],
+            unlockedRecipes: [],
+            achievements: new Array(achievements.length).fill(false),
+            goldenCurryClicks: 0,
+            offlineMaxTime: 0,
+            speedRun5min: false,
+            rocketStart: false,
+            orderMaster: false,
+            clicksInTenSeconds: 0,
+            feverMode: false,
+            feverEndTime: 0,
+            clickBoost: false,
+            clickBoostEndTime: 0,
+            autoClickMode: false,
+            autoClickEndTime: 0,
+            lastSave: Date.now(),
+            startTime: Date.now()
+        };
+
+        let clickCounter = 0;
+        let clickCounterTimeout = null;
+        let autoClickInterval = null;
+
+        // 初期化
+        function init() {
+    loadGame();
+
+
+// ============================
+    // 🔊 サウンド設定の復元
+    // ============================
+    const savedSound = localStorage.getItem("soundEnabled");
+    if (savedSound !== null) {
+        soundEnabled = savedSound === "true";
+    }
+    updateSoundIcon();
+    // ============================
+
+    renderUpgrades();
+    updateDisplay();
+    startAutoProduction();
+
+
+
+    // checkUpgradeUnlocks();
+    renderUpgrades();
+    updateDisplay();
+    startAutoProduction();
+
+
+    startNewsTicker();
+    checkGoldenCurry();
+    checkAchievements();
+
+    setTimeout(() => {
+        if (gameState.totalMeatEarned >= 100 && !gameState.rocketStart) {
+            gameState.rocketStart = true;
+            checkAchievements();
+        }
+    }, 60000);
+
+    setTimeout(() => {
+        if (gameState.totalMeatEarned >= 1000 && !gameState.speedRun5min) {
+            gameState.speedRun5min = true;
+            checkAchievements();
+        }
+    }, 300000);
+}
+        // 肉クリック
+function clickMeat(event) {
+    const power = gameState.clickBoost ? gameState.clickPower * 7 : gameState.clickPower;
+    gameState.meat += power;
+    gameState.totalMeatEarned += power;
+    gameState.totalClicks++;
+
+    // 画像切り替え処理
+ const img = document.getElementById("meatImage");
+img.src = kyosuke2;
+
+setTimeout(() => {
+    img.src = kyosuke1;
+
+    img.classList.remove("kyosuke-glow");
+    void img.offsetWidth;
+    img.classList.add("kyosuke-glow");
+}, 120);
+    // 10秒間のクリック数カウント
+    clickCounter++;
+    if (clickCounterTimeout) clearTimeout(clickCounterTimeout);
+    clickCounterTimeout = setTimeout(() => {
+        if (clickCounter > gameState.clicksInTenSeconds) {
+            gameState.clicksInTenSeconds = clickCounter;
+        }
+        clickCounter = 0;
+    }, 10000);
+
+    // ===== ここから：クリック／タップ位置の計算 =====
+    let xPercent = 50;
+    let yPercent = 50;
+
+    try {
+        const effectsContainer = document.getElementById('clickEffects');
+        if (effectsContainer && event) {
+            const rect = effectsContainer.getBoundingClientRect();
+
+            let clientX = null;
+            let clientY = null;
+
+            // タッチデバイス（スマホ）向け
+            if (event.touches && event.touches[0]) {
+                clientX = event.touches[0].clientX;
+                clientY = event.touches[0].clientY;
+            }
+            // マウスクリック・通常の click イベント
+            else if (event.clientX != null && event.clientY != null) {
+                clientX = event.clientX;
+                clientY = event.clientY;
+            }
+
+            if (clientX != null && clientY != null) {
+                xPercent = ((clientX - rect.left) / rect.width) * 100;
+                yPercent = ((clientY - rect.top) / rect.height) * 100;
+
+                // はみ出し防止（0〜100%にクランプ）
+                xPercent = Math.max(0, Math.min(100, xPercent));
+                yPercent = Math.max(0, Math.min(100, yPercent));
+            }
+        }
+    } catch (e) {
+        // 何かあってもゲームが止まらないように
+        console.warn('click position calc failed:', e);
+    }
+
+    showClickEffect(power, xPercent, yPercent);
+    // ===== ここまで：位置計算 =====
+
+    showDialogue();
+    updateDisplay();
+    checkUpgradeUnlocks();
+    checkRecipes();
+    checkAchievements();
+
+    playMeatClickSound();
+}
+
+        // クリックエフェクト表示
+// xPercent / yPercent は 0〜100 の割合（未指定なら中央）
+function showClickEffect(power, xPercent = 50, yPercent = 50) {
+    const container = document.getElementById('clickEffects');
+    if (!container) return;
+
+    const effect = document.createElement('div');
+
+    const isCritical = Math.random() < 0.1;
+    const displayPower = isCritical ? power * 10 : power;
+
+    effect.textContent = isCritical
+        ? `🍖 +${Math.floor(displayPower)}`
+        : `🥩 +${Math.floor(power)}`;
+
+    effect.className = `click-effect ${isCritical ? 'critical' : 'normal'}`;
+
+    // パーセンテージで配置（クリック位置から出る）
+    effect.style.left = xPercent + '%';
+    effect.style.top = yPercent + '%';
+
+    container.appendChild(effect);
+
+    setTimeout(() => effect.remove(), 1000);
+}
+
+        // ランダムセリフ表示
+        function showRandomDialogue() {
+            const rand = Math.random();
+            let selectedDialogue;
+            
+            if (rand < 0.02) {
+                selectedDialogue = dialogues.filter(d => d.rarity === 'super-rare')[Math.floor(Math.random() * 2)];
+            } else if (rand < 0.1) {
+                selectedDialogue = dialogues.filter(d => d.rarity === 'rare')[Math.floor(Math.random() * 2)];
+            } else {
+                selectedDialogue = dialogues.filter(d => d.rarity === 'normal')[Math.floor(Math.random() * 11)];
+            }
+            
+            const bubble = document.getElementById('speechBubble');
+            bubble.textContent = selectedDialogue.text;
+            bubble.className = 'speech-bubble ' + selectedDialogue.rarity;
+            if (gameState.feverMode && Date.now() < gameState.feverEndTime) {
+                bubble.classList.add('fever');
+            }
+            
+            gameState.heardDialogues.add(selectedDialogue.text);
+        }
+
+
+const kyosuke1 = "images/kyosuke1.png";
+const kyosuke2 = "images/kyosuke2.png";
+
+        // アップグレード購入
+function buyUpgrade(index) {
+    const upgrade = gameState.upgrades[index];
+    const cost = Math.floor(upgrade.baseCost * Math.pow(1.15, upgrade.count));
+
+    if (gameState.meat < cost) return;
+
+    gameState.meat -= cost;
+    upgrade.count++;
+
+    gameState.orderLog.push(index);
+
+    checkOrderMaster();
+
+    playUpgradeBuySound();
+    renderUpgrades();
+    updateDisplay();
+    saveGame(true);
+}
+
+// ★順番実績チェック
+function checkOrderMaster() {
+    const target = [2, 3, 5, 7];
+    const recent = gameState.orderLog.slice(-4);
+    if (JSON.stringify(recent) === JSON.stringify(target)) {
+        gameState.orderMaster = true;
+        checkAchievements();
+    }
+}
+
+        // 表示更新
+        function updateDisplay() {
+            document.getElementById('meatCount').textContent = formatNumber(Math.floor(gameState.meat));
+            document.getElementById('perSecond').textContent = calculateProductionRate().toFixed(1);
+            document.getElementById('totalClicks').textContent = formatNumber(gameState.totalClicks);
+            document.getElementById('totalMeat').textContent = formatNumber(Math.floor(gameState.totalMeatEarned));
+            document.getElementById('unlockedRecipes').textContent = `${gameState.unlockedRecipes.length}/20`;
+            document.getElementById('unlockedAchievements').textContent = `${gameState.achievements.filter(a => a).length}/21`;
+            
+            const statusPanel = document.getElementById('statusPanel');
+            const meatButton = document.getElementById('meatButton');
+            const speechBubble = document.getElementById('speechBubble');
+            
+            if (gameState.feverMode && Date.now() < gameState.feverEndTime) {
+                statusPanel.classList.add('fever');
+                speechBubble.classList.add('fever');
+            } else {
+                statusPanel.classList.remove('fever');
+                speechBubble.classList.remove('fever');
+                gameState.feverMode = false;
+            }
+            
+            if (gameState.clickBoost && Date.now() < gameState.clickBoostEndTime) {
+                meatButton.classList.add('click-boost');
+            } else {
+                meatButton.classList.remove('click-boost');
+                gameState.clickBoost = false;
+            }
+        }
+
+        // 生産レート計算
+        function calculateProductionRate() {
+            let rate = 0;
+            const multiplier = gameState.feverMode && Date.now() < gameState.feverEndTime ? 3 : 1;
+            gameState.upgrades.forEach(upgrade => {
+                rate += upgrade.baseProduction * upgrade.count;
+            });
+            return rate * multiplier;
+        }
+
+        // 自動生産
+        function startAutoProduction() {
+            setInterval(() => {
+                const production = calculateProductionRate() / 10;
+                gameState.meat += production;
+                gameState.totalMeatEarned += production;
+                
+                updateDisplay();
+                checkUpgradeUnlocks();
+                checkRecipes();
+                checkAchievements();
+            }, 100);
+        }
+
+        // 支援者解放チェック
+        function checkUpgradeUnlocks() {
+            gameState.upgrades.forEach((upgrade, index) => {
+                if (!gameState.unlockedUpgrades.includes(index) && 
+                    upgrade.unlockCondition && 
+                    typeof upgrade.unlockCondition === 'function' && 
+                    upgrade.unlockCondition()) {
+                    gameState.unlockedUpgrades.push(index);
+                    showUpgradeUnlock(upgrade);
+                }
+            });
+        }
+
+// 支援者解放演出
+function showUpgradeUnlock(upgrade) {
+    const modal = document.getElementById('unlockModal');
+
+    // アイコン・説明セット
+    document.getElementById('unlockIcon').innerHTML =
+        `<img src="${upgrade.icon}" alt="${upgrade.name}" class="unlock-icon-img">`;
+    document.getElementById('unlockName').textContent = upgrade.name;
+    document.getElementById('unlockDescription').textContent = upgrade.description;
+    document.getElementById('unlockStats').innerHTML = `
+        💰 初期コスト: ${formatNumber(upgrade.baseCost)} 肉<br>
+        📈 生産量: ${upgrade.baseProduction}/秒
+    `;
+
+    // === パーティクル数をスマホで軽くする ===
+    const isMobile = window.innerWidth <= 768;
+    const particleCount = isMobile ? 10 : 20;
+
+    // DocumentFragmentでまとめて生成
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'unlock-particle';
+
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.animationDelay = (Math.random() * 0.5) + 's';
+
+        fragment.appendChild(particle);
+
+        // 消去は個別に
+        setTimeout(() => particle.remove(), 1500);
+    }
+
+    // modalに一度だけ追加（高速）
+    modal.appendChild(fragment);
+
+    // サウンド
+    ensureAudio();
+    playUpgradeUnlockSound();
+
+    // モーダル表示
+    modal.classList.add('active');
+}
+        // 支援者解放モーダルを閉じる
+        function closeUnlockModal() {
+            document.getElementById('unlockModal').classList.remove('active');
+            renderUpgrades();
+        }
+
+        // 料理チェック
+        function checkRecipes() {
+            recipes.forEach(recipe => {
+                if (gameState.totalMeatEarned >= recipe.requirement && !gameState.unlockedRecipes.includes(recipe.id)) {
+                    gameState.unlockedRecipes.push(recipe.id);
+                    showNotification(`🍽️ 新しい料理解放！\n${recipe.name}`);
+                    saveGame(true);
+                }
+            });
+// 🎉 料理全20種コンプリートチェック
+    if (gameState.unlockedRecipes.length === 20 && !gameState.recipeCompleteShown) {
+        gameState.recipeCompleteShown = true;
+        showRecipeCompleteModal();
+    }
+}
+// 🎉 実績全21種コンプリートチェック
+const totalUnlocked = gameState.achievements.filter(a => a).length;
+
+if (totalUnlocked >= 21 && !gameState.achievementCompleteShown) {
+    gameState.achievementCompleteShown = true;
+    showAchievementCompleteModal();
+}
+
+        // 実績チェック
+        function checkAchievements() {
+            achievements.forEach((achievement, index) => {
+                if (!gameState.achievements[index] && achievement.condition()) {
+                    gameState.achievements[index] = true;
+                    showNotification(`🎖 称号を獲得しました！\n${achievement.icon} ${achievement.name}`);
+                    saveGame(true);
+                }
+            });
+
+//実績コンプリート判定
+    const unlocked = gameState.achievements.filter(a => a).length;
+
+    if (unlocked >= 21 && !gameState.achievementCompleteShown) {
+        gameState.achievementCompleteShown = true;
+        showAchievementCompleteModal(); //
+    }
+        }
+
+        // ゴールデンカレー
+        function checkGoldenCurry() {
+            setInterval(() => {
+                if (Math.random() < 0.02) {
+                    spawnGoldenCurry();
+                }
+            }, 45000);
+        }
+
+        function spawnGoldenCurry() {
+            const curry = document.createElement('div');
+            curry.className = 'golden-curry';
+            curry.textContent = '🍛';
+            curry.onclick = () => activateGoldenCurry(curry);
+            document.body.appendChild(curry);
+            
+            setTimeout(() => {
+                if (curry.parentNode) {
+                    curry.remove();
+                }
+            }, 10000);
+        }
+
+        // オートクリック開始
+        function startAutoClick() {
+            if (autoClickInterval) {
+                clearInterval(autoClickInterval);
+            }
+            
+            gameState.autoClickMode = true;
+            gameState.autoClickEndTime = Date.now() + 10000;
+            
+            autoClickInterval = setInterval(() => {
+                if (Date.now() < gameState.autoClickEndTime) {
+                    clickMeat({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 });
+                } else {
+                    clearInterval(autoClickInterval);
+                    gameState.autoClickMode = false;
+                }
+            }, 333);
+        }
+
+        // 黄金肉落下演出
+function spawnGoldenMeatRain(options = { countMultiplier: 1, valueMultiplier: 1 }) {
+    const count = 15 * (options.countMultiplier || 1);
+    const value = 5 * (options.valueMultiplier || 1);
+
+    for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+            const meat = document.createElement('div');
+            meat.className = 'golden-meat-rain';
+            meat.textContent = '🥩';
+            meat.style.left = Math.random() * 100 + '%';
+            meat.style.top = '-50px';
+            meat.style.animationDelay = Math.random() * 0.5 + 's';
+            document.body.appendChild(meat);
+
+            gameState.meat += value;
+            gameState.totalMeatEarned += value;
+
+            setTimeout(() => meat.remove(), 2000);
+        }, i * 100);
+    }
+}
+
+function activateGoldenCurry(element) {
+    element.remove();
+    gameState.goldenCurryClicks++;
+
+    const effects = [
+
+        { name: '🔥 肉フィーバー', action: () => {
+            gameState.feverMode = true;
+            gameState.feverMultiplier = 4;
+            gameState.feverEndTime = Date.now() + 45000;
+
+            showNotification('🔥 肉フィーバー発動！\n45秒間、生産量 4倍！');
+            showSpecialEffect('💥 MEAT FEVER x4!', 'fever');
+        }},
+
+        { name: '👆 クリックブースト', action: () => {
+            gameState.clickBoost = true;
+            gameState.clickBoostMultiplier = 7;
+            gameState.clickBoostEndTime = Date.now() + 30000;
+
+            showNotification('👆 クリックブースト発動！\n30秒間、クリック 7倍！');
+            showSpecialEffect('⚡ CLICK x7!', 'fever');
+        }},
+
+        { name: '🤖 オートクリック', action: () => {
+            gameState.autoClickDuration = 15000;
+            gameState.autoClickSpeed = 2;
+
+            startAutoClick();
+
+            showNotification('🤖 オートクリック発動！\n15秒間、高速自動クリック！');
+            showSpecialEffect('🤖 AUTO CLICK x2!', 'boost');
+        }},
+
+        { name: '✨ 黄金肉落下', action: () => {
+            spawnGoldenMeatRain({
+                countMultiplier: 2,
+                valueMultiplier: 1.3,
+            });
+
+            showNotification('✨ 黄金肉落下！\n空から肉が大量に降ってきた！');
+            showSpecialEffect('✨ GOLDEN RAIN++', 'boost');
+        }},
+
+        { name: '💰 肉ボーナス', action: () => {
+            const bonusRate = 0.10 + Math.random() * 0.10; 
+            // 10%〜20%に強化
+
+            const bonus = Math.floor(gameState.meat * bonusRate);
+
+            gameState.meat += bonus;
+            gameState.totalMeatEarned += bonus;
+
+            showNotification(`💰 肉ボーナス！\n${formatNumber(bonus)} 個の肉を獲得！`);
+            showSpecialEffect(`💰 +${formatNumber(bonus)}`, 'boost');
+        }}
+    ];
+
+    // ランダムに一つ発動
+    const effect = effects[Math.floor(Math.random() * effects.length)];
+    effect.action();
+
+    updateDisplay();
+    checkAchievements();
+    saveGame(true);
+}
+
+
+        // 特殊エフェクト表示(ゴールデンカレー用)
+        function showSpecialEffect(text, type) {
+            const container = document.getElementById('clickEffects');
+            const effect = document.createElement('div');
+            
+            effect.textContent = text;
+            effect.className = `click-effect ${type}`;
+            effect.style.left = '50%';
+            effect.style.top = '50%';
+            
+            container.appendChild(effect);
+            
+            setTimeout(() => {
+                effect.remove();
+            }, 1500);
+        }
+
+        // ニュースティッカー
+        function startNewsTicker() {
+    const newsElement = document.getElementById('news');
+
+    function updateNews() {
+        const randomIndex = Math.floor(Math.random() * newsMessages.length);
+        let message = newsMessages[randomIndex];
+        if (message.includes('◯◯')) {
+            message = message.replace('◯◯', formatNumber(Math.floor(gameState.totalMeatEarned)));
+        }
+
+
+        const separator = '　　';
+        const loopedMessage = (message + separator).repeat(1);
+
+        newsElement.textContent = loopedMessage;
+    }
+
+    updateNews();
+
+    setInterval(updateNews, 30000);
+}
+
+        // 料理図鑑モーダル
+        function openRecipes() {
+    const modal = document.getElementById('recipesModal');
+    const grid = document.getElementById('recipeGrid');
+    grid.innerHTML = '';
+
+    recipes.forEach(recipe => {
+        const item = document.createElement('div');
+        const unlocked = gameState.unlockedRecipes.includes(recipe.id);
+        item.className = 'recipe-item' + (unlocked ? ' unlocked' : '');
+
+        if (!unlocked) {
+            item.innerHTML = `
+                <img class="recipe-img locked" src="${recipe.image}"><br>
+                <strong>???</strong>
+                <p>累計${formatNumber(recipe.requirement)}肉で解放</p>
+            `;
+        } else {
+            item.innerHTML = `
+                <img class="recipe-img" src="${recipe.image}"><br>
+                <strong>${recipe.name}</strong>
+                <p>${recipe.description}</p>
+            `;
+        }
+
+        grid.appendChild(item);
+    });
+
+    modal.classList.add('active');
+}
+
+
+
+function showRecipeCompleteModal() {
+    const modal = document.getElementById('recipeCompleteModal');
+    modal.classList.add('active');
+}
+
+function closeRecipeComplete() {
+    document.getElementById('recipeCompleteModal').classList.remove('active');
+}
+
+function showAchievementCompleteModal() {
+    document.getElementById('achievementCompleteModal').classList.add('active');
+}
+
+function closeAchievementComplete() {
+    document.getElementById('achievementCompleteModal').classList.remove('active');
+}
+
+        // 実績モーダル
+        function openAchievements() {
+            const modal = document.getElementById('achievementsModal');
+            const grid = document.getElementById('achievementGrid');
+            grid.innerHTML = '';
+            
+            achievements.forEach((achievement, index) => {
+                const item = document.createElement('div');
+                const unlocked = gameState.achievements[index];
+                item.className = 'achievement-item' + (unlocked ? ' unlocked' : '');
+                
+                if (unlocked) {
+                    item.innerHTML = `
+                        <div class="achievement-icon">${achievement.icon}</div>
+                        <strong>${achievement.name}</strong>
+                        <p style="font-size: 0.85rem; margin-top: 0.5rem; color: #4caf50; font-weight: bold;">✅ 達成済み</p>
+                        <p style="font-size: 0.8rem; margin-top: 0.3rem; opacity: 0.7;">${achievement.description}</p>
+                    `;
+                } else {
+                    item.innerHTML = `
+                        <div class="locked-icon">🔒</div>
+                        <strong>???</strong>
+                        <p style="font-size: 0.8rem; margin-top: 0.5rem; opacity: 0.7;">条件未達成</p>
+                    `;
+                }
+                
+                grid.appendChild(item);
+            });
+            
+            modal.classList.add('active');
+        }
+
+        // モーダル閉じる
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // 通知表示
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // 数値フォーマット
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(2) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toFixed(0);
+        }
+
+        // セーブ
+        function saveGame(silent = false) {
+            const saveData = {
+                ...gameState,
+                heardDialogues: Array.from(gameState.heardDialogues),
+orderLog: gameState.orderLog,
+                lastSave: Date.now()
+            };
+            localStorage.setItem('kyousukeClicker', JSON.stringify(saveData));
+            
+            if (!silent) {
+                showNotification('💾 ゲームを保存しました！');
+            }
+        }
+
+// =======================
+// ロード処理
+// =======================
+function loadGame() {
+    const saved = localStorage.getItem('kyousukeClicker');
+
+    if (saved) {
+        const data = JSON.parse(saved);
+
+        const restoredUpgrades = upgrades.map((u, i) => ({
+            ...u,
+            count: (data.upgrades && data.upgrades[i] && data.upgrades[i].count)
+                ? data.upgrades[i].count
+                : 0
+        }));
+
+        gameState = {
+            ...data,
+            upgrades: restoredUpgrades,
+            heardDialogues: new Set(data.heardDialogues || []),
+            unlockedUpgrades: data.unlockedUpgrades || [0],
+orderLog: data.orderLog || [],
+        };
+
+        // オフライン時間
+const offlineTime = (Date.now() - data.lastSave) / 1000;
+
+if (offlineTime > 0) {
+    const offlineProduction = calculateProductionRate() * offlineTime;
+
+    gameState.meat += offlineProduction;
+    gameState.totalMeatEarned += offlineProduction;
+
+    // 最大放置時間更新
+    if (offlineTime > gameState.offlineMaxTime) {
+        gameState.offlineMaxTime = offlineTime;
+    }
+
+    const hours = Math.floor(offlineTime / 3600);
+    const minutes = Math.floor((offlineTime % 3600) / 60);
+
+    showNotification(
+                `🏠 おかえりなさい！\n留守中(${hours}時間${minutes}分)に${formatNumber(Math.floor(offlineProduction))}個の肉を準備しました！`
+            );
+        }
+
+    } else {
+        // 新規データ
+        gameState = {
+            ...gameState,
+            unlockedUpgrades: [0],
+orderLog: [],
+            heardDialogues: new Set()
+        };
+    }
+}
+
+        // リセット
+        function resetGame() {
+    const ok = confirm("本当にリセットしますか？\nデータは完全に消去されます。");
+
+    if (!ok) return;
+    localStorage.removeItem('kyousukeClicker');
+    location.reload();
+}
+
+        // 定期自動保存
+        setInterval(() => saveGame(true), 10000);
+
+        // ゲーム開始
+        init();
+
+
+// =======================
+// 支援者クリック
+// =======================
+document.getElementById('upgradesList').addEventListener('click', (e) => {
+    const item = e.target.closest('.upgrade-item');
+    if (!item) return;
+    if (item.classList.contains('locked')) return;
+
+    const index = parseInt(item.dataset.upgradeIndex);
+    if (isNaN(index)) return;
+
+    console.log('支援者クリック:', index);
+    buyUpgrade(index);
+});
+
+window.addEventListener("load", () => {
+    const fade = document.getElementById("fade");
+    setTimeout(() => {
+        fade.style.opacity = 0;
+    }, 200);
+});
+
+
+
+
+window.addEventListener("load", () => {
+    const fade = document.getElementById("fade");
+    setTimeout(() => {
+        fade.style.opacity = 0;
+    }, 200);
+});
+
+
+    </script>
+
+    <!-- フッター -->
+    <footer>
+        <p>
+            本作はもぐり(@Vz6Sc)による<span>非公式の二次創作ファンゲーム</span>です。<br>個人の趣味により創作されたものであり、公式関係者様各位とは一切関係ありません。 <br>
+            お祝いとネタを兼ねた個人制作のため、
+            <strong>不具合や挙動の荒さ</strong>などあっても笑って許してください😅<br>
+            バグ報告・デバッグ対応などは行っておりません。<br>
+            (存分に愛でてあげてください🖐)(狂介!誕生日おめでとう!)<br>
+ <small>このゲームでは <a href="https://otologic.jp" target="_blank">OtoLogic</a> 様、<a href="https://soundeffect-lab.info/">効果音ラボ</a>様の効果音を使用しています。</small>
+        </p><br>
+        <button class="footer-reset-btn" onclick="resetGame()">🔄 データをリセット</button><br>
+    </footer>
+</body>
+</html>
