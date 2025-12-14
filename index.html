@@ -3004,6 +3004,8 @@ function showDialogue() {
             meat: 0,
             totalMeatEarned: 0,
             totalClicks: 0,
+            rawClicks: 0,
+            clickLevel: 0,  
             clickPower: 1,
             upgrades: upgrades.map(u => ({ ...u, count: 0 })),
             unlockedUpgrades: [0],
@@ -3675,6 +3677,17 @@ function closeAchievementComplete() {
             }
             return num.toFixed(0);
         }
+        // クリック強化（換算クリック）
+        function getClickValue() {
+        return (1 + gameState.clickLevel) ** 2;
+}
+
+const CLICK_BASE_COST = 1000;
+const CLICK_RATE = 1.4;
+
+function getClickUpgradeCost(level = gameState.clickLevel) {
+    return Math.round(CLICK_BASE_COST * (CLICK_RATE ** level));
+}
 
         // セーブ
         function saveGame(silent = false) {
@@ -3712,8 +3725,13 @@ function loadGame() {
             upgrades: restoredUpgrades,
             heardDialogues: new Set(data.heardDialogues || []),
             unlockedUpgrades: data.unlockedUpgrades || [0],
-orderLog: data.orderLog || [],
+orderLog: data.orderLog || [], 
         };
+
+
+gameState.rawClicks ??= 0;
+gameState.clickLevel ??= 0;
+gameState.totalClicks ??= 0;
 
         // オフライン時間
 const offlineTime = (Date.now() - data.lastSave) / 1000;
