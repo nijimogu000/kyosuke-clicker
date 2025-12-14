@@ -296,12 +296,15 @@ border: 1px solid rgba(245, 208, 126, 0.25);
 
     transition: all 0.3s ease;
 }
+        .upgrade-panel h2 {
+    margin-bottom: 0.6rem;
+}
 }
 .upgrade-info {
-    display: flex;
+display: flex;
     align-items: center;
     gap: 0.8rem;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.8rem;   
 }
 
 .click-upgrade-icon {
@@ -1416,7 +1419,7 @@ white-space: pre-line;
 
 .upgrade-panel h2 {
       font-size: 1.0rem;
-      margin-bottom: 0.25rem; 
+      margin-bottom: 0.6rem; 
 
 .status-panel,
 .click-area,
@@ -1516,12 +1519,7 @@ white-space: pre-line;
    ステータスパネルの縮小調整（スマホ用）
    ========================= */
 @media (max-width: 768px) {
-  .status-panel {
-      padding: 1rem;
-      border-radius: 15px;
-      box-shadow: 0 6px 20px rgba(199, 54, 89, 0.25);
-  }
-
+ 
   .status-panel h2 {
       font-size: 1.1rem;
       margin-bottom: 0.4rem;
