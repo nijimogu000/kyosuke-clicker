@@ -2011,40 +2011,7 @@ footer small {
         height: 220px;
     }
 }
-/* ============================
-   スマホ用モーダル最適化
-   ============================ */
 
-@media (max-width: 768px) {
-
-    /* 通常モーダル（料理図鑑・実績） */
-    .modal-content {
-        max-height: 90vh;
-        overflow-y: auto;
-        border-radius: 12px;
-        margin: 1rem;
-    }
-
-    /* 解放モーダル */
-    .unlock-content {
-        max-height: 90vh;
-        overflow-y: auto;
-        padding-bottom: 2rem;
-        margin: 1rem;
-    }
-    /* モーダル内の画像調整用 */
-.unlock-content img,
-.recipe-img {
-    max-width: 90%;
-    height: auto;
-}
-
-    /* 閉じるボタンのタップ */
-    .modal-close {
-        font-size: 2rem;
-        padding: 0.5rem 1rem;
-    }
-}
 
 @media screen and (orientation: landscape) and (max-width: 900px) {
     body::before {
