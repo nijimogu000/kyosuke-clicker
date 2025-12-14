@@ -1233,6 +1233,45 @@ white-space: pre-line;
     pointer-events: none !important;
 }
 
+/* クリック強化ボタン */
+#clickUpgradeButton {
+    background: linear-gradient(135deg, #C73659, #A91D3A);
+    color: #FFFFFF;
+
+    border: 1px solid rgba(245, 208, 126, 0.9);
+    border-radius: 999px;
+
+    padding: 0.6rem 1.6rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+
+    cursor: pointer;
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.35),
+        0 0 12px rgba(199, 54, 89, 0.45);
+
+    transition:
+        transform 0.1s ease,
+        box-shadow 0.1s ease,
+        filter 0.1s ease;
+}
+
+#clickUpgradeButton:hover {
+    transform: translateY(-1px);
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.45),
+        0 0 16px rgba(245, 208, 126, 0.6);
+    filter: brightness(1.08);
+}
+
+#clickUpgradeButton:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.35),
+        0 0 8px rgba(199, 54, 89, 0.4);
+    filter: brightness(0.95);
+}      
 
 /* =========================
    1200px 以下（タブレット〜小型PC）
@@ -1321,6 +1360,8 @@ white-space: pre-line;
       font-size: 0.95rem;
       text-align: center;
       box-sizing: border-box;
+     margin-top: 0.5rem;
+      margin-bottom: 0.8rem;
   }
 }
     
