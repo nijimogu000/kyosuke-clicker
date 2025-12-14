@@ -742,7 +742,7 @@ background: rgba(0, 0, 0, 0.35);
     justify-content: space-between;
     align-items: center;
 
-    padding: 2rem 2rem 1rem 2rem;
+padding: 2rem 4.5rem 1rem 2rem;
 
     background: rgba(255,255,255,0.05);
     border-bottom: 2px solid rgba(255,255,255,0.25);
@@ -764,26 +764,7 @@ background: rgba(0, 0, 0, 0.35);
     padding: 2rem;
     overflow-y: auto;
     flex: 1;
-}
-.modal-close {
-    background: linear-gradient(135deg, #C73659, #A91D3A);
-    border: none;
-
-    color: white;
-
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-
-    cursor: pointer;
-    font-size: 1.5rem;
-    font-weight: bold;
-
-    box-shadow:
-        0 0 10px rgba(199,54,89,0.5),
-        0 2px 8px rgba(0,0,0,0.4);
-
-    transition: 0.2s;
+    min-height: 0;
 }
 
 .modal-close:hover {
@@ -792,20 +773,57 @@ background: rgba(0, 0, 0, 0.35);
 .recipe-grid, .achievement-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-
+    grid-auto-rows: minmax(140px, auto);
     gap: 1rem;
     margin-top: 1rem;
 }
 .recipe-item, .achievement-item {
-    background: rgba(255, 255, 255, 0.06);
-    border: 2px solid rgba(255,255,255,0.20);
+    min-height: 160px;
+    padding: 1rem;
     border-radius: 12px;
 
-    padding: 1rem;
-    text-align: center;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(245,208,126,0.25);
 
+    text-align: center;
     color: #FFFFFF;
 }
+
+
+.modal-close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    line-height: 1;
+
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #fff;
+
+    background: linear-gradient(135deg, #C73659, #A91D3A);
+    border: 1px solid rgba(245,208,126,0.6);
+    cursor: pointer;
+
+    box-shadow:
+        0 0 10px rgba(199,54,89,0.5),
+        0 2px 8px rgba(0,0,0,0.4);
+
+    transition: 0.2s;
+    z-index: 20;
+}
+
+
+
 
 /* 解放済み*/
 .recipe-item.unlocked, .achievement-item.unlocked {
@@ -1299,6 +1317,16 @@ white-space: pre-line;
 }
 }
 
+
+@media (max-width: 768px) {
+    .recipe-grid,
+    .achievement-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+
  /* =========================
    ニュースティッカー（スマホ調整）
    ========================= */
@@ -1548,12 +1576,12 @@ text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     border-radius: 18px;
     background: rgba(255,255,255,0.07);
     border: 2px solid rgba(245,208,126,0.35);
-    overflow-y: auto;
 }
 
 /* ヘッダー */
 .modal-header {
     padding: 0.9rem;
+padding-right: 56px;
     border-bottom: 2px solid rgba(245,208,126,0.35);
 }
 
@@ -1567,20 +1595,8 @@ text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     padding: 1rem;
 }
 
-/* 閉じるボタン */
-.modal-close {
-    width: 32px;
-    height: 32px;
-    font-size: 1.2rem;
-    background: linear-gradient(135deg, #C73659, #A91D3A);
-    border: 1px solid rgba(245,208,126,0.6);
-}
-.recipe-item, .achievement-item {
-    padding: 0.8rem;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(245,208,126,0.25);
-}
+
+
 
 .recipe-icon, .achievement-icon {
     font-size: 2.2rem;
@@ -2013,6 +2029,7 @@ footer small {
 }
 
 
+
 @media screen and (orientation: landscape) and (max-width: 900px) {
     body::before {
         content: "縦画面でプレイしてください";
@@ -2033,6 +2050,8 @@ footer small {
         height: 200px;
     }
 }
+
+
 
 /* スマホのパーティクル軽量 */
 @media (max-width: 768px) {
@@ -2076,6 +2095,14 @@ footer small {
         border-radius: 8px;
         margin-top: 0.8rem;
     }
+}
+
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+button, a {
+  -webkit-tap-highlight-color: transparent;
 }
 
     </style>
@@ -2440,40 +2467,40 @@ if (!soundEnabled) return;
 let soundEnabled = true;
 
 
-        // ゲームデータ
+      // ゲームデータ
         const upgrades = [
-            { id: 1, name: '肉トレ', icon: 'images/upgrade01.png', baseCost: 15, baseProduction: 0.1, unlockCondition: () => true, description: '筋トレと肉は切っても切れない関係!定期的に肉トレをして燃料消費だ!' },
-            { id: 2, name: 'エージェント', icon: 'images/upgrade02.png',  baseCost: 100, baseProduction: 1, unlockCondition: () => gameState.upgrades[0].count > 0, description: 'みんなのエージェント。情報網を駆使して肉を調達してくれるぞ！' },
-            { id: 3, name: '松之助', icon: 'images/upgrade03.png', baseCost: 500, baseProduction: 5, unlockCondition: () => gameState.totalMeatEarned >= 200, description: '狂介の良き理解者。唐揚げおにぎりを持って駆けつけてくれた頼れる兄貴分！' },
-            { id: 4, name: '紫苑', icon: 'images/upgrade04.png', baseCost: 2000, baseProduction: 10, unlockCondition: () => gameState.totalMeatEarned >= 350, description: '料理上手な友人。珍しい肉料理を作ってみたい!と駆けつけてくれたぞ！' },
-            { id: 5, name: '肉屋の店主', icon: 'images/upgrade05.png', baseCost: 3000, baseProduction: 20, unlockCondition: () => gameState.totalMeatEarned >= 500, description: 'バイト先の肉屋も参戦！狂介のために新鮮な肉を安定供給してくれるぞ！' },
-            { id: 6, name: '為士', icon: 'images/upgrade06.png', baseCost: 10000, baseProduction: 100, unlockCondition: () => gameState.totalMeatEarned >= 1000, description: '呆れ顔で見つめているが、実は協力してくれている...のかもしれない。' },
-            { id: 7, name: 'レオン', icon: 'images/upgrade07.png', baseCost: 50000, baseProduction: 500, unlockCondition: () => gameState.totalMeatEarned >= 2000, description: 'シゴデキスーパー執事。圧倒的な調理スキルで大量の肉料理を生産するぞ！' },
-            { id: 8, name: '皇紀', icon: 'images/upgrade08.png', baseCost: 200000, baseProduction: 2000, unlockCondition: () => gameState.totalMeatEarned >= 5000, description: '商業地区の料理人。その包丁捌きはとてもワイルド。解体されないように気をつけろ!' }
+            { id: 1, name: 'エージェント', icon: 'images/upgrade01.png', baseCost: 100, baseProduction: 1, unlockCondition: () => true, description: 'みんなのエージェント。情報網を駆使して肉を調達してくれるぞ！' },
+            { id: 2, name: 'レオン', icon: 'images/upgrade02.png',  baseCost: 500, baseProduction: 5, unlockCondition: () => gameState.upgrades[0].count > 0, description: 'シゴデキスーパー執事。圧倒的な調理スキルで大量の肉料理を生産するぞ！' },
+            { id: 3, name: '松之助', icon: 'images/upgrade03.png', baseCost: 2000, baseProduction: 10, unlockCondition: () => gameState.totalMeatEarned >= 20000, description: '狂介の良き理解者。唐揚げおにぎりを持って駆けつけてくれた頼れる兄貴分！' },
+            { id: 4, name: '紫苑', icon: 'images/upgrade04.png', baseCost: 5000, baseProduction: 20, unlockCondition: () => gameState.totalMeatEarned >= 50000, description: '料理上手な友人。珍しい肉料理を作ってみたい!と駆けつけてくれたぞ！' },
+            { id: 5, name: '肉屋の店主', icon: 'images/upgrade05.png', baseCost: 8000, baseProduction: 40, unlockCondition: () => gameState.totalMeatEarned >= 150000, description: 'バイト先の肉屋も参戦！狂介のために新鮮な肉を安定供給してくれるぞ！' },
+            { id: 6, name: '為士', icon: 'images/upgrade06.png', baseCost: 20000, baseProduction: 100, unlockCondition: () => gameState.totalMeatEarned >= 300000, description: '呆れ顔で見つめているが、実は協力してくれている...のかもしれない。' },
+            { id: 7, name: '戴天', icon: 'images/upgrade07.png', baseCost: 80000, baseProduction: 500, unlockCondition: () => gameState.totalMeatEarned >= 800000, description: '狂介の胃袋に興味を持ったらしい。' },
+            { id: 8, name: '皇紀', icon: 'images/upgrade08.png', baseCost: 200000, baseProduction: 2000, unlockCondition: () => gameState.totalMeatEarned >= 1000000, description: '商業地区の料理人。その包丁捌きはとてもワイルド。解体されないように気をつけろ!' }
         ];
 
         const recipes = [
             { id: 1, name: '唐揚げ', icon: '🍗',image: 'images/recipes/food1.png', requirement: 10, description: '定番の美味しさ。カリッとジューシー！' },
             { id: 2, name: 'カレー', icon: '🍛',image: 'images/recipes/food2.png', requirement: 50, description: 'スパイスが効いた濃厚な味わい' },
             { id: 3, name: 'タコス', icon: '🥩', requirement: 250, description: 'スパイス香る肉と野菜を包んだ、手軽で豪快な一品' },
-            { id: 4, name: '大盛り肉カレー', icon: '🍛', requirement: 550, description: 'ゴロゴロ肉がたっぷり！' },
-            { id: 5, name: '牛丼', icon: '🍜', requirement: 1500, description: '甘辛いタレが染み込んだご飯' },
-            { id: 6, name: 'ハンバーグ', icon: '🍖', requirement: 5500, description: '肉汁溢れる極上の一品' },
-            { id: 7, name: 'ポークソテー', icon: '🍖', requirement: 15000, description: 'バターの香り豊かな豚肉' },
-            { id: 8, name: 'ステーキ', icon: '🍗', requirement: 35000, description: 'ミディアムレアの完璧な焼き加減' },
-            { id: 9, name: 'カリーヴルスト', icon: '🔥', requirement: 55000, description: 'カレーケチャップが絡むドイツの名物ソーセージ' },
-            { id: 10, name: 'チキン南蛮', icon: '🍲', requirement: 85000, description: '甘酢とタルタルが絶妙なコンビネーション' },
-            { id: 11, name: '鉄板焼き', icon: '🍖', requirement: 100000, description: '熱々の鉄板で焼き上げた香ばしい肉' },
-            { id: 12, name: 'ヤンニョムチキン', icon: '👅', requirement: 250000, description: '甘辛ダレが染み込んだ、クセになる韓国式フライドチキン' },
-            { id: 13, name: 'すき焼き', icon: '🥩', requirement: 300000, description: '甘辛いタレが絶妙' },
-            { id: 14, name: '焼肉定食', icon: '🍖', requirement: 450000, description: '炭火で焼いた香ばしい肉' },
+            { id: 4, name: '大盛り肉カレー', icon: '🍛', requirement: 1000, description: 'ゴロゴロ肉がたっぷり！' },
+            { id: 5, name: '牛丼', icon: '🍜', requirement: 3000, description: '甘辛いタレが染み込んだご飯' },
+            { id: 6, name: 'ハンバーグ', icon: '🍖', requirement: 10000, description: '肉汁溢れる極上の一品' },
+            { id: 7, name: 'ポークソテー', icon: '🍖', requirement: 35000, description: 'バターの香り豊かな豚肉' },
+            { id: 8, name: 'ステーキ', icon: '🍗', requirement: 77777, description: 'ミディアムレアの完璧な焼き加減' },
+            { id: 9, name: 'カリーヴルスト', icon: '🔥', requirement: 120000, description: 'カレーケチャップが絡むドイツの名物ソーセージ' },
+            { id: 10, name: 'チキン南蛮', icon: '🍲', requirement: 200000, description: '甘酢とタルタルが絶妙なコンビネーション' },
+            { id: 11, name: '鉄板焼き', icon: '🍖', requirement: 350000, description: '熱々の鉄板で焼き上げた香ばしい肉' },
+            { id: 12, name: 'ヤンニョムチキン', icon: '👅', requirement: 600000, description: '甘辛ダレが染み込んだ、クセになる韓国式フライドチキン' },
+            { id: 13, name: 'すき焼き', icon: '🥩', requirement: 900000, description: '甘辛いタレが絶妙' },
+            { id: 14, name: '焼肉定食', icon: '🍖', requirement: 1200000, description: '炭火で焼いた香ばしい肉' },
 
-            { id: 15, name: '紅焼肉', icon: '🥩', requirement: 650000, description: 'とろけるように煮込まれた中華式角煮の濃厚な旨味' },
-            { id: 16, name: 'ｽﾊﾟｹﾞｯﾃｨ･ｳｨｽﾞ･ﾐｰﾄﾎﾞｰﾙ', icon: '🥩', requirement: 900000, description: '肉たっぷりのミートボールと濃厚ソースが絡む定番パスタ' },
-            { id: 17, name: '牛フィレステーキ', icon: '🥩', requirement: 1300000, description: 'ほどけるような柔らかさを持つ、赤身の最高峰' },
-            { id: 18, name: '伝説の熟成肉', icon: '🎂', requirement: 2000000, description: '数十年の熟成を経た幻の一品' },
-            { id: 19, name: 'レオン特性スペシャル肉カレー', icon: '🌶️', requirement: 3000000, description: '狂介のために作られた究極の一皿' },
-            { id: 20, name: '狂介の肉増しドリーム丼', icon: '🏆', requirement: 5000000, description: 'すべての肉が乗った最終形' }
+            { id: 15, name: '紅焼肉', icon: '🥩', requirement: 1600000, description: 'とろけるように煮込まれた中華式角煮の濃厚な旨味' },
+            { id: 16, name: 'ｽﾊﾟｹﾞｯﾃｨ･ｳｨｽﾞ･ﾐｰﾄﾎﾞｰﾙ', icon: '🥩', requirement: 2000000, description: '肉たっぷりのミートボールと濃厚ソースが絡む定番パスタ' },
+            { id: 17, name: '牛フィレステーキ', icon: '🥩', requirement: 2800000, description: 'ほどけるような柔らかさを持つ、赤身の最高峰' },
+            { id: 18, name: '伝説の熟成肉', icon: '🎂', requirement: 3700000, description: '数十年の熟成を経た幻の一品' },
+            { id: 19, name: 'レオン特性スペシャル肉カレー', icon: '🌶️', requirement: 4600000, description: '狂介のために作られた究極の一皿' },
+            { id: 20, name: '狂介の肉増しドリーム丼', icon: '🏆', requirement: 6000000, description: 'すべての肉が乗った最終形' }
         ];
 
 const achievements = [
@@ -2482,20 +2509,20 @@ const achievements = [
       description: 'プレイ累計肉1個達成' },
 
     { id: 2, name: '一人前の肉奉行', icon: '🥩', 
-      condition: () => gameState.totalMeatEarned >= 100,
-      description: 'プレイ累計肉100個達成' },
+      condition: () => gameState.totalMeatEarned >= 10000,
+      description: 'プレイ累計肉10000個達成' },
 
     { id: 3, name: 'おかわり三昧', icon: '🥣', 
-      condition: () => gameState.totalMeatEarned >= 300,
-      description: 'プレイ累計肉300個達成' },
+      condition: () => gameState.totalMeatEarned >= 50000,
+      description: 'プレイ累計肉50000個達成' },
 
     { id: 4, name: '狂介の胃袋を満たした者', icon: '😋', 
-      condition: () => gameState.totalMeatEarned >= 500,
-      description: 'プレイ累計肉500個達成' },
+      condition: () => gameState.totalMeatEarned >= 100000,
+      description: 'プレイ累計肉100000個達成' },
 
     { id: 12, name: 'クリック狂', icon: '🖱',
-      condition: () => gameState.totalClicks >= 5000,
-      description: 'クリック5,000回達成' },
+      condition: () => gameState.totalClicks >= 10000,
+      description: '総クリック数の累計が10000回達成' },
 
     { id: 17, name: 'ロケットスタート', icon: '🚀',
       condition: () => gameState.rocketStart,
@@ -2503,15 +2530,15 @@ const achievements = [
 
     { id: 15, name: '肉速5段', icon: '🥄',
       condition: () => gameState.speedRun5min,
-      description: '5分以内に肉1,000個到達' },
+      description: '5分以内に肉10,000個到達' },
 
     { id: 5, name: 'お肉マスター', icon: '🥳',
-      condition: () => gameState.totalMeatEarned >= 1000 && gameState.upgrades.some(u => u.count > 0),
-      description: 'プレイ累計肉1,000個+支援者1人以上' },
+      condition: () => gameState.totalMeatEarned >= 10000 && gameState.upgrades.some(u => u.count > 0),
+      description: 'プレイ累計肉10,000個+支援者1人以上' },
 
     { id: 11, name: 'ラッキーボーイ', icon: '🛡️',
-      condition: () => gameState.goldenCurryClicks >= 10,
-      description: 'ゴールデン肉カレー10回クリック' },
+      condition: () => gameState.goldenCurryClicks >= 1,
+      description: 'ゴールデン肉カレー1回クリック' },
 
 
 
@@ -2520,12 +2547,12 @@ const achievements = [
       description: '料理図鑑10種解放' },
 
     { id: 8, name: '肉王候補', icon: '🤚',
-      condition: () => gameState.totalMeatEarned >= 50000,
-      description: 'プレイ累計肉50,000個達成' },
+      condition: () => gameState.totalMeatEarned >= 500000,
+      description: 'プレイ累計肉500000個達成' },
 
     { id: 13, name: '肉富豪', icon: '🤴',
-      condition: () => gameState.meat >= 20000,
-      description: '一度に肉20,000個以上保有' },
+      condition: () => gameState.meat >= 100000,
+      description: '一度に肉100,000個以上保有' },
 
     { id: 16, name: 'スピードクリッカー', icon: '🏃',
       condition: () => gameState.clicksInTenSeconds >= 40,
@@ -2547,19 +2574,19 @@ const achievements = [
 
     { id: 9, name: '肉バカ', icon: '🍖',
       condition: () => gameState.totalClicks >= 500000,
-      description: 'プレイ累計クリック500,000回達成' },
+      description: '総クリック数の累計が500,000回達成' },
 
     { id: 10, name: '狂介狂い', icon: '👹',
       condition: () => gameState.totalClicks >= 1000000,
-      description: 'プレイ累計クリック1,000,000回達成' },
+      description: '総クリック数の累計が1,000,000回達成' },
 
     { id: 19, name: 'ゴールデンマスター', icon: '⭐',
-      condition: () => gameState.goldenCurryClicks >= 50,
-      description: 'ゴールデン肉カレーを50回クリック' },
+      condition: () => gameState.goldenCurryClicks >= 10,
+      description: 'ゴールデン肉カレーを10回クリック' },
 
     { id: 14, name: '肉の番人', icon: '⚔️',
-      condition: () => gameState.upgrades.every(u => u.count >= 15),
-      description: '支援者全員をLv15以上に育成' },
+      condition: () => gameState.upgrades.every(u => u.count >= 20),
+      description: '支援者全員をLv20以上に育成' },
 
 
 
@@ -2569,8 +2596,8 @@ const achievements = [
 
     { id: 21, name: '真の肉奉公者', icon: '🪐',
       condition: () => gameState.achievements.filter(a => a).length >= 20 
-                     && gameState.meat >= 100000,
-      description: '全実績20種達成＋肉100,000個保有' }
+                     && gameState.meat >= 1000000,
+      description: '全実績20種達成＋肉1000000個保有' }
 ];
 
 
@@ -2675,8 +2702,11 @@ const dialogues = [
       condition: () => gameState.totalMeatEarned >= 500000 },
 
     { text: 'オマエとなら……もっと強くなれそうだ', rarity: 'super-rare',
-      condition: () => gameState.totalMeatEarned >= 500000 }
+      condition: () => gameState.totalMeatEarned >= 500000 },
+    { text: '最強最恐最狂！！！', rarity: 'super-rare',
+      condition: () => gameState.totalMeatEarned >= 500000 },
 ];
+
 
 let dialogueLocked = false;
 let dialogueTimeout = null;
@@ -2737,50 +2767,50 @@ function showDialogue() {
             '📰 陽真『狂介ー！　限定のメガバーガー手に入れてきた！　一緒に食おうぜ！！』',
             '📰 才悟『...肉の減り方が尋常じゃないな。調理場が追いついていない』',
             '📰 才悟『肉が荒鬼狂介に吸い込まれていく...。見ていると、不思議と感心してしまうな』',
-            '📰 紫苑『荒鬼くん、本当に楽しそうに食べてくれるね。はい、次の一皿だよ』',
-            '📰 紫苑『無理はしなくていいけど...まだいける？　じゃあ温かいうちにどうぞ』',
-            '📰 慈玄『はぁ...お前の食い方を見ていると、こっちの胃が重くなってくる』',
-            '📰 慈玄『そんなに詰め込んで大丈夫なのか。ぶっ倒れても俺は知らないからな』',
+            '📰 紫苑『荒鬼くんは本当に美味しそうに食べてくれるよね。はい、次の一皿だよ』',
+            '📰 紫苑『無理はしなくていいけど...まだいける？　じゃあ温かいうちにどうぞ！』',
+            '📰 慈玄『はぁ...お前の食い方を見ていると、こっちの胃まで重くなってくる...』',
+            '📰 慈玄『そんなに詰め込んで大丈夫なのか...？　ぶっ倒れても俺は知らないからな』',
             '📰 為士『...また肉か』',
             '📰 為士『...その量を誇れると思っているなら、実に哀れだな』',
-            '📰 為士『肉を食べるだけでこうも騒がしいとは...。相変わらず暑苦しくて鬱陶しい奴だ』',
+            '📰 為士『肉を食べるだけでこうも騒がしいとは...。相変わらず暑苦しくて鬱陶しいヤツだ』',
             '📰 為士『...もう勝手にしろ』',
             '📰 松之助『そんな食べ方して...腹、壊すなよ？』',
-            '📰 松之助『そんな肉ばっかじゃ筋肉も泣くぞ。少しでいいから野菜も食べろ。な？』',
+            '📰 松之助『肉ばっかりじゃ筋肉も泣くぞ。少しでいいから野菜も食べろ。な？』',
             '📰 松之助『もう、記録とかそういう次元じゃないな...』',
-            '📰 松之助『俺の唐揚げおにぎりも持ってけ！　頑張れよ！』',
+            '📰 松之助『俺の唐揚げおにぎりも持っていけ！　頑張れよ！』',
             '📰 狂介『俺が肉で、肉が俺だ！』',
             '📰 狂介『肉が...足りねぇ...』',
-            '📰 狂介『肉...もっと...もっとだ...』',
+            '📰 狂介『...もっと...もっとだ...』',
             '📰 狂介『俺は肉でも１番になる男だぜ！！！！！』',
             '📰 ルーイ『有名な放置ゲーを思い出すな...。あったろ、クッキーが勝手に増えるやつ』',
-            '📰 ルーイ『街の肉全部食うとか...いやもう好きにしろ。俺は関わりたくねぇ』',
-            '📰 ランス『消費速度が常人の枠を超えている...。仕組みを解き明かしたくなるよ』',
+            '📰 ルーイ『街中の肉全部食うとか...いやもう好きにしろ。俺は知らねぇ』',
+            '📰 ランス『消費速度が常人の枠を超えている...。彼の身体の仕組みを解き明かしたくなるよ』',
             '📰 ランス『君たちは止めるのかい？　僕はもう少しだけ見ていたいな』',
             '📰 Ｑ『はいはい、お肉ね...好きだよねぇ、ほんと』',
-            '📰 Ｑ『お肉だけって飽きないの？　もっと可愛いものとか食べなよ』',
-            '📰 静流『これだけ美味しそうに食べてくれると、作った側も励みになるよね』',
-            '📰 静流『見てるだけでお腹いっぱいになっちゃった。若いって凄いねぇ』',
-            '📰 宗雲『ふむ、これほど気持ちよく食べる奴も珍しいな』',
-            '📰 宗雲『好きに食べるのは構わないが...ほどほど、という言葉も覚えておけ』',
-            '📰 颯『えぇっ？！　これ全部荒鬼が食べたの？！　凄っ！！』',
+            '📰 Ｑ『お肉だけって飽きない？　もっと甘いものとか食べなよ』',
+            '📰 静流『これだけ美味しそうに食べてくれる人が居ると、作った側も励みになるよねぇ』',
+            '📰 静流『あー...見てるだけでお腹いっぱいになっちゃった。若いって凄いねぇ』',
+            '📰 宗雲『...ふむ、これほど気持ちよく食べる奴も珍しいな』',
+            '📰 宗雲『食べ方に口出しするつもりはない。だが、「ほどほど」という言葉があることは覚えておけ』',
+            '📰 颯『えっ？！　これ全部狂介が食べたの？！　すごっ！！』',
             '📰 颯『大盛り完食チャレンジとか行ったらさ、絶対優勝できるじゃん。今度誘ってみようかな』',
             '📰 皇紀『選ぶ肉が雑なら、出来る筋も雑になる』',
             '📰 皇紀『...良い食いっぷりだ』',
-            '📰 浄『肉で喜べるのは若者の特権だな。俺は俺で、甘味の世界に浸らせてもらうよ』',
-            '📰 浄『よくもまぁ飽きもせず肉ばかり食べられるものだ...。俺はああいう重たいものより、甘いスイーツのほうがありがたいな』',
-            '📰 戴天『燃料効率が異常に高いのでしょうか...。興味深いデータが取れそうですね』',
-            '📰 戴天『この完食ぶり、まさしく驚嘆称賛に値する気迫ですね』',
-            '📰 雨竜『この量を１人で...？　まさかここまでとは...圧巻ですね』',
-            '📰 雨竜『荒鬼さんの食事の勢いには毎回驚かされますちゃんと飲んでくださいね』',
+            '📰 浄『肉で無邪気に喜べるのは、まだ若い証拠だな。俺は俺で、甘味の世界に浸らせてもらうとするよ』',
+            '📰 浄『レディたちの間で肉が流行り始めているのか。...困ったな』',
+            '📰 戴天『燃料効率が異常に高いのでしょうか...。彼の身体を調べれば興味深いデータが取れそうですね』',
+            '📰 戴天『この完食ぶり、まさしく驚嘆称賛に値する気迫ですね...』',
+            '📰 雨竜『この量を１人で...？　まさかここまでとは...圧巻です』',
+            '📰 雨竜『荒鬼さんの食事の勢いには、いつも驚かされます。水も忘れずに飲んでくださいね』',
             '📰 駆『これだけ需要があるなら、肉の相場まで動きそうだな...。今のうちに新しい商品でも考えておくか』',
-            '📰 駆『うちのフラリオでもあそこまでは食わねぇよ。あの天パ、食費とかどう回してんだ？』',
-            '📰フラリオ『ちょ、待て待て！　それ鳥じゃねーよな？！　...ああ牛か。マジ焦った』',
-            '📰フラリオ『いやいや、胃袋どうなってんだよ！　アニメの大食いキャラじゃねーか！』',
-            '📰レオン『おおっと、まだお召し上がりですか？！　承知いたしました！！　次の一皿も、最高の一品を全力でお届けいたします！！』',
+            '📰 駆『うちのフラリオでもあそこまでは食わねぇよ。パーマのヤツ、食費とかどう回してんだ？』',
+            '📰フラリオ『ちょ、待て待て！　それ鳥じゃねーよな？！　...ああ牛か。マジで焦った』',
+            '📰フラリオ『いやいや、オマエの胃袋どうなってんだよ！　......俺もひょっとする、といけんのか？』',
+            '📰レオン『おおっと、まだお召し上がりですね？！　承知いたしました！！　次の一皿も、最高の一品を全力でお届けいたしますよ！！』',
             '📰レオン『このように気持ちよく召し上がっていただけるとは、感激でございます！！　私も一層、腕が鳴ります！！』',
-            '📰 肉屋『在庫が...在庫が足りない！！』',
-            '📰 肉屋『だ、だめだ……補充が追いつかん！！』',
+            '📰 肉屋『在庫が......在庫が足りない！！』',
+            '📰 肉屋『だ、だめだ......補充が追いつかん！！』',
             '📰 肉屋『店長！！　牛も豚も鶏も全部ありません！！』',
             '📰 肉屋『店長！！　もう品出しする肉が無いです！！』',
             '📰 レオン、カレーの仕込み中',
@@ -2791,29 +2821,29 @@ function showDialogue() {
             '📰 狂介の肉トレ、今日も絶好調',
             '📰 狂介、ついに肉と会話ができるようになる？！',
             '📰 荒鬼狂介、一体いつまで食べ続けるのか',
-            '📰 肉食の神、荒鬼狂介 降臨',
+            '📰 肉食の神、荒鬼狂介　降　臨　',
             '📰 目撃情報:虹顔市にゴールデン肉カレーが出現',
             '📰 肉業界、供給ラインを狂介一人に特化へ',
-            '📰 肉市場、荒鬼狂介専用レーンを正式に設置',
+            '📰 肉市場、荒鬼狂介専用レーンを正式に設置へ',
             '📰 虹顔市、肉消費量が国家統計を超え緊急会議へ突入',
             '📰 時空管理局『彼の食欲は宇宙に影響を与える可能性』',
             '📰 時空管理局『狂介の食欲が異能反応値を更新した』と発表',
             '📰 時空管理局『狂介の胃袋に“別次元の入口”がある可能性』と発表',
-            '📰 今夜は肉祭り開催決定',
-            '📰 皇紀、狂介の食欲に驚愕',
+            '📰 今夜は肉祭り開催決定！',
+            '📰 皇紀、狂介の食欲に思わず驚愕の表情',
             '📰 為士、肉カウンターを呆れ顔で見つめる',
             '📰 為士、肉の匂いに嫌気が差して部屋を退出',
             '📰 松之助、調理に追われて眠れず',
             '📰 松之助、徹夜明けでなお狂介の追加注文に対応',
-            '📰 市場、今日も品薄。原因は"アノ男"',
+            '📰 市場、今日も品薄。原因はもちろん"アノ男"',
             '📰 街中で聞こえる『もっと肉をくれ！』の叫び',
             '📰 雨竜、狂介の大食い記録を丁寧にデータ化',
             '📰 市民『朝から肉の匂いしかしない』と苦情殺到',
             '📰 市場関係者『肉コーナーは幻です』と店内放送で謝罪',
             '📰 虹顔市、肉不足で“野菜の日”へ強制移行を検討',
             '📰 路上で謎の肉片が発見される。　専門家『これはゴールデン肉カレーの欠片かも』',
-            '📰 子どもたちの間で広がる『肉を無限に食べるお兄ちゃん』の噂',
-            '📰 虹顔市で目撃情報相次ぐ『すごい勢いで肉を消す男』'
+            '📰 子どもたちの間で広がる『肉を無限に食べる男』のウワサ',
+            '📰 市内各所で肉不足の声相次ぐ。空前の肉ブーム、到来か！？　市場・市民ともに混乱広がる'
         ];
 
 
@@ -3382,7 +3412,7 @@ function activateGoldenCurry(element) {
 
     updateNews();
 
-    setInterval(updateNews, 30000);
+    setInterval(updateNews, 22000);
 }
 
         // 料理図鑑モーダル
