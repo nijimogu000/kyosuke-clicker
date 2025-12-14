@@ -1390,25 +1390,26 @@ white-space: pre-line;
 
 
 /* =========================
-   ステータスパネルの縮小調整
+   ステータスパネルの縮小調整（スマホ用）
    ========================= */
-.status-panel {
-    padding: 1rem;
-    border-radius: 15px;
-    box-shadow: 0 6px 20px rgba(199, 54, 89, 0.25);
-}
+@media (max-width: 768px) {
+  .status-panel {
+      padding: 1rem;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(199, 54, 89, 0.25);
+  }
 
-.status-panel h2 {
-    font-size: 1.1rem;
-    margin-bottom: 0.4rem;
-    color: #FFFFFF;
-}
+  .status-panel h2 {
+      font-size: 1.1rem;
+      margin-bottom: 0.4rem;
+      color: #FFFFFF;
+  }
 
-.status-panel > div:first-of-type {
-    font-size: 0.8rem !important;
-    margin-bottom: 0.5rem !important;
+  .status-panel > div:first-of-type {
+      font-size: 0.8rem !important;
+      margin-bottom: 0.5rem !important;
+  }
 }
-
 
 /* 肉カウント */
 .meat-count {
