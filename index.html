@@ -3255,6 +3255,10 @@ function checkOrderMaster() {
             const statusPanel = document.getElementById('statusPanel');
             const meatButton = document.getElementById('meatButton');
             const speechBubble = document.getElementById('speechBubble');
+            const clickPowerEl = document.getElementById('clickPower');
+           if (clickPowerEl) clickPowerEl.textContent = getClickValue();
+           const clickNextCostEl = document.getElementById('clickNextCost');
+           if (clickNextCostEl) clickNextCostEl.textContent = formatNumber(getClickUpgradeCost());
             
             if (gameState.feverMode && Date.now() < gameState.feverEndTime) {
                 statusPanel.classList.add('fever');
