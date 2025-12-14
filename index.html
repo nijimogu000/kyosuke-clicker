@@ -2217,10 +2217,31 @@ button, a {
         </div>
 
         <!-- ★ 左下：強化ボタン -->
-        <div class="upgrade-panel">
-            <h2>💪 クリック強化</h2>
-            <button id="clickUpgradeButton">クリック強化（Lv.1）</button>
+<div class="upgrade-panel">
+    <h2>💪 クリック強化</h2>
+
+    <!-- 狂介アイコン＋現在の強化情報 -->
+    <div class="upgrade-info">
+        <img src="images/kyosuke_icon.png" alt="狂介アイコン" class="upgrade-icon">
+
+        <div class="upgrade-text">
+            <div class="upgrade-title">肉トレ（Lv.1）</div>
+            <div class="upgrade-desc">
+    <!-- PC用：1クリック = +480 -->
+    <span class="pc-only">
+        1クリック = +<span id="clickPower">0</span>
+        <br>次の肉トレまで：あと<span id="clickNextCost">0</span>
+    </span>
+    <span class="sp-only">
+        1タップ = +<span id="clickPower">0</span>
+    </span>
+</div>
         </div>
+    </div>
+
+    <!-- 強化ボタン -->
+    <button id="clickUpgradeButton">肉トレをする！</button>
+</div>
 
     </div>
 
@@ -2761,6 +2782,7 @@ const dialogues = [
 
     { text: 'オマエとなら……もっと強くなれそうだ', rarity: 'super-rare',
       condition: () => gameState.totalMeatEarned >= 500000 },
+    
     { text: '最強最恐最狂！！！', rarity: 'super-rare',
       condition: () => gameState.totalMeatEarned >= 500000 },
 ];
