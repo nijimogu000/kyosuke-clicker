@@ -3081,7 +3081,8 @@ function clickMeat(event) {
     const power = gameState.clickBoost ? gameState.clickPower * 7 : gameState.clickPower;
     gameState.meat += power;
     gameState.totalMeatEarned += power;
-    gameState.totalClicks++;
+gameState.rawClicks += 1;
+gameState.totalClicks += getClickValue();
 
     // 画像切り替え処理
  const img = document.getElementById("meatImage");
@@ -3241,6 +3242,12 @@ function checkOrderMaster() {
             document.getElementById('meatCount').textContent = formatNumber(Math.floor(gameState.meat));
             document.getElementById('perSecond').textContent = calculateProductionRate().toFixed(1);
             document.getElementById('totalClicks').textContent = formatNumber(gameState.totalClicks);
+                const clickLvEl = document.getElementById('clickLevel');
+                if (clickLvEl) clickLvEl.textContent = gameState.clickLevel;
+                const clickValueEl = document.getElementById('clickValue');
+                if (clickValueEl) clickValueEl.textContent = getClickValue();
+                const clickCostEl = document.getElementById('clickCost');
+                if (clickCostEl) clickCostEl.textContent = formatNumber(getClickUpgradeCost());
             document.getElementById('totalMeat').textContent = formatNumber(Math.floor(gameState.totalMeatEarned));
             document.getElementById('unlockedRecipes').textContent = `${gameState.unlockedRecipes.length}/20`;
             document.getElementById('unlockedAchievements').textContent = `${gameState.achievements.filter(a => a).length}/21`;
