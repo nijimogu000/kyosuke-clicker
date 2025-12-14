@@ -272,6 +272,16 @@ border: 1px solid rgba(245, 208, 126, 0.25);
 }
 
 /* =========================
+   クリック強化
+   ========================= */
+.pc-only {
+    display: inline;
+}
+.sp-only {
+    display: none;
+}        
+
+/* =========================
    クリックエリア
    ========================= */
 .click-area {
@@ -1369,11 +1379,19 @@ white-space: pre-line;
         width: 160px;
         height: 160px;
     }
-    
-}
-    
 }
 
+.pc-only {
+        display: none;
+    }
+    .sp-only {
+        display: inline;
+    }
+}
+
+
+
+        
 
 @media (max-width: 768px) {
     .recipe-grid,
