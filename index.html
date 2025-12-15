@@ -3670,6 +3670,7 @@ function closeAchievementComplete() {
 
         // 通知表示
         function showNotification(message) {
+            document.querySelectorAll('.notification').forEach(n => n.remove());
             const notification = document.createElement('div');
             notification.className = 'notification';
 
