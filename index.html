@@ -3709,6 +3709,12 @@ function getClickUpgradeCost(level = gameState.clickLevel) {
 }
         
 function upgradeClickPower() {
+    // Lv上限
+    if (gameState.clickLevel >= 20) {
+        showNotification('🏋🏻‍♂️ 肉トレはLv20でカンストだ！');
+        return;
+    }
+
     const cost = getClickUpgradeCost();
 
     if (gameState.meat < cost) {
@@ -3719,19 +3725,11 @@ function upgradeClickPower() {
     gameState.meat -= cost;
     gameState.clickLevel += 1;
 
+    showNotification(`DEBUG: clickLevel=${gameState.clickLevel}`);
     showNotification(`🏋🏻‍♂️ 肉トレ強化！ Lv.${gameState.clickLevel}\n1タップ=+${getClickValue()}（換算）`);
+
     updateDisplay();
     saveGame(true);
-}
-
-        function upgradeClickPower() {
-    // Lv上限
-    if (gameState.clickLevel >= 20) {
-        showNotification('🏋🏻‍♂️ 肉トレはLv20でカンストだ！');
-        return;
-    }
-
-    const cost = getClickUpgradeCost();
 }
         
         // セーブ
