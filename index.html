@@ -2299,14 +2299,14 @@ button, a {
         <div class="upgrade-text">
             <div class="upgrade-title">肉トレ（Lv.<span id="clickLevelText">0</span>）</div>
             <div class="upgrade-desc">
-    <!-- PC用：1クリック = +480 -->
+    <!-- PC用-->
     <span class="pc-only">
         1クリック = +<span id="clickPower">0</span>
         <br>次の肉トレまで：あと<span id="clickNextCost">0</span>肉
     </span>
-    <span class="sp-only">
-        1タップ = +<span id="clickPower">0</span>
-    </span>
+<span class="sp-only">
+  1タップ = +<span id="clickPowerSp">0</span>
+</span>
 </div>
         </div>
     </div>
@@ -3251,8 +3251,10 @@ function checkOrderMaster() {
             const statusPanel = document.getElementById('statusPanel');
             const meatButton = document.getElementById('meatButton');
             const speechBubble = document.getElementById('speechBubble');
-            const clickPowerEl = document.getElementById('clickPower');
-           if (clickPowerEl) clickPowerEl.textContent = getClickValue();
+            const clickPowerPcEl = document.getElementById('clickPowerPc');
+            if (clickPowerPcEl) clickPowerPcEl.textContent = getClickValue();
+            const clickPowerSpEl = document.getElementById('clickPowerSp');
+            if (clickPowerSpEl) clickPowerSpEl.textContent = getClickValue();
            const clickNextCostEl = document.getElementById('clickNextCost');
            if (clickNextCostEl) clickNextCostEl.textContent = formatNumber(getClickUpgradeCost());
             
