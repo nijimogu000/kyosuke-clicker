@@ -2312,7 +2312,7 @@ button, a {
     </div>
 
     <!-- 強化ボタン -->
-    <button id="clickUpgradeButton">肉トレをする！</button>
+<button id="clickUpgradeButton" onclick="upgradeClickPower()">肉トレをする！</button>
 </div>
 
     </div>
@@ -3699,7 +3699,21 @@ const CLICK_RATE = 1.4;
 function getClickUpgradeCost(level = gameState.clickLevel) {
     return Math.round(CLICK_BASE_COST * (CLICK_RATE ** level));
 }
+function upgradeClickPower() {
+    const cost = getClickUpgradeCost();
 
+    if (gameState.meat < cost) {
+        showNotification(`🍖 肉が足りない！\n必要: ${formatNumber(cost)} 肉`);
+        return;
+    }
+
+    gameState.meat -= cost;
+    gameState.clickLevel += 1;
+
+    showNotification(`🏋🏻‍♂️ 肉トレ強化！ Lv.${gameState.clickLevel}\n1タップ=+${getClickValue()}（換算）`);
+    updateDisplay();
+    saveGame(true);
+}
         // セーブ
         function saveGame(silent = false) {
             const saveData = {
