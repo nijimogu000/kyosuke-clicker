@@ -3681,6 +3681,14 @@ function closeAchievementComplete() {
             notification.className = 'notification';
             notification.textContent = message;
             document.body.appendChild(notification);
+
+    let type = 'default';
+    if (message.startsWith('🏋')) type = 'upgrade'; // クリック強化
+    else if (message.startsWith('🍖') || message.startsWith('💸')) type = 'error'; // 肉不足
+
+    notification.classList.add('toast', `toast--${type}`);
+
+
             
             setTimeout(() => {
                 notification.remove();
