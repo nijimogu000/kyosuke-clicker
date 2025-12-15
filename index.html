@@ -328,8 +328,18 @@ display: flex;
 }
         
 
-.toast--upgrade { background: rgba(120,170,255,0.18) !important; border-color: rgba(120,170,255,0.45) !important; }
-.toast--error   { background: rgba(180,180,180,0.14) !important; border-color: rgba(200,200,200,0.28) !important; }
+
+.toast--upgrade {
+  background: rgba(120, 170, 255, 1) !important;
+  border-color: rgba(120, 170, 255, 1) !important;
+}
+
+
+.toast--error {
+  background: rgba(180, 180, 180, 1) !important;
+  border-color: rgba(200, 200, 200, 1) !important;
+  color: rgba(0, 0, 0, 0.9) !important;
+}
 
 /* =========================
    クリックエリア
@@ -3677,7 +3687,8 @@ function closeAchievementComplete() {
     let type = 'default';
     if (message.startsWith('🏋')) type = 'upgrade'; // クリック強化
     else if (message.startsWith('🍖') || message.startsWith('💸')) type = 'error'; // 肉不足
-    notification.classList.add('toast', `toast--${type}`);
+notification.classList.add(`toast--${type}`);
+
 
             notification.textContent = message;
             document.body.appendChild(notification);
