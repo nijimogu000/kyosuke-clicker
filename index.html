@@ -2302,7 +2302,7 @@ button, a {
     <!-- PC用：1クリック = +480 -->
     <span class="pc-only">
         1クリック = +<span id="clickPower">0</span>
-        <br>次の肉トレまで：あと<span id="clickNextCost">0</span>
+        <br>次の肉トレまで：あと<span id="clickNextCost">0</span>肉
     </span>
     <span class="sp-only">
         1タップ = +<span id="clickPower">0</span>
@@ -3242,14 +3242,8 @@ function checkOrderMaster() {
             document.getElementById('meatCount').textContent = formatNumber(Math.floor(gameState.meat));
             document.getElementById('perSecond').textContent = calculateProductionRate().toFixed(1);
             document.getElementById('totalClicks').textContent = formatNumber(gameState.totalClicks);
-                const clickLvEl = document.getElementById('clickLevel');
-                if (clickLvEl) clickLvEl.textContent = gameState.clickLevel;
-                const clickValueEl = document.getElementById('clickValue');
-                if (clickValueEl) clickValueEl.textContent = getClickValue();
-                const clickCostEl = document.getElementById('clickCost');
-                if (clickCostEl) clickCostEl.textContent = formatNumber(getClickUpgradeCost());
-                const clickLevelTextEl = document.getElementById('clickLevelText');
-                if (clickLevelTextEl) clickLevelTextEl.textContent = gameState.clickLevel;
+            const clickLevelTextEl = document.getElementById('clickLevelText');
+            if (clickLevelTextEl) clickLevelTextEl.textContent = gameState.clickLevel;
             document.getElementById('totalMeat').textContent = formatNumber(Math.floor(gameState.totalMeatEarned));
             document.getElementById('unlockedRecipes').textContent = `${gameState.unlockedRecipes.length}/20`;
             document.getElementById('unlockedAchievements').textContent = `${gameState.achievements.filter(a => a).length}/21`;
@@ -3724,8 +3718,6 @@ function upgradeClickPower() {
 
     gameState.meat -= cost;
     gameState.clickLevel += 1;
-
-    showNotification(`DEBUG: clickLevel=${gameState.clickLevel}`);
     showNotification(`🏋🏻‍♂️ 肉トレ強化！ Lv.${gameState.clickLevel}\n1タップ=+${getClickValue()}（換算）`);
 
     updateDisplay();
