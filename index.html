@@ -3693,12 +3693,19 @@ function closeAchievementComplete() {
         return (1 + gameState.clickLevel) ** 2;
 }
 
-const CLICK_BASE_COST = 500;
+const CLICK_COST_TABLE = [300, 600, 1200];
+
+const CLICK_BASE_COST = 1200;
 const CLICK_RATE = 1.4;
 
 function getClickUpgradeCost(level = gameState.clickLevel) {
-    return Math.round(CLICK_BASE_COST * (CLICK_RATE ** level));
+    if (level < CLICK_COST_TABLE.length) {
+        return CLICK_COST_TABLE[level];
+    }
+    return Math.round(CLICK_BASE_COST * (CLICK_RATE ** (level - 2)));
 }
+
+        
 function upgradeClickPower() {
     const cost = getClickUpgradeCost();
 
