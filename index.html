@@ -3102,7 +3102,8 @@ function showDialogue() {
 }
         // 肉クリック
 function clickMeat(event) {
-    const power = gameState.clickBoost ? gameState.clickPower * 7 : gameState.clickPower;
+const base = getClickValue();
+const power = gameState.clickBoost ? base * 7 : base;
     gameState.meat += power;
     gameState.totalMeatEarned += power;
 gameState.rawClicks += 1;
