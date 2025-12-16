@@ -1546,6 +1546,38 @@ width: 100%;
       font-size: 0.8rem !important;
       margin-bottom: 0.5rem !important;
   }
+
+/* 支援者パネル自体の余白を詰める */
+  .supporters-panel {
+    padding: 0.9rem !important;
+    border-radius: 16px;
+    max-height: 420px;
+  }
+
+  .supporters-panel h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.6rem;
+  }
+
+  /* 一覧の上下の余白があれば詰める */
+  #upgradesList {
+    gap: 0.6rem; 
+  }
+
+  #upgradesList .upgrade-item,
+  #upgradesList .upgrade-card,
+  #upgradesList .upgrade,
+  #upgradesList > div {
+    padding: 0.7rem 0.8rem !important;
+    margin-bottom: 0.6rem !important;
+    border-radius: 14px;
+  }
+
+  #upgradesList img {
+    width: 40px;
+    height: 40px;
+  }
+
 }
 
 /* 肉カウント */
@@ -2358,10 +2390,10 @@ button, a {
     </div>
 
     <!-- 右: アップグレードパネル -->
-    <div class="upgrades-panel">
-        <h2>👥 支援者</h2>
-        <div id="upgradesList"></div>
-    </div>
+<div class="upgrades-panel supporters-panel">
+    <h2>👥 支援者</h2>
+    <div id="upgradesList"></div>
+</div>
 
 </div>
     <!-- 支援者解放モーダル -->
