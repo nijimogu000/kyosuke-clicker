@@ -1577,6 +1577,20 @@ width: 100%;
     width: 40px;
     height: 40px;
   }
+
+    
+ /* 支援者カードがbuttonの場合：中の余白を詰める */
+  .supporters-panel #upgradesList button {
+    padding: 0.6rem 0.8rem !important; 
+    min-height: auto !important;
+    line-height: 1.2;
+  }
+
+  /* ボタンの中身の縦余白が多い時の保険 */
+  .supporters-panel #upgradesList button * {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
 }
 
 
