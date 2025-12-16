@@ -1580,19 +1580,29 @@ width: 100%;
 
     
  /* 支援者カードがbuttonの場合：中の余白を詰める */
-  .supporters-panel #upgradesList button {
-    padding: 0.6rem 0.8rem !important; 
-    min-height: auto !important;
-    line-height: 1.2;
-  }
+.supporters-panel #upgradesList button {
+  padding: 0.6rem 0.8rem !important;
+  min-height: auto !important;
+  line-height: 1.2;
+}
 
   /* ボタンの中身の縦余白が多い時の保険 */
-  .supporters-panel #upgradesList button * {
-    margin-top: 0 !important;
+.supporters-panel #upgradesList button * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+}
+@media (max-width: 768px) {
+  #upgradesList{
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  #upgradesList .upgrade-item{
     margin-bottom: 0 !important;
   }
 }
-
 
 /* 肉カウント */
 .meat-count {
@@ -1804,8 +1814,8 @@ padding-right: 56px;
 
 /* ガラス感*/
 .unlock-content {
-max-height: 90vh;
-    width: 200%; 
+  width: min(92vw, 550px);
+  max-height: 90vh;
     padding: 2rem 1.8rem;
     border-radius: 20px;
     background: rgba(255,255,255,0.08);
