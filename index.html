@@ -3033,6 +3033,7 @@ function showDialogue() {
             upgrades: upgrades.map(u => ({ ...u, count: 0 })),
             unlockedUpgrades: [0],
             unlockedRecipes: [],
+            achievementLog: [],
             achievements: new Array(achievements.length).fill(false),
             goldenCurryClicks: 0,
             offlineMaxTime: 0,
@@ -3415,6 +3416,12 @@ if (totalUnlocked >= 21 && !gameState.achievementCompleteShown) {
             achievements.forEach((achievement, index) => {
                 if (!gameState.achievements[index] && achievement.condition()) {
                     gameState.achievements[index] = true;
+                    gameState.achievementLog.push({
+    time: Date.now(),
+    id: achievement.id ?? (index + 1),
+    name: achievement.name,
+    icon: achievement.icon
+});
                     showNotification(`🎖 称号を獲得しました！\n${achievement.icon} ${achievement.name}`);
                     saveGame(true);
                 }
@@ -3804,6 +3811,7 @@ orderLog: data.orderLog || [],
 gameState.rawClicks ??= 0;
 gameState.clickLevel ??= 0;
 gameState.totalClicks ??= 0;
+gameState.achievementLog ??= [];
 delete gameState.clickPower;
 
         // オフライン時間
