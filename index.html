@@ -989,14 +989,18 @@ margin: 0px 0px 0px 0;
 
 /* PC・共通（通常の解放アニメ） */
 @keyframes unlockPop {
-    0% {
-        transform: scale(0.3);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+  0% {
+    transform: scale(0.3) rotate(-12deg);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.05) rotate(3deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
 }
 
 
