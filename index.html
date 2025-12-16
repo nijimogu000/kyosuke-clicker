@@ -3084,7 +3084,7 @@ function showDialogue() {
 
     startNewsTicker();
     checkGoldenCurry();
-    checkAchievements();
+    ();
 
     setTimeout(() => {
         if (gameState.totalMeatEarned >= 100 && !gameState.rocketStart) {
@@ -3412,20 +3412,26 @@ if (totalUnlocked >= 21 && !gameState.achievementCompleteShown) {
 }
 
         // 実績チェック
-        function checkAchievements() {
-            achievements.forEach((achievement, index) => {
-                if (!gameState.achievements[index] && achievement.condition()) {
-                    gameState.achievements[index] = true;
-                    gameState.achievementLog.push({
-    time: Date.now(),
-    id: achievement.id ?? (index + 1),
-    name: achievement.name,
-    icon: achievement.icon
-});
-                    showNotification(`🎖 称号を獲得しました！\n${achievement.icon} ${achievement.name}`);
-                    saveGame(true);
-                }
-            });
+function checkAchievements() {
+  achievements.forEach((achievement, index) => {
+    if (!gameState.achievements[index] && achievement.condition()) {
+      gameState.achievements[index] = true;
+
+      const achId = achievement.id ?? (index + 1);
+      const already = (gameState.achievementLog || []).some(x => x.id === achId);
+      if (!already) {
+        gameState.achievementLog.push({
+          time: Date.now(),
+          id: achId,
+          name: achievement.name,
+          icon: achievement.icon
+        });
+      }
+
+      showNotification(`🎖 称号を獲得しました！\n${achievement.icon} ${achievement.name}`);
+      saveGame(true);
+    }
+  });
 
 //実績コンプリート判定
     const unlocked = gameState.achievements.filter(a => a).length;
