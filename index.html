@@ -660,15 +660,6 @@ border: 2px solid rgba(245, 208, 126, 0.25);
     width: 100%;
     min-width: 0;
 }
-pgrade-info {
-    white-space: nowrap;
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.7rem;
-
-    opacity: 0.85;
-    color: #DDDDDD;
-}
 
 /* 所持数タグ */
 .upgrade-count {
@@ -1594,6 +1585,9 @@ width: 100%;
   margin-top: 0 !important;
   margin-bottom: 0 !important;
 }
+.supporters-panel .upgrade-inner {
+    height: auto !important; 
+  }
 }
 @media (max-width: 768px) {
   #upgradesList{
@@ -1604,6 +1598,10 @@ width: 100%;
 
   #upgradesList .upgrade-item{
     margin-bottom: 0 !important;
+  }
+ .supporters-panel .upgrade-item {
+    padding: 0.7rem 0.8rem 0.55rem !important;
+    margin-bottom: 0.6rem !important;
   }
 }
 
