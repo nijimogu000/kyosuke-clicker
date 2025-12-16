@@ -3804,6 +3804,7 @@ orderLog: data.orderLog || [],
 gameState.rawClicks ??= 0;
 gameState.clickLevel ??= 0;
 gameState.totalClicks ??= 0;
+delete gameState.clickPower;
 
         // オフライン時間
 const offlineTime = (Date.now() - data.lastSave) / 1000;
