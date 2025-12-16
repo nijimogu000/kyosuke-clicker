@@ -89,6 +89,7 @@ body {
     color: var(--text-color);
     overflow-x: hidden;
     min-height: 100vh;
+      position: relative;
 }        /* 背景アニメーション */
 body::before {
     content: '';
@@ -105,6 +106,7 @@ body::before {
 
     animation: bgPulse 10s ease-in-out infinite;
     pointer-events: none;
+      z-index: 0;
 }
 
 @keyframes bgPulse {
@@ -2171,18 +2173,21 @@ footer small {
 
 
 @media screen and (orientation: landscape) and (max-width: 900px) {
-    body::before {
-        content: "縦画面でプレイしてください";
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,1);
-        color: white;
-        font-size: 1.8rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 999999;
-    }
+  body::after {
+    content: "縦画面でプレイしてください";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,1);
+    color: white;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 999999;
+
+    pointer-events: auto;
+  }
 }
 @media (max-width: 480px) {
     .unlock-icon {
@@ -2251,6 +2256,8 @@ button, a {
         margin-bottom: 1rem;
     }
 }
+
+  
         
     </style>
 
