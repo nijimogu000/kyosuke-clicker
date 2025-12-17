@@ -1377,36 +1377,6 @@ white-space: pre-line;
         width: 200px;
         height: 200px;
     }
-
-    .container {
-        gap: 0.8rem;
-row-gap: 0.1rem;
-    }
-
-.main-container {
-    gap: 0.2rem;
-    padding: 0.2rem;
-}
-
- .status-panel,
-    .upgrade-panel {
-width: 100%;
-      margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
-      padding: 0.6rem 1rem 0.3rem;
-    }
-    .upgrade-panel h2 {
-        font-size: 1.0rem;
-        margin-bottom: 0.6rem;
-    }
-}
- 
- .click-area::before {
-        filter: blur(4px);
-        opacity: 0.32;
-    }
-}
-
 }
 /* =========================
    768px 以下（スマホ）
@@ -1488,7 +1458,7 @@ width: 100%;
 @media (max-width: 768px) {
     .container {
         gap: 0.8rem;
-row-gap: 0.1rem;
+row-gap: 0.5rem;
     }
     .status-panel,
     .upgrade-panel {
@@ -1555,17 +1525,17 @@ row-gap: 0.1rem;
         animation-duration: 26s;   /* 時間を長く＝ゆっくり流れる */
         font-size: 0.85rem;
     }
-
+}
 
 
 /* =========================
    メインコンテナ
    ========================= */
 .main-container {
-    gap: 0.2rem;
-    padding: 0.2rem;
+    gap: 1rem;
+    padding: 1rem;
 }
-}
+
 
 /* =========================
    スマホ用（768px以下）
