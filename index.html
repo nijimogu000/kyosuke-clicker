@@ -562,6 +562,7 @@ border: 2px solid rgba(245, 208, 126, 0.25);
 .unlock-modal.active {
     display: flex;  /* .activeで表示 */
     pointer-events: auto !important;
+    align-items: flex-start;
 }
 
 /* 支援者パネルのクリックを強制的に有効化 */
@@ -852,6 +853,8 @@ padding: 2rem 4.5rem 1rem 2rem;
 }
 
 
+
+
 .modal-close {
     position: absolute;
     top: 0.6rem;
@@ -939,7 +942,8 @@ padding: 2rem 4.5rem 1rem 2rem;
     filter: brightness(0) invert(0.4) opacity(0.4);
 }
 /* 実績モーダル */
-#achievementsModal .modal-content {
+#achievementsModal .modal-content,
+#recipesModal .modal-content {
     max-width: 600px;
     width: 100%;
     margin: 0 auto;
@@ -1011,20 +1015,31 @@ margin: 0px 0px 0px 0;
   top: 45%;
   transform: translate(-50%, -50%) scale(0.4);
   will-change: transform, opacity;
-  animation: particleFly 0.8s ease-out forwards;
+  animation: particleFly 1s ease-out forwards;
+
+ text-shadow:
+    0 0 6px rgba(255, 255, 255, 0.9),
+    0 0 14px rgba(255, 240, 180, 0.9);
 }
 
 /* 飛び散るアニメーション */
 @keyframes particleFly {
-  0% {
+   0% {
     transform: translate(-50%, -50%) scale(0.4);
+    opacity: 0;
+  }
+  40% {
+    transform: translate(
+      calc(-50% + var(--dx) * 0.6),
+      calc(-50% + var(--dy) * 0.6)
+    ) scale(1.0);
     opacity: 1;
   }
   100% {
     transform: translate(
       calc(-50% + var(--dx)),
       calc(-50% + var(--dy))
-    ) scale(1);
+    ) scale(1.2);
     opacity: 0;
   }
 }
@@ -1395,6 +1410,25 @@ white-space: pre-line;
     filter: brightness(0.95);
 }      
 
+/* レベルMAX時のボタン */
+#clickUpgradeButton:disabled,
+#clickUpgradeButton.click-upgrade-disabled {
+    background: rgba(120, 120, 120, 0.8);
+    border-color: rgba(245, 208, 126, 0.3);
+    color: #ddd;
+    cursor: not-allowed;
+    box-shadow: none;
+    filter: none;
+    transform: none;
+}
+
+#clickUpgradeButton:disabled:hover,
+#clickUpgradeButton:disabled:active {
+    transform: none;
+    box-shadow: none;
+    filter: none;
+}
+
 /* =========================
    1200px 以下（タブレット〜小型PC）
    ========================= */
@@ -1489,11 +1523,11 @@ white-space: pre-line;
     }
 
     .header-buttons {
-        gap: 0.4rem;
+        gap: 0.rem;
     }
 
     .header-btn {
-        padding: 0.35rem 0.8rem;
+        padding: 0.35rem 0.2rem;
         font-size: 0.85rem;
     }
 
@@ -1920,7 +1954,7 @@ padding-right: 56px;
 
 .recipe-item strong, .achievement-item strong {
     font-size: 0.85rem;
-    color: #FFFFFF;
+    color: #F5D07E;
 }
 
 .recipe-item p, .achievement-item p {
@@ -2484,6 +2518,107 @@ button, a {
     }
 }
 
+/* カードをグリッドの列幅いっぱいに広げる保険 */
+.recipe-grid,
+.achievement-grid {
+    justify-items: stretch;
+}
+
+.recipe-item,
+.achievement-item {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+
+/* =========================
+   遊び方ボタン & モーダル
+   ========================= */
+
+
+/* モーダルの背景（灰色） */
+.help-modal{
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+
+  background: rgba(0,0,0,0.65);
+}
+
+
+.help-modal.active{
+  display: flex;
+}
+
+
+.help-modal__content{
+  width: min(760px, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
+  overflow: auto;
+
+  background: rgba(255,255,255,0.10);
+  border: 2px solid rgba(255,255,255,0.20);
+  border-radius: 18px;
+  padding: 1.2rem 1.2rem 1.1rem;
+
+  position: relative;
+  color: #fff;
+  backdrop-filter: blur(10px);
+}
+
+
+.help-modal__close{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+
+  border: 2px solid rgba(245,208,126,0.55);
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+
+.help-title{
+  font-size: 1.4rem;
+  font-weight: 900;
+  margin: 0 0 1rem;
+}
+
+
+.help-body{
+  line-height: 1.6;
+}
+
+.help-head{
+  font-weight: 900;
+  font-size: 1.05rem;
+  margin: 0.9rem 0 0.25rem;
+}
+
+.help-text{
+  opacity: 0.95;
+  font-size: 0.98rem;
+}
+body.modal-open {
+  overflow: hidden;
+}
+
+
+@media (max-width: 768px){
+  .help-title{ font-size: 1.25rem; }
+  .help-modal__content{ padding: 1rem; }
+}
   
         
     </style>
@@ -2497,6 +2632,7 @@ button, a {
 
     <div class="header-right">
         <div class="header-buttons">
+  <button class="header-btn" id="helpBtn" type="button">❓ 遊び方</button>
         <button class="header-btn" onclick="openRecipes()">📖 料理図鑑</button>
         <button class="header-btn" onclick="openAchievements()">🏆 実績</button>
         <button class="header-btn" onclick="saveGame()">💾 保存</button>
@@ -2594,8 +2730,8 @@ button, a {
 </div>
     <!-- 支援者解放モーダル -->
     <div class="unlock-modal" id="unlockModal">
-        <div class="unlock-content">
             <div class="particles" id="particles"></div>
+        <div class="unlock-content">
             <div class="unlock-title">🎉 新しい支援者が解放されました!🎉</div>
             <div class="unlock-icon" id="unlockIcon"></div>
             <div class="unlock-name" id="unlockName"></div>
@@ -2698,85 +2834,6 @@ function updateSoundIcon() {
 
 
 
-// 効果音：キュピーン
-function playKyupeen() {
-    // 🔇 ミュートなら即終了
-    if (!soundEnabled) return;
-
-    ensureAudio();
-    if (!audioContext) return;
-
-    const ctx = audioContext;
-    const t = ctx.currentTime;
-
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(600, t);
-    osc.frequency.exponentialRampToValueAtTime(1800, t + 0.25);
-
-    gain.gain.setValueAtTime(0.001, t);
-    gain.gain.exponentialRampToValueAtTime(0.4, t + 0.05);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
-
-    osc.connect(gain).connect(ctx.destination);
-
-    osc.start(t);
-    osc.stop(t + 0.3);
-}
-
-// 効果音：ピッ
-function playSystemBeep() {
-    if (!soundEnabled) return;
-
-    ensureAudio();
-    if (!audioContext) return;
-
-    const ctx = audioContext;
-    const t = ctx.currentTime;
-
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.type = "square";
-    osc.frequency.setValueAtTime(1400, t);
-
-    gain.gain.setValueAtTime(0.2, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
-
-    osc.connect(gain).connect(ctx.destination);
-
-    osc.start(t);
-    osc.stop(t + 0.08);
-}
-
-// 効果音：キラキラ
-function playShiny() {
-    if (!soundEnabled) return;
-
-    ensureAudio();
-    if (!audioContext) return;
-
-    const ctx = audioContext;
-    const base = ctx.currentTime;
-    const freqs = [900, 1200, 1500];
-
-    freqs.forEach((f, i) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-
-        osc.type = "triangle";
-        osc.frequency.setValueAtTime(f, base + i * 0.03);
-
-        gain.gain.setValueAtTime(0.15, base + i * 0.03);
-        gain.gain.exponentialRampToValueAtTime(0.001, base + 0.35 + i * 0.03);
-
-        osc.connect(gain).connect(ctx.destination);
-        osc.start(base + i * 0.03);
-        osc.stop(base + 0.35 + i * 0.03);
-    });
-}
 
 
 // =======================
@@ -2866,20 +2923,31 @@ if (!soundEnabled) return;
     const s = upgradeBuySound.cloneNode();
     s.play().catch(e => console.log("音再生エラー:", e));
 }
+
+// 肉トレ強化サウンド
+const clickUpgradeSound = new Audio('sounds/nikutore.mp3');
+
+function playClickUpgradeSound() {
+    if (!soundEnabled) return;
+    const s = clickUpgradeSound.cloneNode();
+    s.play().catch(e => console.log("音再生エラー:", e));
+}
+
+
 // ===== サウンド設定 =====
 let soundEnabled = true;
 
 
       // ゲームデータ
         const upgrades = [
-            { id: 1, name: 'エージェント', icon: 'images/upgrade01.png', baseCost: 100, baseProduction: 1, unlockCondition: () => true, description: 'みんなのエージェント。情報網を駆使して肉を調達してくれるぞ！' },
-            { id: 2, name: 'レオン', icon: 'images/upgrade02.png',  baseCost: 500, baseProduction: 5, unlockCondition: () => gameState.upgrades[0].count > 0, description: 'シゴデキスーパー執事。圧倒的な調理スキルで大量の肉料理を生産するぞ！' },
-            { id: 3, name: '松之助', icon: 'images/upgrade03.png', baseCost: 2000, baseProduction: 10, unlockCondition: () => gameState.totalMeatEarned >= 20000, description: '狂介の良き理解者。唐揚げおにぎりを持って駆けつけてくれた頼れる兄貴分！' },
-            { id: 4, name: '紫苑', icon: 'images/upgrade04.png', baseCost: 5000, baseProduction: 20, unlockCondition: () => gameState.totalMeatEarned >= 50000, description: '料理上手な友人。珍しい肉料理を作ってみたい!と駆けつけてくれたぞ！' },
+            { id: 1, name: 'エージェント', icon: 'images/upgrade01.png', baseCost: 100, baseProduction: 1, unlockCondition: () => true, description: 'みんなのエージェント。情報網を駆使して肉を調達してくれる' },
+            { id: 2, name: 'レオン', icon: 'images/upgrade02.png',  baseCost: 500, baseProduction: 5, unlockCondition: () => gameState.upgrades[0].count > 0, description: 'シゴデキスーパー執事。圧倒的な調理スキルで大量の肉料理を生産する' },
+            { id: 3, name: '松之助', icon: 'images/upgrade03.png', baseCost: 2000, baseProduction: 10, unlockCondition: () => gameState.totalMeatEarned >= 20000, description: '狂介の良き理解者であり兄貴分。狂介の異常な食べっぷりを心配しつつも見守ってくれている' },
+            { id: 4, name: '紫苑', icon: 'images/upgrade04.png', baseCost: 5000, baseProduction: 20, unlockCondition: () => gameState.totalMeatEarned >= 50000, description: '料理上手な友人。「珍しい肉料理を作ってみたいんだ」と手伝いに来てくれた' },
             { id: 5, name: '肉屋の店主', icon: 'images/upgrade05.png', baseCost: 8000, baseProduction: 40, unlockCondition: () => gameState.totalMeatEarned >= 150000, description: 'バイト先の肉屋も参戦！狂介のために新鮮な肉を安定供給してくれるぞ！' },
-            { id: 6, name: '為士', icon: 'images/upgrade06.png', baseCost: 20000, baseProduction: 100, unlockCondition: () => gameState.totalMeatEarned >= 300000, description: '呆れ顔で見つめているが、実は協力してくれている...のかもしれない。' },
-            { id: 7, name: '戴天', icon: 'images/upgrade07.png', baseCost: 80000, baseProduction: 500, unlockCondition: () => gameState.totalMeatEarned >= 800000, description: '狂介の胃袋に興味を持ったらしい。' },
-            { id: 8, name: '皇紀', icon: 'images/upgrade08.png', baseCost: 200000, baseProduction: 2000, unlockCondition: () => gameState.totalMeatEarned >= 1000000, description: '商業地区の料理人。その包丁捌きはとてもワイルド。解体されないように気をつけろ!' }
+            { id: 6, name: '為士', icon: 'images/upgrade06.png', baseCost: 20000, baseProduction: 100, unlockCondition: () => gameState.totalMeatEarned >= 300000, description: '呆れ顔で見つめているが、干渉しないことで協力してくれている...のかもしれない' },
+            { id: 7, name: '戴天', icon: 'images/upgrade07.png', baseCost: 80000, baseProduction: 500, unlockCondition: () => gameState.totalMeatEarned >= 800000, description: '狂介の胃袋に興味を持ったらしい。肉を提供する代わりにデータを取りに来た' },
+            { id: 8, name: '皇紀', icon: 'images/upgrade08.png', baseCost: 200000, baseProduction: 2000, unlockCondition: () => gameState.totalMeatEarned >= 1000000, description: '商業地区の料理人。狂介の食べっぷりに触発されたらしい。その包丁捌きはとてもワイルド' }
         ];
 
         const recipes = [
@@ -3251,6 +3319,8 @@ function showDialogue() {
         ];
 
 
+            const MAX_CLICK_LEVEL = 20;
+
         // ゲーム状態
         let gameState = {
             meat: 0,
@@ -3328,17 +3398,28 @@ const power = gameState.clickBoost ? base * 7 : base;
 gameState.rawClicks += 1;
 gameState.totalClicks += getClickValue();
 
-    // 画像切り替え処理
- const img = document.getElementById("meatImage");
-img.src = kyosuke2;
+    
+// 画像切り替え処理（3コマ）
+const img = document.getElementById("meatImage");
 
+// ① 
+img.src = kyosukeHalf;
+
+// ②
+setTimeout(() => {
+    img.src = kyosuke2;
+}, 150);
+
+// ③
 setTimeout(() => {
     img.src = kyosuke1;
 
     img.classList.remove("kyosuke-glow");
     void img.offsetWidth;
     img.classList.add("kyosuke-glow");
-}, 120);
+}, 300);  // ← 全体で0.22秒ぐらいに伸ばす
+
+
     // 10秒間のクリック数カウント
     clickCounter++;
     if (clickCounterTimeout) clearTimeout(clickCounterTimeout);
@@ -3449,7 +3530,8 @@ function showClickEffect(power, xPercent = 50, yPercent = 50) {
 
 
 const kyosuke1 = "images/kyosuke1.png";
-const kyosuke2 = "images/kyosuke2.png";
+const kyosukeHalf = "images/kyosuke2.png";
+const kyosuke2 = "images/kyosuke3.png";
 
         // アップグレード購入
 function buyUpgrade(index) {
@@ -3487,8 +3569,7 @@ function checkOrderMaster() {
             document.getElementById('perSecond').textContent = calculateProductionRate().toFixed(1);
             document.getElementById('totalClicks').textContent = formatNumber(gameState.totalClicks);
             const clickLevelTextEl = document.getElementById('clickLevelText');
-            if (clickLevelTextEl) clickLevelTextEl.textContent = gameState.clickLevel;
-            document.getElementById('totalMeat').textContent = formatNumber(Math.floor(gameState.totalMeatEarned));
+                        document.getElementById('totalMeat').textContent = formatNumber(Math.floor(gameState.totalMeatEarned));
             document.getElementById('unlockedRecipes').textContent = `${gameState.unlockedRecipes.length}/20`;
             document.getElementById('unlockedAchievements').textContent = `${gameState.achievements.filter(a => a).length}/21`;
             
@@ -3499,9 +3580,32 @@ function checkOrderMaster() {
             if (clickPowerPcEl) clickPowerPcEl.textContent = getClickValue();
             const clickPowerSpEl = document.getElementById('clickPowerSp');
             if (clickPowerSpEl) clickPowerSpEl.textContent = getClickValue();
-           const clickNextCostEl = document.getElementById('clickNextCost');
-           if (clickNextCostEl) clickNextCostEl.textContent = formatNumber(getClickUpgradeCost());
+          const clickNextCostEl = document.getElementById('clickNextCost');
+const clickUpgradeBtn = document.getElementById('clickUpgradeButton');
             
+
+if (gameState.clickLevel >= MAX_CLICK_LEVEL) {
+    if (clickLevelTextEl) clickLevelTextEl.textContent = 'MAX';
+    if (clickNextCostEl)  clickNextCostEl.textContent  = '-';
+
+    if (clickUpgradeBtn) {
+        clickUpgradeBtn.disabled = true;
+        clickUpgradeBtn.classList.add('click-upgrade-disabled');
+        clickUpgradeBtn.textContent = 'レベルＭＡＸ';
+    }
+} else {
+    if (clickLevelTextEl) clickLevelTextEl.textContent = gameState.clickLevel;
+    if (clickNextCostEl)  clickNextCostEl.textContent  = formatNumber(getClickUpgradeCost());
+
+    if (clickUpgradeBtn) {
+        clickUpgradeBtn.disabled = false;
+        clickUpgradeBtn.classList.remove('click-upgrade-disabled');
+        clickUpgradeBtn.textContent = '肉トレをする！';
+    }
+}
+
+
+
             if (gameState.feverMode && Date.now() < gameState.feverEndTime) {
                 statusPanel.classList.add('fever');
                 speechBubble.classList.add('fever');
@@ -3577,7 +3681,7 @@ function showUpgradeUnlock(upgrade) {
         particlesContainer.innerHTML = '';
 
         const isMobile = window.innerWidth <= 768;
-        const particleCount = isMobile ? 10 : 20;
+        const particleCount = isMobile ? 16 : 40;
         const EMOJIS = ['💫', '🌟', '⭐️', '🎉', '🍖', '🥩'];
 
         for (let i = 0; i < particleCount; i++) {
@@ -3588,7 +3692,7 @@ function showUpgradeUnlock(upgrade) {
             span.style.top  = `${Math.random() * 100}%`;
             // ランダム方向 & 距離
             const angle = Math.random() * Math.PI * 2;
-const distance = (isMobile ? 120 : 180) + Math.random() * (isMobile ? 160 : 260);         
+            const distance = (isMobile ? 160 : 260) + Math.random() * (isMobile ? 200 : 360);       
             const dx = Math.cos(angle) * distance;
             const dy = Math.sin(angle) * distance;
 
@@ -3983,30 +4087,35 @@ function getClickUpgradeCost(level = gameState.clickLevel) {
 }
         
 function upgradeClickPower() {
-    if (gameState.clickLevel >= 20) {
-        showNotification('🏋🏻‍♂️ 肉トレはLv20でカンストだ！');
+    const btn = document.getElementById('clickUpgradeButton');
+
+    if (gameState.clickLevel >= MAX_CLICK_LEVEL) {
+        if (btn) {
+            btn.disabled = true;
+            btn.classList.add('click-upgrade-disabled');
+            btn.textContent = 'レベルMAX！';
+
+        }
+        showNotification(`🏋🏻‍♂️ 肉トレはLv${MAX_CLICK_LEVEL}でカンストだ！`);
         return;
     }
+
     const cost = getClickUpgradeCost();
     if (gameState.meat < cost) {
-        showNotification(`🍖 肉が足りない！\n必要: ${formatNumber(cost)} 肉`);
+        showNotification(`🍖 肉が足りねェ！\n必要肉: ${formatNumber(cost)} `);
         return;
-    }
-    const btn = document.getElementById('clickUpgradeButton');
-    if (btn) {
-        btn.disabled = true;
-        setTimeout(() => { btn.disabled = false; }, 200);
     }
 
     gameState.meat -= cost;
     gameState.clickLevel += 1;
 
+playClickUpgradeSound();
+
     showNotification(`🏋🏻‍♂️ 肉トレ強化！ Lv.${gameState.clickLevel}\n1タップ=+${getClickValue()}（換算）`);
 
     updateDisplay();
     saveGame(true);
-}
-        
+}        
         // セーブ
         function saveGame(silent = false) {
             const saveData = {
@@ -4043,14 +4152,14 @@ function loadGame() {
             upgrades: restoredUpgrades,
             heardDialogues: new Set(data.heardDialogues || []),
             unlockedUpgrades: data.unlockedUpgrades || [0],
-orderLog: data.orderLog || [], 
-        };
+            orderLog: data.orderLog || [], 
+            };
 
 
-gameState.rawClicks ??= 0;
-gameState.clickLevel ??= 0;
-gameState.totalClicks ??= 0;
-gameState.achievementLog ??= [];
+            gameState.rawClicks ??= 0;
+            gameState.clickLevel ??= 0;
+            gameState.totalClicks ??= 0;
+            gameState.achievementLog ??= [];
 delete gameState.clickPower;
 
         // オフライン時間
@@ -4135,6 +4244,51 @@ window.addEventListener("load", () => {
 });
 
 
+
+
+// =======================
+// 遊び方
+// =======================
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('helpBtn');
+  const modal = document.getElementById('helpModal');
+  const closeBtn = document.getElementById('helpClose');
+
+  if (!btn || !modal || !closeBtn) return;
+
+  function openHelp() {
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('modal-open');
+  }
+
+  function closeHelp() {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+  }
+
+  btn.addEventListener('click', openHelp);
+  closeBtn.addEventListener('click', closeHelp);
+
+// 初回だけ自動で開く
+const seenKey = 'helpSeen_v1';
+if (!localStorage.getItem(seenKey)) {
+  openHelp();
+  localStorage.setItem(seenKey, '1');
+}
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeHelp();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) closeHelp();
+  });
+});
+
+
+
     </script>
 
     <!-- フッター -->
@@ -4149,5 +4303,55 @@ window.addEventListener("load", () => {
         </p><br>
         <button class="footer-reset-btn" onclick="resetGame()">🔄 データをリセット</button><br>
     </footer>
+
+
+<div class="help-modal" id="helpModal" aria-hidden="true">
+  <div class="help-modal__content" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <button class="help-modal__close" id="helpClose" type="button" aria-label="閉じる">×</button>
+
+    <h2 class="help-title" id="helpTitle">🍖 『狂介クリッカー』の遊び方 🍖</h2>
+
+    <div class="help-body">
+      <div class="help-section">
+        <div class="help-head">◆ まずは肉</div>
+        <div class="help-text">狂介が肉を欲しがっているので、狂介をタップして肉をあげてください。<br>
+とにかく押して押して押しまくりましょう。
+</div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-head">◆ 支援者を呼ぶ</div>
+        <div class="help-text">集めた肉で、支援者を勧誘できます。<br>
+支援してくれる仲間が増えるほど獲得出来る肉の量も増えていきます。</div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-head">◆ クリックを鍛える</div>
+        <div class="help-text">「肉トレ」をすると、1回のクリックがどんどん強くなります。<br>
+指と狂介、どちらを鍛えるかはあなた次第。</div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-head">◆ 料理図鑑</div>
+        <div class="help-text">たくさん肉を集めて狂介が食べた肉料理の図鑑を完成させましょう。</div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-head">◆ 実績</div>
+        <div class="help-text">特定の条件を満たすと実績が解放されます。<br>
+色々と試してみてください。</div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-head">◆ セーブ・リセット</div>
+        <div class="help-text">データは自動で保存されます。えらい。<br>
+但し、サイト下部にある「データをリセット」を押すと、すべて最初からになります。<br></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 </body>
 </html>
