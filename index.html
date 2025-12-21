@@ -2625,8 +2625,9 @@ body.modal-open {
 /* ステータスコピー用 */
 .status-panel .copy-btn{
   display: block;
-  margin-left: auto;
-  margin-top: 0.8rem;
+
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
 
   padding: 0.45rem 0.9rem;
   font-size: 0.7rem;
@@ -2667,6 +2668,7 @@ body.modal-open {
         <!-- 左: ステータスパネル -->
         <div class="status-panel" id="statusPanel">
             <h2>📊 ステータス</h2>
+<button class="header-btn copy-btn" id="copyMeatBtn" type="button">コピーする</button>
             <div style="text-align: center; font-size: 1rem; opacity: 0.7; margin-bottom: 0.5rem; color: var(--text-dark);">現在の保有肉数</div>
             <div class="meat-count" id="meatCount">0</div>
             <div class="per-second">🥩 <span id="perSecond">0</span> 肉/秒</div>
@@ -2684,9 +2686,8 @@ body.modal-open {
             </div>
             <div class="stat-item">
                 <span>達成済み実績</span>
-                <span id="unlockedAchievements">0/21</span>
+                <span id="unlockedAchievements">0/22</span>
             </div>
-<button class="header-btn copy-btn" id="copyMeatBtn" type="button">ステータスをコピーする</button>
         </div>
 
         <!-- ★ 左下：強化ボタン -->
@@ -3021,7 +3022,7 @@ const achievements = [
       condition: () => gameState.totalMeatEarned >= 10000 && gameState.upgrades.some(u => u.count > 0),
       description: 'プレイ累計肉10,000個+支援者1人以上' },
 
-    { id: 11, name: 'ラッキーボーイ', icon: '🛡️',
+    { id: 11, name: 'ラッキーカレー', icon: '🍛',
       condition: () => gameState.goldenCurryClicks >= 1,
       description: 'ゴールデン肉カレー1回クリック' },
 
@@ -3080,9 +3081,9 @@ const achievements = [
       description: '6時間以上オフラインで放置' },
 
     { id: 21, name: '真の肉奉公者', icon: '🪐',
-      condition: () => gameState.achievements.filter(a => a).length >= 20 
-                     && gameState.meat >= 1000000,
-      description: '全実績20種達成＋肉1000000個保有' }
+condition: () => gameState.achievements.filter(a => a).length >= (achievements.length - 1)
+               && gameState.meat >= 1000000,
+      description: '全実績達成＋肉1000000個保有' }
 ];
 
 
@@ -3589,7 +3590,8 @@ const recent = gameState.orderLog.slice(-5);
             const clickLevelTextEl = document.getElementById('clickLevelText');
                         document.getElementById('totalMeat').textContent = formatNumber(Math.floor(gameState.totalMeatEarned));
             document.getElementById('unlockedRecipes').textContent = `${gameState.unlockedRecipes.length}/20`;
-            document.getElementById('unlockedAchievements').textContent = `${gameState.achievements.filter(a => a).length}/21`;
+            document.getElementById('unlockedAchievements').textContent =
+            `${gameState.achievements.filter(a => a).length}/${achievements.length}`;
             
             const statusPanel = document.getElementById('statusPanel');
             const meatButton = document.getElementById('meatButton');
