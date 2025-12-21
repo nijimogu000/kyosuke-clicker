@@ -2620,6 +2620,19 @@ body.modal-open {
   .help-modal__content{ padding: 1rem; }
 }
   
+
+
+/* ステータスコピー用 */
+.status-panel .copy-btn{
+  display: block;
+  margin-left: auto;
+  margin-top: 0.8rem;
+
+  padding: 0.45rem 0.9rem;
+  font-size: 0.7rem;
+  border-radius: 12px;
+  width: fit-content;
+}
         
     </style>
 
@@ -2658,7 +2671,7 @@ body.modal-open {
             <div class="meat-count" id="meatCount">0</div>
             <div class="per-second">🥩 <span id="perSecond">0</span> 肉/秒</div>
             <div class="stat-item">
-                <span>累計獲得肉</span>
+                <span>累計獲得肉数</span>
                 <span id="totalMeat">0</span>
             </div>
             <div class="stat-item">
@@ -2673,6 +2686,7 @@ body.modal-open {
                 <span>達成済み実績</span>
                 <span id="unlockedAchievements">0/21</span>
             </div>
+<button class="header-btn copy-btn" id="copyMeatBtn" type="button">ステータスをコピーする</button>
         </div>
 
         <!-- ★ 左下：強化ボタン -->
@@ -3031,7 +3045,7 @@ const achievements = [
 
     { id: 18, name: 'ライダーたちの支援', icon: '👪',
       condition: () => gameState.orderMaster,
-      description: '松之助→紫苑→為士→皇紀の順番で購入' },
+      description: '松之助→紫苑→為士→戴天→皇紀の順番で購入' },
 
     { id: 20, name: 'セリフコレクター', icon: '🗣️',
       condition: () => gameState.heardDialogues.size >= 32,
@@ -3261,7 +3275,7 @@ function showDialogue() {
             '📰 ランス『君たちは止めるのかい？　僕はもう少しだけ見ていたいな』',
             '📰 Ｑ『はいはい、お肉ね...好きだよねぇ、ほんと』',
             '📰 Ｑ『お肉だけって飽きない？　もっと甘いものとか食べなよ』',
-            '📰 静流『これだけ美味しそうに食べてくれる人が居ると、作った側も励みになるよねぇ』',
+            '📰 静流『これだけ美味しそうに食べてくれると、作った人も嬉しいだろうな』',
             '📰 静流『あー...見てるだけでお腹いっぱいになっちゃった。若いって凄いねぇ』',
             '📰 宗雲『...ふむ、これほど気持ちよく食べる奴も珍しいな』',
             '📰 宗雲『食べ方に口出しするつもりはない。だが、「ほどほど」という言葉があることは覚えておけ』',
@@ -3270,15 +3284,15 @@ function showDialogue() {
             '📰 皇紀『選ぶ肉が雑なら、出来る筋も雑になる』',
             '📰 皇紀『...良い食いっぷりだ』',
             '📰 浄『肉で無邪気に喜べるのは、まだ若い証拠だな。俺は俺で、甘味の世界に浸らせてもらうとするよ』',
-            '📰 浄『レディたちの間で肉が流行り始めているのか。...困ったな』',
+            '📰 浄『レディたちの間で肉料理が流行り始めているのか。...困ったな』',
             '📰 戴天『燃料効率が異常に高いのでしょうか...。彼の身体を調べれば興味深いデータが取れそうですね』',
             '📰 戴天『この完食ぶり、まさしく驚嘆称賛に値する気迫ですね...』',
             '📰 雨竜『この量を１人で...？　まさかここまでとは...圧巻です』',
             '📰 雨竜『荒鬼さんの食事の勢いには、いつも驚かされます。水も忘れずに飲んでくださいね』',
             '📰 駆『これだけ需要があるなら、肉の相場まで動きそうだな...。今のうちに新しい商品でも考えておくか』',
             '📰 駆『うちのフラリオでもあそこまでは食わねぇよ。パーマのヤツ、食費とかどう回してんだ？』',
-            '📰フラリオ『ちょ、待て待て！　それ鳥じゃねーよな？！　...ああ牛か。マジで焦った』',
-            '📰フラリオ『いやいや、オマエの胃袋どうなってんだよ！　......俺もひょっとする、といけんのか？』',
+            '📰フラリオ『ちょ、待て待て！　それ鳥じゃねーよな？！　...う、牛か。マジで勘弁してくれ...』',
+            '📰フラリオ『いやいや、オマエの胃袋どうなってんだよ！　......俺もひょっとする、といけんのか...？』',
             '📰レオン『おおっと、まだお召し上がりですね？！　承知いたしました！！　次の一皿も、最高の一品を全力でお届けいたしますよ！！』',
             '📰レオン『このように気持ちよく召し上がっていただけるとは、感激でございます！！　私も一層、腕が鳴ります！！』',
             '📰 肉屋『在庫が......在庫が足りない！！』',
@@ -3533,6 +3547,7 @@ const kyosuke1 = "images/kyosuke1.png";
 const kyosukeHalf = "images/kyosuke2.png";
 const kyosuke2 = "images/kyosuke3.png";
 
+    
         // アップグレード購入
 function buyUpgrade(index) {
     const upgrade = gameState.upgrades[index];
@@ -3543,7 +3558,10 @@ function buyUpgrade(index) {
     gameState.meat -= cost;
     upgrade.count++;
 
-    gameState.orderLog.push(index);
+gameState.orderLog.push(upgrades[index].id); 
+
+console.log("pushed =", gameState.orderLog.at(-1), "expected id =", upgrades[index].id, "index =", index);
+
 
     checkOrderMaster();
 
@@ -3555,8 +3573,8 @@ function buyUpgrade(index) {
 
 // ★順番実績チェック
 function checkOrderMaster() {
-    const target = [2, 3, 5, 7];
-    const recent = gameState.orderLog.slice(-4);
+const target = [3, 4, 6, 7, 8];
+const recent = gameState.orderLog.slice(-5);
     if (JSON.stringify(recent) === JSON.stringify(target)) {
         gameState.orderMaster = true;
         checkAchievements();
@@ -4156,6 +4174,19 @@ function loadGame() {
             };
 
 
+// --- orderLog 移行 ---
+if (Array.isArray(gameState.orderLog) && gameState.orderLog.length > 0) {
+    const max = Math.max(...gameState.orderLog);
+
+    if (max <= 7) {
+        gameState.orderLog = gameState.orderLog
+            .map(i => upgrades[i]?.id)
+            .filter(v => typeof v === 'number');
+    }
+}
+
+
+
             gameState.rawClicks ??= 0;
             gameState.clickLevel ??= 0;
             gameState.totalClicks ??= 0;
@@ -4243,6 +4274,61 @@ window.addEventListener("load", () => {
     }, 200);
 });
 
+
+// =======================
+// ステータスコピー
+// =======================
+document.addEventListener('DOMContentLoaded', () => {
+  const copyBtn = document.getElementById('copyMeatBtn');
+  if (!copyBtn) return;
+
+  function getText(id) {
+    const el = document.getElementById(id);
+    return el ? el.textContent.trim() : '';
+  }
+
+  function buildStatusText() {
+    const meat = getText('meatCount');
+    const perSec = getText('perSecond');
+    const totalMeat = getText('totalMeat');
+    const totalClicks = getText('totalClicks');
+    const recipes = getText('unlockedRecipes');
+    const achievements = getText('unlockedAchievements');
+
+    // 投稿用テキスト
+    return [
+      `『狂介クリッカー』`,
+      `----------------------------`,
+      `保有肉数: ${meat}`,
+      `肉/秒: ${perSec}`,
+      `累計獲得肉数: ${totalMeat}`,
+      `総クリック数: ${totalClicks}`,
+      `解放済み料理: ${recipes}`,
+      `達成済み実績: ${achievements}`
+    ].join('\n');
+  }
+
+  async function copyStatus() {
+    const text = buildStatusText();
+
+    try {
+      await navigator.clipboard.writeText(text);
+      showNotification?.('📋 ステータスをコピーしました！');
+    } catch (err) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      showNotification?.('📋 ステータスをコピーしました！');
+    }
+  }
+
+  copyBtn.addEventListener('click', copyStatus);
+});
 
 
 
@@ -4339,13 +4425,13 @@ if (!localStorage.getItem(seenKey)) {
       <div class="help-section">
         <div class="help-head">◆ 実績</div>
         <div class="help-text">特定の条件を満たすと実績が解放されます。<br>
-色々と試してみてください。</div>
+色々と試してみてください。埋めてもご褒美はありません。</div>
       </div>
 
       <div class="help-section">
         <div class="help-head">◆ セーブ・リセット</div>
         <div class="help-text">データは自動で保存されます。えらい。<br>
-但し、サイト下部にある「データをリセット」を押すと、すべて最初からになります。<br></div>
+また、サイト下部にある「データをリセット」を押すと、すべて最初からになります。<br></div>
       </div>
     </div>
   </div>
