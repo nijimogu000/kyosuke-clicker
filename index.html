@@ -2731,7 +2731,7 @@ body.modal-open {
             狂介をクリックして始めよう!🖐
         </div>
         <div style="position: relative;">
-            <button class="meat-button" id="meatButton" onclick="clickMeat(event)">
+<button class="meat-button" id="meatButton" onclick="handleClick(event)">
                 <img id="meatImage" src="images/kyosuke1.png" alt="狂介" />
             </button>
             <div id="clickEffects" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden;"></div>
@@ -2825,6 +2825,104 @@ body.modal-open {
     </div>
 
     <script>
+
+
+
+// ===============================
+// スマホ判定
+// ===============================
+function isMobile() {
+    return window.matchMedia("(max-width: 768px)").matches;
+}
+
+// スマホ専用：クリック渋滞防止フラグ
+let lastClick = 0;
+let clickSoundCooldown = false;
+let animRunning = false;
+let effectRunning = false;
+// ===============================
+// 📱 スマホ専用 軽量クリック処理
+// ===============================
+function clickMeatMobile(event) {
+
+    // ① 連打間引き（10ms）
+    const now = performance.now();
+    if (now - lastClick < 10) return;
+    lastClick = now;
+
+    // ② 肉加算（PC版と同じ）
+    const base = getClickValue();
+    const power = gameState.clickBoost ? base * 7 : base;
+    gameState.meat += power;
+    gameState.totalMeatEarned += power;
+    gameState.rawClicks += 1;
+    gameState.totalClicks += getClickValue();
+
+    // ③ アニメ（3コマ）間引き
+    if (!animRunning) {
+        animRunning = true;
+        const img = document.getElementById("meatImage");
+
+        img.src = kyosukeHalf;
+
+        setTimeout(() => { img.src = kyosuke2; }, 60);
+        setTimeout(() => {
+            img.src = kyosuke1;
+            animRunning = false;
+        }, 100);
+    }
+
+    // ④ 音の多重再生禁止
+    if (!clickSoundCooldown) {
+        clickSoundCooldown = true;
+        const s = meatClickSound.cloneNode();
+        s.play().catch(() => {});
+        setTimeout(() => clickSoundCooldown = false, 40);
+    }
+
+    // ⑤ クリックエフェクト（最小限）
+    if (!effectRunning) {
+        effectRunning = true;
+        showClickEffect(power, 50, 50);
+        setTimeout(() => effectRunning = false, 100);
+    }
+
+    // ⑥ PC版と同じ後処理
+    showDialogue();
+    updateDisplay();
+    checkUpgradeUnlocks();
+    checkRecipes();
+    checkAchievements();
+}
+
+// ===============================
+// 📱 スマホなら軽量版クリック関数に切り替え
+// ===============================
+function handleClick(event) {
+    if (isMobile()) {
+        clickMeatMobile(event);
+    } else {
+        clickMeat(event);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // =======================
@@ -4269,15 +4367,6 @@ window.addEventListener("load", () => {
     }, 200);
 });
 
-
-
-
-window.addEventListener("load", () => {
-    const fade = document.getElementById("fade");
-    setTimeout(() => {
-        fade.style.opacity = 0;
-    }, 200);
-});
 
 
 // =======================
