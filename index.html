@@ -4188,21 +4188,28 @@ function loadGame() {
 
 // --- orderLog 移行 ---
 if (Array.isArray(gameState.orderLog) && gameState.orderLog.length > 0) {
-    const max = Math.max(...gameState.orderLog);
 
-    if (max <= 7) {
-        gameState.orderLog = gameState.orderLog
-            .map(i => upgrades[i]?.id)
-            .filter(v => typeof v === 'number');
-    }
+  var max = Math.max.apply(null, gameState.orderLog);
+
+  if (max <= 7) {
+    gameState.orderLog = gameState.orderLog
+      .map(function (i) {
+        if (upgrades[i] && typeof upgrades[i].id === 'number') {
+          return upgrades[i].id;
+        }
+        return null;
+      })
+      .filter(function (v) {
+        return typeof v === 'number';
+      });
+  }
 }
 
+if (gameState.rawClicks == null) gameState.rawClicks = 0;
+if (gameState.clickLevel == null) gameState.clickLevel = 0;
+if (gameState.totalClicks == null) gameState.totalClicks = 0;
+if (!Array.isArray(gameState.achievementLog)) gameState.achievementLog = [];
 
-
-            gameState.rawClicks ??= 0;
-            gameState.clickLevel ??= 0;
-            gameState.totalClicks ??= 0;
-            gameState.achievementLog ??= [];
 delete gameState.clickPower;
 
         // オフライン時間
@@ -4251,8 +4258,7 @@ orderLog: [],
         // 定期自動保存
         setInterval(() => saveGame(true), 10000);
 
-        // ゲーム開始
-        init();
+ 
 
 
 // =======================
@@ -4271,94 +4277,75 @@ document.getElementById('upgradesList').addEventListener('click', (e) => {
 });
 
 window.addEventListener("load", () => {
+
     const fade = document.getElementById("fade");
     setTimeout(() => {
         fade.style.opacity = 0;
     }, 200);
 
+      // ゲーム開始
+        init();
 
-
-
-// ===============================
-// スマホ判定
-// ===============================
-function isMobile() {
-    return window.matchMedia("(max-width: 768px)").matches;
-}
-
-// スマホ専用：クリック渋滞防止フラグ
-let lastClick = 0;
-let clickSoundCooldown = false;
-let animRunning = false;
-let effectRunning = false;
-// ===============================
-// 📱 スマホ専用 軽量クリック処理
-// ===============================
-function clickMeatMobile(event) {
-
-    // ① 連打間引き（10ms）
-    const now = performance.now();
-    if (now - lastClick < 10) return;
-    lastClick = now;
-
-    // ② 肉加算（PC版と同じ）
-    const base = getClickValue();
-    const power = gameState.clickBoost ? base * 7 : base;
-    gameState.meat += power;
-    gameState.totalMeatEarned += power;
-    gameState.rawClicks += 1;
-    gameState.totalClicks += getClickValue();
-
-    // ③ アニメ（3コマ）間引き
-    if (!animRunning) {
-        animRunning = true;
-        const img = document.getElementById("meatImage");
-
-        img.src = kyosukeHalf;
-
-        setTimeout(() => { img.src = kyosuke2; }, 60);
-        setTimeout(() => {
-            img.src = kyosuke1;
-            animRunning = false;
-        }, 100);
+    // ===============================
+    // スマホ判定
+    // ===============================
+    function isMobile() {
+        return window.matchMedia("(max-width: 768px)").matches;
     }
 
-    // ④ 音の多重再生禁止
-    if (!clickSoundCooldown) {
-        clickSoundCooldown = true;
-        const s = meatClickSound.cloneNode();
-        s.play().catch(() => {});
-        setTimeout(() => clickSoundCooldown = false, 40);
+    let lastClick = 0;
+    let clickSoundCooldown = false;
+    let animRunning = false;
+    let effectRunning = false;
+
+    function clickMeatMobile(event) {
+        const now = performance.now();
+        if (now - lastClick < 10) return;
+        lastClick = now;
+
+        const base = getClickValue();
+        const power = gameState.clickBoost ? base * 7 : base;
+        gameState.meat += power;
+        gameState.totalMeatEarned += power;
+        gameState.rawClicks += 1;
+        gameState.totalClicks += getClickValue();
+
+        if (!animRunning) {
+            animRunning = true;
+            const img = document.getElementById("meatImage");
+            img.src = kyosukeHalf;
+            setTimeout(() => { img.src = kyosuke2 }, 60);
+            setTimeout(() => {
+                img.src = kyosuke1;
+                animRunning = false;
+            }, 100);
+        }
+
+        if (!clickSoundCooldown) {
+            clickSoundCooldown = true;
+            meatClickSound.cloneNode().play().catch(() => {});
+            setTimeout(() => clickSoundCooldown = false, 40);
+        }
+
+        if (!effectRunning) {
+            effectRunning = true;
+            showClickEffect(power, 50, 50);
+            setTimeout(() => effectRunning = false, 100);
+        }
+
+        showDialogue();
+        updateDisplay();
+        checkUpgradeUnlocks();
+        checkRecipes();
+        checkAchievements();
     }
 
-    // ⑤ クリックエフェクト（最小限）
-    if (!effectRunning) {
-        effectRunning = true;
-        showClickEffect(power, 50, 50);
-        setTimeout(() => effectRunning = false, 100);
+    function handleClick(event) {
+        if (isMobile()) clickMeatMobile(event);
+        else clickMeat(event);
     }
-
-    // ⑥ PC版と同じ後処理
-    showDialogue();
-    updateDisplay();
-    checkUpgradeUnlocks();
-    checkRecipes();
-    checkAchievements();
-}
-
-// ===============================
-// 📱 スマホなら軽量版クリック関数に切り替え
-// ===============================
-function handleClick(event) {
-    if (isMobile()) {
-        clickMeatMobile(event);
-    } else {
-        clickMeat(event);
-    }
-
 
 });
-
 
 
 
@@ -4400,20 +4387,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const text = buildStatusText();
 
     try {
-      await navigator.clipboard.writeText(text);
-      showNotification?.('📋 ステータスをコピーしました！');
-    } catch (err) {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.left = '-9999px';
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      ta.remove();
-      showNotification?.('📋 ステータスをコピーしました！');
-    }
+  await navigator.clipboard.writeText(text);
+
+  if (typeof showNotification === 'function') {
+    showNotification('📋 ステータスをコピーしました！');
   }
+
+} catch (err) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  ta.remove();
+
+  if (typeof showNotification === 'function') {
+    showNotification('📋 ステータスをコピーしました！');
+  }
+}
 
   copyBtn.addEventListener('click', copyStatus);
 });
