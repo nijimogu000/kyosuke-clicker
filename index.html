@@ -2618,8 +2618,16 @@ body.modal-open {
 
 
 @media (max-width: 768px){
-  .help-title{ font-size: 1.25rem; }
-  .help-modal__content{ padding: 1rem; }
+  .help-title {
+    font-size: 1.25rem;
+  }
+
+  .help-modal__content {
+    padding: 1rem;
+    max-height: 80dvh;          /* スマホでも画面に収まる高さ */
+    overflow-y: auto;           /* はみ出たらスクロール */
+    -webkit-overflow-scrolling: touch;  /* iOSのスムーズスクロール */
+  }
 }
   
 
@@ -4368,6 +4376,61 @@ window.addEventListener("load", () => {
 });
 
 
+
+// =======================
+// ステータスコピー
+// =======================
+document.addEventListener('DOMContentLoaded', () => {
+  const copyBtn = document.getElementById('copyMeatBtn');
+  if (!copyBtn) return;
+
+  function getText(id) {
+    const el = document.getElementById(id);
+    return el ? el.textContent.trim() : '';
+  }
+
+  function buildStatusText() {
+    const meat = getText('meatCount');
+    const perSec = getText('perSecond');
+    const totalMeat = getText('totalMeat');
+    const totalClicks = getText('totalClicks');
+    const recipes = getText('unlockedRecipes');
+    const achievements = getText('unlockedAchievements');
+
+    // 投稿用テキスト
+    return [
+      `kyosuke-clicker　ログ`,
+      ``,
+      `保有肉数: ${meat}`,
+      `肉/秒: ${perSec}`,
+      `累計獲得肉数: ${totalMeat}`,
+      `総クリック数: ${totalClicks}`,
+      `解放済み料理: ${recipes}`,
+      `達成済み実績: ${achievements}`
+    ].join('\n');
+  }
+
+  async function copyStatus() {
+    const text = buildStatusText();
+
+    try {
+      await navigator.clipboard.writeText(text);
+      showNotification?.('📋 ステータスをコピーしました！');
+    } catch (err) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      showNotification?.('📋 ステータスをコピーしました！');
+    }
+  }
+
+  copyBtn.addEventListener('click', copyStatus);
+});
 
 
 
