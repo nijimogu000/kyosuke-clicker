@@ -2618,14 +2618,9 @@ body.modal-open {
 
 
 @media (max-width: 768px){
-  .help-title{ font-size: 1.25rem; 
+  .help-title{ font-size: 1.25rem; }
+  .help-modal__content{ padding: 1rem; }
 }
-  .help-modal__content{ padding: 1rem; 
-
-  max-height: 85dvh;         /* ← スマホで縦を縮める */
-  overflow-y: auto;         /* ← 中身をスクロール可能にする */
--webkit-overflow-scrolling: touch;
-}}
   
 
 
@@ -2736,7 +2731,7 @@ body.modal-open {
             狂介をクリックして始めよう!🖐
         </div>
         <div style="position: relative;">
-            <button class="meat-button" id="meatButton" onclick="handleClick(event)">
+            <button class="meat-button" id="meatButton" onclick="clickMeat(event)">
                 <img id="meatImage" src="images/kyosuke1.png" alt="狂介" />
             </button>
             <div id="clickEffects" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden;"></div>
@@ -3411,9 +3406,6 @@ function showDialogue() {
         }
     }, 300000);
 }
-
-
-
         // 肉クリック
 function clickMeat(event) {
 const base = getClickValue();
@@ -4188,28 +4180,21 @@ function loadGame() {
 
 // --- orderLog 移行 ---
 if (Array.isArray(gameState.orderLog) && gameState.orderLog.length > 0) {
+    const max = Math.max(...gameState.orderLog);
 
-  var max = Math.max.apply(null, gameState.orderLog);
-
-  if (max <= 7) {
-    gameState.orderLog = gameState.orderLog
-      .map(function (i) {
-        if (upgrades[i] && typeof upgrades[i].id === 'number') {
-          return upgrades[i].id;
-        }
-        return null;
-      })
-      .filter(function (v) {
-        return typeof v === 'number';
-      });
-  }
+    if (max <= 7) {
+        gameState.orderLog = gameState.orderLog
+            .map(i => upgrades[i]?.id)
+            .filter(v => typeof v === 'number');
+    }
 }
 
-if (gameState.rawClicks == null) gameState.rawClicks = 0;
-if (gameState.clickLevel == null) gameState.clickLevel = 0;
-if (gameState.totalClicks == null) gameState.totalClicks = 0;
-if (!Array.isArray(gameState.achievementLog)) gameState.achievementLog = [];
 
+
+            gameState.rawClicks ??= 0;
+            gameState.clickLevel ??= 0;
+            gameState.totalClicks ??= 0;
+            gameState.achievementLog ??= [];
 delete gameState.clickPower;
 
         // オフライン時間
@@ -4258,7 +4243,8 @@ orderLog: [],
         // 定期自動保存
         setInterval(() => saveGame(true), 10000);
 
- 
+        // ゲーム開始
+        init();
 
 
 // =======================
@@ -4277,77 +4263,21 @@ document.getElementById('upgradesList').addEventListener('click', (e) => {
 });
 
 window.addEventListener("load", () => {
-
     const fade = document.getElementById("fade");
     setTimeout(() => {
         fade.style.opacity = 0;
     }, 200);
-
-      // ゲーム開始
-        init();
-
-    // ===============================
-    // スマホ判定
-    // ===============================
-    function isMobile() {
-        return window.matchMedia("(max-width: 768px)").matches;
-    }
-
-    let lastClick = 0;
-    let clickSoundCooldown = false;
-    let animRunning = false;
-    let effectRunning = false;
-
-    function clickMeatMobile(event) {
-        const now = performance.now();
-        if (now - lastClick < 10) return;
-        lastClick = now;
-
-        const base = getClickValue();
-        const power = gameState.clickBoost ? base * 7 : base;
-        gameState.meat += power;
-        gameState.totalMeatEarned += power;
-        gameState.rawClicks += 1;
-        gameState.totalClicks += getClickValue();
-
-        if (!animRunning) {
-            animRunning = true;
-            const img = document.getElementById("meatImage");
-            img.src = kyosukeHalf;
-            setTimeout(() => { img.src = kyosuke2 }, 60);
-            setTimeout(() => {
-                img.src = kyosuke1;
-                animRunning = false;
-            }, 100);
-        }
-
-        if (!clickSoundCooldown) {
-            clickSoundCooldown = true;
-            meatClickSound.cloneNode().play().catch(() => {});
-            setTimeout(() => clickSoundCooldown = false, 40);
-        }
-
-        if (!effectRunning) {
-            effectRunning = true;
-            showClickEffect(power, 50, 50);
-            setTimeout(() => effectRunning = false, 100);
-        }
-
-        showDialogue();
-        updateDisplay();
-        checkUpgradeUnlocks();
-        checkRecipes();
-        checkAchievements();
-    }
-
-    function handleClick(event) {
-        if (isMobile()) clickMeatMobile(event);
-        else clickMeat(event);
-    }
-
 });
 
 
+
+
+window.addEventListener("load", () => {
+    const fade = document.getElementById("fade");
+    setTimeout(() => {
+        fade.style.opacity = 0;
+    }, 200);
+});
 
 
 // =======================
@@ -4372,7 +4302,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 投稿用テキスト
     return [
-      `kyosuke-clickerログ`,
+      `『狂介クリッカー』記録ログ`,
       ``,
       `保有肉数: ${meat}`,
       `肉/秒: ${perSec}`,
@@ -4387,26 +4317,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const text = buildStatusText();
 
     try {
-  await navigator.clipboard.writeText(text);
-
-  if (typeof showNotification === 'function') {
-    showNotification('📋 ステータスをコピーしました！');
+      await navigator.clipboard.writeText(text);
+      showNotification?.('📋 ステータスをコピーしました！');
+    } catch (err) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      showNotification?.('📋 ステータスをコピーしました！');
+    }
   }
-
-} catch (err) {
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.position = 'fixed';
-  ta.style.left = '-9999px';
-  document.body.appendChild(ta);
-  ta.select();
-  document.execCommand('copy');
-  ta.remove();
-
-  if (typeof showNotification === 'function') {
-    showNotification('📋 ステータスをコピーしました！');
-  }
-}
 
   copyBtn.addEventListener('click', copyStatus);
 });
