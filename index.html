@@ -2836,6 +2836,8 @@ body.modal-open {
 
 
 
+
+
 // ===============================
 // スマホ判定
 // ===============================
@@ -2913,8 +2915,6 @@ function handleClick(event) {
         clickMeat(event);
     }
 }
-
-
 
 
 
@@ -3228,7 +3228,7 @@ const dialogues = [
     { text: 'たんぱく質が全身に染み渡るぜェ！！', rarity: 'normal',
       condition: () => gameState.totalMeatEarned < 10000 },
 
-    { text: 'まだ余裕だぜ……', rarity: 'rare',
+    { text: 'まだ余裕だぜ……', rarity: 'rare',face: 'burn',
       condition: () => gameState.totalMeatEarned < 10000 },
 
 
@@ -3260,7 +3260,7 @@ const dialogues = [
     { text: '俺の胃袋、何処までいけるんだ……', rarity: 'rare',
       condition: () => gameState.totalMeatEarned >= 10000 && gameState.totalMeatEarned < 500000 },
 
-    { text: '俺が１番だ！！！！！！', rarity: 'rare',
+    { text: '俺が１番だ！！！！！！', rarity: 'rare',face: 'burn',
       condition: () => gameState.totalMeatEarned >= 10000 && gameState.totalMeatEarned < 500000 },
 
 
@@ -3274,31 +3274,31 @@ const dialogues = [
     { text: 'そろそろ肉トレしとくか……？！', rarity: 'normal',
       condition: () => gameState.totalMeatEarned >= 500000 },
 
-    { text: '……うぷっ', rarity: 'normal',
+    { text: '……うぷっ', rarity: 'normal',face: 'pain',
       condition: () => gameState.totalMeatEarned >= 500000 },
 
     { text: '……肉最高！！', rarity: 'normal',
       condition: () => gameState.totalMeatEarned >= 500000 },
 
-    { text: '……一旦、休ませて……くれ……', rarity: 'rare',
+    { text: '……一旦、休ませて……くれ……', rarity: 'rare',face: 'pain',
       condition: () => gameState.totalMeatEarned >= 500000 },
 
     { text: '……ありがとな', rarity: 'super-rare',
       condition: () => gameState.totalMeatEarned >= 500000 },
 
-    { text: '……もう……無理かもしれねぇ……', rarity: 'super-rare',
+    { text: '……もう……無理かもしれねぇ……', rarity: 'super-rare',face: 'pain',
       condition: () => gameState.totalMeatEarned >= 500000 },
 
     { text: '……オマエ……正気か……？', rarity: 'super-rare',
       condition: () => gameState.totalMeatEarned >= 500000 },
 
-    { text: 'オマエ、マジでスゲェよ……', rarity: 'super-rare',
+    { text: 'オマエ、マジでスゲェよ……', rarity: 'super-rare',face: 'praise',
       condition: () => gameState.totalMeatEarned >= 500000 },
 
-    { text: 'オマエとなら……もっと強くなれそうだ', rarity: 'super-rare',
+    { text: 'オマエとなら……もっと強くなれそうだ', rarity: 'super-rare',face: 'praise',
       condition: () => gameState.totalMeatEarned >= 500000 },
     
-    { text: '最強最恐最狂！！！', rarity: 'super-rare',
+    { text: '最強最恐最狂！！！', rarity: 'super-rare',face: 'burn',
       condition: () => gameState.totalMeatEarned >= 500000 },
 ];
 
@@ -3456,7 +3456,15 @@ function showDialogue() {
             unlockedRecipes: [],
             achievementLog: [],
             achievements: new Array(achievements.length).fill(false),
-            goldenCurryClicks: 0,
+
+ // ゴールデンカレー関連（あとで消す）
+    goldenCurryClicks: 0,
+    goldenEverAppeared: false,   // ← 追加（あとで消す）
+    forceGoldenOnce: false,      // ← 追加（あとで消す）
+goldenFailCount: 0,   // ゴールデンカレー失敗回数（あとで消す）
+
+
+
             offlineMaxTime: 0,
             speedRun5min: false,
             rocketStart: false,
@@ -3469,7 +3477,12 @@ function showDialogue() {
             autoClickMode: false,
             autoClickEndTime: 0,
             lastSave: Date.now(),
-            startTime: Date.now()
+            startTime: Date.now(),
+
+// 帰還台詞用(あとで消す)
+    hasPlayedBefore: false,
+    lastLeaveTime: 0
+
         };
 
         let clickCounter = 0;
@@ -3479,7 +3492,7 @@ function showDialogue() {
         // 初期化
         function init() {
     loadGame();
-
+gameState.goldenFailCount ??= 0;   // ← 追加（あとで消す）
 
 // ============================
     // 🔊 サウンド設定の復元
@@ -3541,6 +3554,7 @@ setTimeout(() => {
     void img.offsetWidth;
     img.classList.add("kyosuke-glow");
 }, 300);  // ← 全体で0.22秒ぐらいに伸ばす
+
 
 
     // 10秒間のクリック数カウント
@@ -3628,7 +3642,7 @@ function showClickEffect(power, xPercent = 50, yPercent = 50) {
     setTimeout(() => effect.remove(), 1000);
 }
 
-        // ランダムセリフ表示
+       // ランダムセリフ表示
         function showRandomDialogue() {
             const rand = Math.random();
             let selectedDialogue;
@@ -3655,6 +3669,33 @@ function showClickEffect(power, xPercent = 50, yPercent = 50) {
 const kyosuke1 = "images/kyosuke1.png";
 const kyosukeHalf = "images/kyosuke2.png";
 const kyosuke2 = "images/kyosuke3.png";
+
+    
+
+
+
+
+        // 起動時の吹き出し設定（あとで消す）
+function setupInitialSpeech() {
+    const bubble = document.getElementById("speechBubble");
+    if (!bubble) return;
+
+    const now = Date.now();
+
+    // 初回起動
+    if (!gameState.hasPlayedBefore) {
+        bubble.textContent = "狂介をクリックして始めよう!🖐";
+        return;
+    }
+
+    // 放置時間チェック（5分以上）
+    const awayTime = now - gameState.lastLeaveTime;
+    if (awayTime > 5 * 60 * 1000) {
+        bubble.textContent = "おう、帰ったな！　待ってたぜ！";
+    } else {
+        bubble.textContent = "狂介をクリックして始めよう!🖐";
+    }
+}
 
     
         // アップグレード購入
@@ -3908,15 +3949,44 @@ function checkAchievements() {
         }
 
         // ゴールデンカレー
-        function checkGoldenCurry() {
-            setInterval(() => {
-                if (Math.random() < 0.02) {
-                    spawnGoldenCurry();
-                }
-            }, 45000);
-        }
+function checkGoldenCurry() {
+    setInterval(() => {
+        trySpawnGoldenCurry();
+    }, 45000);
+}
+
+// ゴールデンカレー抽選ロジック（本体）(あとで消す)
+function trySpawnGoldenCurry() {
+
+    // 初回救済（6時間放置後）
+    if (gameState.forceGoldenOnce) {
+        gameState.forceGoldenOnce = false;
+        spawnGoldenCurry();
+        return;
+    }
+
+   
+    // 60回失敗 → ハード天井（最優先）
+    if (gameState.goldenFailCount >= 60) {
+        gameState.goldenFailCount = 0;
+        spawnGoldenCurry();
+        return;
+    }
+
+    // 確率設定
+    let chance = gameState.goldenFailCount >= 8 ? 0.05 : 0.02;
+
+    // 抽選
+    if (Math.random() < chance) {
+        gameState.goldenFailCount = 0;
+        spawnGoldenCurry();
+    } else {
+        gameState.goldenFailCount++;
+    }
+}
 
         function spawnGoldenCurry() {
+    gameState.goldenEverAppeared = true; // ★ これを追加(あとで消す)
             const curry = document.createElement('div');
             curry.className = 'golden-curry';
             curry.textContent = '🍛';
@@ -4317,6 +4387,14 @@ if (offlineTime > 0) {
         gameState.offlineMaxTime = offlineTime;
     }
 
+// ===== 放置6時間：初回救済フラグ(あとで消す) =====
+    if (
+        !gameState.goldenEverAppeared &&
+        offlineTime >= 6 * 60 * 60
+    ) {
+        gameState.forceGoldenOnce = true;
+    }
+
 
     const hours = Math.floor(offlineTime / 3600);
     const minutes = Math.floor((offlineTime % 3600) / 60);
@@ -4373,6 +4451,7 @@ window.addEventListener("load", () => {
     setTimeout(() => {
         fade.style.opacity = 0;
     }, 200);
+setupInitialSpeech(); // ← これを追加（あとで消す）
 });
 
 
@@ -4478,8 +4557,18 @@ if (!localStorage.getItem(seenKey)) {
 });
 
 
+// =======================
+// 離脱時刻の記録 （あとで消す）
+// =======================
+window.addEventListener("beforeunload", () => {
+    gameState.lastLeaveTime = Date.now();
+    gameState.hasPlayedBefore = true;
+    saveGame();
+});
 
     </script>
+
+
 
     <!-- フッター -->
     <footer>
