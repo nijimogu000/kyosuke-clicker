@@ -3457,12 +3457,12 @@ function showDialogue() {
             achievementLog: [],
             achievements: new Array(achievements.length).fill(false),
 
- // ゴールデンカレー関連（あとで消す）
+ // ゴールデンカレー関連
     goldenCurryClicks: 0,
-    goldenEverAppeared: false,   // ← 追加（あとで消す）
-    forceGoldenOnce: false,      // ← 追加（あとで消す）
-goldenFailCount: 0,   // ゴールデンカレー失敗回数（あとで消す）
-
+    goldenEverAppeared: false, 
+    forceGoldenOnce: false,
+goldenFailCount: 0,   // ゴールデンカレー失敗回数
+goldenEverClicked: false, // ゴールデンカレーを1度でもクリックしたか
 
 
             offlineMaxTime: 0,
@@ -3955,12 +3955,11 @@ function checkGoldenCurry() {
     }, 45000);
 }
 
-// ゴールデンカレー抽選ロジック（本体）(あとで消す)
+// ゴールデンカレー抽選ロジック（本体）
 function trySpawnGoldenCurry() {
 
     // 初回救済（6時間放置後）
     if (gameState.forceGoldenOnce) {
-        gameState.forceGoldenOnce = false;
         spawnGoldenCurry();
         return;
     }
@@ -4045,6 +4044,10 @@ function spawnGoldenMeatRain(options = { countMultiplier: 1, valueMultiplier: 1 
 function activateGoldenCurry(element) {
     element.remove();
     gameState.goldenCurryClicks++;
+
+// ★ 初回救済をクリック時に完了
+gameState.forceGoldenOnce = false;
+gameState.goldenEverClicked = true;
 
     const effects = [
 
@@ -4387,13 +4390,13 @@ if (offlineTime > 0) {
         gameState.offlineMaxTime = offlineTime;
     }
 
-// ===== 放置6時間：初回救済フラグ(あとで消す) =====
-    if (
-        !gameState.goldenEverAppeared &&
-        offlineTime >= 6 * 60 * 60
-    ) {
-        gameState.forceGoldenOnce = true;
-    }
+// ===== 放置6時間：初回救済フラグ =====
+   if (
+    !gameState.goldenEverClicked &&
+    offlineTime >= 6 * 60 * 60
+) {
+    gameState.forceGoldenOnce = true;
+}
 
 
     const hours = Math.floor(offlineTime / 3600);
