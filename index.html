@@ -3973,7 +3973,7 @@ function trySpawnGoldenCurry() {
     }
 
     // 確率設定
-    let chance = gameState.goldenFailCount >= 8 ? 0.05 : 0.02;
+let chance = gameState.goldenFailCount <= 7 ? 0.024 : 0.02;
 
     // 抽選
     if (Math.random() < chance) {
