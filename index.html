@@ -3175,8 +3175,8 @@ const achievements = [
       description: '総クリック数の累計が1,000,000回達成' },
 
     { id: 19, name: 'ゴールデンマスター', icon: '⭐',
-      condition: () => gameState.goldenCurryClicks >= 10,
-      description: 'ゴールデン肉カレーを10回クリック' },
+      condition: () => gameState.goldenCurryClicks >= 5,
+      description: 'ゴールデン肉カレーを5回クリック' },
 
     { id: 14, name: '肉の番人', icon: '⚔️',
       condition: () => gameState.upgrades.every(u => u.count >= 20),
@@ -3965,15 +3965,15 @@ function trySpawnGoldenCurry() {
     }
 
    
-    // 60回失敗 → ハード天井（最優先）
-    if (gameState.goldenFailCount >= 60) {
+    // 天井
+if (gameState.goldenFailCount >= 50) {
         gameState.goldenFailCount = 0;
         spawnGoldenCurry();
         return;
     }
 
     // 確率設定
-let chance = gameState.goldenFailCount <= 7 ? 0.024 : 0.02;
+let chance = 0.025;
 
     // 抽選
     if (Math.random() < chance) {
@@ -3985,7 +3985,7 @@ let chance = gameState.goldenFailCount <= 7 ? 0.024 : 0.02;
 }
 
         function spawnGoldenCurry() {
-    gameState.goldenEverAppeared = true; // ★ これを追加(あとで消す)
+    gameState.goldenEverAppeared = true;
             const curry = document.createElement('div');
             curry.className = 'golden-curry';
             curry.textContent = '🍛';
